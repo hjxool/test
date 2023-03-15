@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="text" id="inputtest">
+  <button id="btntest" onclick="query2()">查询</button>
+  <iframe src="./test/index2.html" frameborder="0" width="500" height="500"></iframe>
+
+  <!-- <script src="./test/worker.js"></script> -->
+  <!-- <script src="worker.js"></script> -->
+  <script>
+    let worker = new Worker('./test/worker.js')
+    function query () {
+      worker.postMessage(inputtest.value)
+    }
+    worker.onmessage = function (e) {
+      console.log(e)
+      alert(`计算结果：${e.data}`)
+    }
+    // window自身通信
+    function query2 () {
+      postMessage('asdasdas')
+    }
+    window.onmessage = (e) => {
+      alert(e.data)
+    }
+  </script>
+</body>
+
+</html>

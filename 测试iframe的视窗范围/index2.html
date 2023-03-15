@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      /* 必须去掉body的样式 不然会影响iframe里元素显示 */
+      margin: 0;
+      padding: 0;
+    }
+
+    #second_layer {
+      width: 100%;
+      height: 100%;
+      /* 绝对定位也不会超出iframe框架 */
+      position: absolute;
+      border: 2px solid yellow;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .test_vw_vh {
+      width: 100vw;
+      height: 100vh;
+      background-color: green;
+      position: absolute;
+      z-index: -1;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="second_layer" onclick="mouse_position(event)">
+    <div class="two">222222222222</div>
+    <div class="test_vw_vh">测试vw和vh是相对于浏览器还是iframe</div>
+  </div>
+
+  <script>
+    console.log('执行顺序：子')
+    let dom = document.querySelector('#second_layer')
+    console.log('iframe元素获取自身节点', dom) // 可以
+    let dom2 = document.querySelector('.one')
+    console.log('iframe元素获取父级节点', dom2) // 不行
+    function boundary (dom) {
+      let left = dom.offsetLeft
+      let parent_dom = dom.offsetParent
+      while (parent_dom != null) {
+        left += parent_dom.offsetLeft
+        parent_dom = parent_dom.offsetParent
+      }
+      return left
+    }
+    let dom3 = document.querySelector('.two')
+    console.log('iframe元素通过一级一级父节点获取相对视窗的位置', boundary(dom3)) // 只能获取到相对于iframe框架的位置
+    let b2 = dom3.getBoundingClientRect().left
+    console.log('用浏览器提供的方法获取相对视窗的位置', b2) // 还是只能获取到相对iframe的位置
+    console.log('看一下iframe下window是谁的', window) // 是iframe自己的window
+    window.parent.p_fun('one') // 必须要在服务器基础上才能调用 本地服务器或者远程服务器
+    function son_fun (params) {
+      console.log('iframe里的方法', params)
+    }
+    let parent_element = window.parent.document.querySelector('.one')
+    console.log('iframe里获取父页面元素', parent_element) // 通过这种方法可以避免修改添加父页面方法
+    function mouse_position (e) {
+      // 查看子iframe里鼠标事件位置是相对于哪的
+      console.log(e.clientX) // 结论还是相对于iframe
+    }
+  </script>
+</body>
+
+</html>

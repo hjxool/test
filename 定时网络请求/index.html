@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="../module/axios.min.js"></script>
+  <script>
+    (function test () {
+      axios({
+        method: 'get',
+        url: 'http://zyjs.myhm.org/Learn_show.asp?ID=455',
+      })
+        .then(res => {
+          console.log(res)
+        })
+    })()
+  </script>
+</body>
+
+</html>
