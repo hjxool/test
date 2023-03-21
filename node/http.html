@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>http</title>
+</head>
+
+<body>
+  <button onclick="post()">post</button>
+
+  <script>
+    function post () {
+      let data = {
+        name: 'xxx',
+        password: '1234'
+      }
+      fetch('http://127.0.0.1/9000', {
+        method: 'post',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      // .then(res => {
+      //   console.log('返回结果未处理', res)
+      //   res.json()
+      // }).then(res => {
+      //   console.log('处理后结果', res)
+      // })
+    }
+  </script>
+</body>
+
+</html>
