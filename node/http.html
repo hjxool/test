@@ -1,43 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>http</title>
-	</head>
 
-	<body>
-		<button onclick="post()">post</button>
-		<form action="http://127.0.0.1:9000/?xxx1=123" method="post">
-			<input type="text" name="name" />
-			<input type="text" name="password" />
-			<input type="submit" value="提交" />
-		</form>
-		<video src="./test001.mp4"></video>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>http</title>
+</head>
 
-		<script src="../http/http_html.js"></script>
-		<script>
-			function post() {
-				let data = {
-					name: "xxx",
-					password: "1234",
-				};
-				fetch("http://127.0.0.1/9000", {
-					method: "post",
-					body: JSON.stringify(data),
-					headers: {
-						"Content-Type": "application/json",
-					},
-				})
-					.then((res) => {
-						console.log("返回结果未处理", res);
-						res.json();
-					})
-					.then((res) => {
-						console.log("处理后结果", res);
-					});
-			}
-		</script>
-	</body>
+<body>
+  <button onclick="post()">post</button>
+  <form action="http://127.0.0.1:9000/?xxx1=123" method="post">
+    <input type="text" name="name" />
+    <input type="text" name="password" />
+    <input type="submit" value="提交" />
+  </form>
+  <video src="./test001.mp4"></video>
+
+  <script src="./http_html.js"></script>
+  <script>
+    function post () {
+      let data = {
+        name: "xxx",
+        password: "1234",
+      };
+      fetch("http://127.0.0.1/9000", {
+        method: "post",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => {
+          console.log("返回结果未处理", res);
+          res.json();
+        })
+        .then((res) => {
+          console.log("处理后结果", res);
+        });
+    }
+  </script>
+</body>
+
 </html>
