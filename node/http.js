@@ -47,21 +47,22 @@ const fs = require("fs");
 const path = require("path");
 const server = http.createServer((request, response) => {
 	let { pathname } = new URL(`http://127.0.0.1${request.url}`);
-	let t = path.resolve(__dirname, pathname);
+	// let t = path.resolve(__dirname, pathname);
 	// let t = __dirname + "/../" + "G/Git仓库/test" + pathname;
-	console.log(t);
+	// console.log(t);
 	if (pathname == "/login") {
 		let html = fs.readFileSync("./http.html");
 		response.write(html);
 		response.end();
 	} else {
 		// 这样无法获取上一层级目录下的文件
-		fs.readFile(t, (err, data) => {
+		fs.readFile(`.${pathname}`, (err, data) => {
 			if (err) {
 				response.statusCode = 500;
 				response.end("404");
 				return;
 			}
+			response.setHeader("content-type", "application/octet-stream");
 			response.end(data);
 		});
 	}
