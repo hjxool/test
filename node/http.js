@@ -1,4 +1,4 @@
-const http = require("http");
+const http = require('http');
 
 // const server = http.createServer((request, response) => {
 // 	let body = '';
@@ -43,31 +43,40 @@ const http = require("http");
 // 	response.end('response');
 // });
 
-const fs = require("fs");
-const path = require("path");
+// const fs = require("fs");
+// const path = require("path");
+// const server = http.createServer((request, response) => {
+// 	let { pathname } = new URL(`http://127.0.0.1${request.url}`);
+// 	// let t = path.resolve(__dirname, pathname);
+// 	// let t = __dirname + "/../" + "G/Git仓库/test" + pathname;
+// 	// console.log(t);
+// 	if (pathname == "/login") {
+// 		let html = fs.readFileSync("./http.html");
+// 		response.write(html);
+// 		response.end();
+// 	} else {
+// 		// 这样无法获取上一层级目录下的文件
+// 		fs.readFile(`.${pathname}`, (err, data) => {
+// 			if (err) {
+// 				response.statusCode = 500;
+// 				response.end("404");
+// 				return;
+// 			}
+// 			response.setHeader("content-type", "application/octet-stream");
+// 			response.end(data);
+// 		});
+// 	}
+// });
+
 const server = http.createServer((request, response) => {
-	let { pathname } = new URL(`http://127.0.0.1${request.url}`);
-	// let t = path.resolve(__dirname, pathname);
-	// let t = __dirname + "/../" + "G/Git仓库/test" + pathname;
-	// console.log(t);
-	if (pathname == "/login") {
-		let html = fs.readFileSync("./http.html");
-		response.write(html);
-		response.end();
-	} else {
-		// 这样无法获取上一层级目录下的文件
-		fs.readFile(`.${pathname}`, (err, data) => {
-			if (err) {
-				response.statusCode = 500;
-				response.end("404");
-				return;
-			}
-			response.setHeader("content-type", "application/octet-stream");
-			response.end(data);
-		});
+	switch (request.url) {
+		default:
+			response.end('404');
+			break;
 	}
+	console.log(111111);
 });
 
 server.listen(9000, () => {
-	console.log("服务已启动...");
+	console.log('服务已启动...');
 });
