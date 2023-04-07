@@ -16,14 +16,32 @@ const app = express();
 // 	res.end('end');
 // });
 
-app.all('/', (req, res) => {
+// app.all('/', (req, res) => {
+// 	console.log('收到请求');
+// res.redirect('./login');
+// res.download('./test.txt', '新名字.txt');
+// const fs = require('fs');
+// let data = fs.readFileSync('./package.json');
+// res.json(data.toString());
+// res.json({ name: 123 });
+// 	res.sendFile(__dirname + '/test.');
+// });
+// app.all('/login', (req, res) => {
+// res.send(`console.log('login')`);
+// res.download('./package.json');
+// });
+
+// 中间件
+const fs = require('fs');
+function callback(req, res, next) {
+	let { url, ip } = req;
+	fs.appendFileSync('request.log', `path:${url} IP:${ip}`);
+	next();
+}
+app.use(callback);
+app.get('/', (req, res) => {
 	console.log('收到请求');
-	// res.redirect('./login');
-	res.download('./test.txt', '新名字.txt');
-});
-app.all('/login', (req, res) => {
-	// res.send(`console.log('login')`);
-	// res.download('./package.json');
+	res.send('end');
 });
 
 app.listen('5500', () => {
