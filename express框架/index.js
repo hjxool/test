@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 
 // app.all('*', (req, res) => {
@@ -71,8 +71,52 @@ const app = express();
 // });
 // app.use(express.static(__dirname));
 
-app.listen("5500", () => {
-	console.log("5500端口监听");
+// 测试案例
+// app.use(express.static(__dirname));
+// app.get('/', (req, res) => {
+// 	// res.redirect('./test.html');
+// 	// res.sendFile(__dirname + '/test.html');
+// });
+// const fs = require('fs');
+// const parse = require('body-parser');
+// const json = parse.json();
+// const query = parse.urlencoded({ extended: false });
+// app.post('/login', query, (req, res) => {
+// req.on('data', (chunk) => {
+// 	console.log(chunk.toString());
+// 	fs.appendFileSync('./request.log', chunk);
+// });
+// req.on('end', () => {
+// 	console.log('结束');
+// 	res.sendFile(__dirname + '/request.log');
+// });
+// 	res.send(req.body);
+// });
+
+// 防盗链测试
+app.use((req, res, next) => {
+	let url = req.get('referer');
+	if (url) {
+		// 第一种方法用正则
+		// let reg = /^https?:\/\/(?<a>[0-9\.a-zA-Z]+)(:[0-9]+)?\//g;
+		// req.cus_params = reg.exec(url).groups.a;
+		// 第二种方法 URL
+		let obj = new URL(url);
+		req.cus_params = obj.hostname;
+		if (req.cus_params !== '127.0.0.1') {
+			res.status(404).send('<h1>404 NOT FOUND</h1>');
+			return;
+		}
+	}
+	next();
+});
+app.use(express.static(__dirname));
+app.post('/login', (req, res) => {
+	res.send(req.cus_params);
+});
+
+app.listen('5500', () => {
+	console.log('5500端口监听');
 });
 // const t = require('./test.js');
 // console.log(t);
