@@ -94,26 +94,32 @@ const app = express();
 // });
 
 // 防盗链测试
-app.use((req, res, next) => {
-	let url = req.get('referer');
-	if (url) {
-		// 第一种方法用正则
-		// let reg = /^https?:\/\/(?<a>[0-9\.a-zA-Z]+)(:[0-9]+)?\//g;
-		// req.cus_params = reg.exec(url).groups.a;
-		// 第二种方法 URL
-		let obj = new URL(url);
-		req.cus_params = obj.hostname;
-		if (req.cus_params !== '127.0.0.1') {
-			res.status(404).send('<h1>404 NOT FOUND</h1>');
-			return;
-		}
-	}
-	next();
-});
-app.use(express.static(__dirname));
-app.post('/login', (req, res) => {
-	res.send(req.cus_params);
-});
+// app.use((req, res, next) => {
+// 	let url = req.get('referer');
+// 	if (url) {
+// 第一种方法用正则
+// let reg = /^https?:\/\/(?<a>[0-9\.a-zA-Z]+)(:[0-9]+)?\//g;
+// req.cus_params = reg.exec(url).groups.a;
+// 第二种方法 URL
+// 		let obj = new URL(url);
+// 		req.cus_params = obj.hostname;
+// 		if (req.cus_params !== '127.0.0.1') {
+// 			res.status(404).send('<h1>404 NOT FOUND</h1>');
+// 			return;
+// 		}
+// 	}
+// 	next();
+// });
+// app.use(express.static(__dirname));
+// app.post('/login', (req, res) => {
+// 	res.send(req.cus_params);
+// });
+
+// 测试路由模块化
+const router1 = require('./路由模块化/router1');
+const router2 = require('./路由模块化/router2');
+app.use(router1);
+app.use(router2);
 
 app.listen('5500', () => {
 	console.log('5500端口监听');

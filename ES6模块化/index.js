@@ -3,5 +3,6 @@
 function fn2() {
 	import('./test.js').then((xx) => {
 		console.log(xx);
+		xx.default.fn();
 	});
 }
