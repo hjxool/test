@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="index">
+			<h1>{{aaa}}</h1>
+			<button @click="aaa+='a'">修改</button>
+		</div>
+
+		<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+		<script type="module">
+			const { ref, watchEffect } = Vue;
+			let vm = {
+				setup() {
+					let aaa = ref("123");
+					watchEffect(() => {
+						let x1 = aaa.value;
+						console.log("触发watchEffect");
+					});
+					return {
+						aaa,
+					};
+				},
+			};
+			Vue.createApp(vm).mount("#index");
+		</script>
+	</body>
+</html>
