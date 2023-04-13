@@ -116,10 +116,15 @@ const app = express();
 // });
 
 // 测试路由模块化
-const router1 = require('./路由模块化/router1');
-const router2 = require('./路由模块化/router2');
-app.use(router1);
-app.use(router2);
+// const router1 = require('./路由模块化/router1');
+// const router2 = require('./路由模块化/router2');
+// app.use(router1);
+// app.use(router2);
+
+// 测试下载文件
+// app.get('/', (req, res) => {
+// 	res.set('Content-Disposition', 'attachment').sendFile(__dirname + '/test001.mp4');
+// });
 
 app.listen('5500', () => {
 	console.log('5500端口监听');
