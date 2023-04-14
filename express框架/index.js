@@ -126,6 +126,12 @@ const app = express();
 // 	res.set('Content-Disposition', 'attachment').sendFile(__dirname + '/test001.mp4');
 // });
 
+// 测试资源路径
+app.use(express.static(__dirname));
+app.get('/', (req, res) => {
+	res.sendFile(__dirname + '/src/index.html');
+});
+
 app.listen('5500', () => {
 	console.log('5500端口监听');
 });
