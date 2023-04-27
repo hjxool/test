@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 
 // app.all('*', (req, res) => {
@@ -122,18 +122,22 @@ const app = express();
 // app.use(router2);
 
 // 测试下载文件
-// app.get('/', (req, res) => {
-// 	res.set('Content-Disposition', 'attachment').sendFile(__dirname + '/test001.mp4');
+// app.get("/", (req, res) => {
+// res.sendFile(__dirname + "/src/index.html");
+// res.set("Content-Disposition", "attachment").sendFile(__dirname + "/src/index.html");
+// res.sendFile(__dirname + "/test.mp4");
+// res.set("Content-Disposition", "attachment").sendFile(__dirname + "/test.mp4");
+// res.set("Content-Disposition", "attachment").send(132 + 465);
 // });
 
 // 测试资源路径
-app.use(express.static(__dirname));
-app.get('/', (req, res) => {
-	res.sendFile(__dirname + '/src/index.html');
-});
+// app.use(express.static(__dirname));
+// app.get('/', (req, res) => {
+// 	res.sendFile(__dirname + '/src/index.html');
+// });
 
-app.listen('5500', () => {
-	console.log('5500端口监听');
+app.listen("5500", () => {
+	console.log("5500端口监听");
 });
 // const t = require('./test.js');
 // console.log(t);
