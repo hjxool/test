@@ -12,9 +12,25 @@ const ejs = require("ejs");
 // console.log(res);
 
 // 测试 类似vue的插值语法 并投射到接口返回页面
-let content = "这是内容";
-let title = "标题测试";
-const fs = require("fs");
-let file = fs.readFileSync("./test2.html").toString();
-let res = ejs.render(file, { title, content });
-console.log(res);
+// const express = require("express");
+// const app = express();
+// let content = "这是内容";
+// let title = "标题测试";
+// const fs = require("fs");
+// let file = fs.readFileSync("./test2.html").toString();
+// let res = ejs.render(file, { title, content });
+// console.log(res);
+// app.get("/", (req, res) => {
+// 	res.send(res);
+// });
+// app.listen("80", () => {
+// 	console.log("80端口监听");
+// });
+
+// 测试 ejs的v-for
+let arr = ["ada", "bbb", "qweq", "rrrr"];
+let res = ejs.render(`
+    <% arr.forEach(item =>{
+         
+    }) %>
+`);
