@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>测试</title>
+</head>
+
+<body>
+  <button onclick="fn()">创建本地文件</button>
+  <input type="file" onchange="fn2(event)">读取文件内的JSON数据
+
+  <script>
+    function fn () {
+      let obj = {
+        test: 'asdasdasd',
+        aaa: {
+          bbb: [123]
+        }
+      }
+      let str = JSON.stringify(obj)
+      let blob = new Blob([str], { type: 'application/json' })
+      let a = document.createElement('a')
+      let url = URL.createObjectURL(blob)
+      a.download = '测试.mp4'
+      a.href = url
+      a.target = '_blank'
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+    }
+    function fn2 (e) {
+      let file = e.target.files[0]
+      let reader = new FileReader()
+      reader.readAsBinaryString(file)
+      reader.onload = (res) => {
+        console.log(res.target.result)
+        console.log(JSON.parse(res.target.result))
+      }
+    }
+  </script>
+</body>
+
+</html>
