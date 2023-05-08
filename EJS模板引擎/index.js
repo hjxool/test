@@ -56,8 +56,9 @@ const ejs = require('ejs');
 // 测试 express中使用ejs
 const express = require('express');
 const app = express();
+// view engine和views是固定写法
 app.set('view engine', 'ejs');
-app.set('view', `${__dirname}`);
+app.set('views', `${__dirname}`);
 app.get('/', (req, res) => {
 	let text = 'hahahahah';
 	res.render('test3', { title: text });
