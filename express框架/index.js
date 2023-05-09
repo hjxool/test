@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 
 // app.all('*', (req, res) => {
@@ -136,8 +136,8 @@ const app = express();
 // 	res.sendFile(__dirname + '/src/index.html');
 // });
 
-app.listen("5500", () => {
-	console.log("5500端口监听");
+app.listen('5500', () => {
+	console.log('5500端口监听');
 });
 // const t = require('./test.js');
 // console.log(t);
