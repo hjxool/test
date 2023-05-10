@@ -41,7 +41,11 @@ app.get('/', (req, res) => {
 	res.redirect('./index.html');
 });
 app.post('/test', (req, res) => {
-	let form = formidable({ multiples: true });
+	let form = formidable({
+		multiples: true,
+		uploadDir: __dirname,
+		keepExtensions: true,
+	});
 	form.parse(req, (err, fields, files) => {
 		if (err) {
 			next(err);
