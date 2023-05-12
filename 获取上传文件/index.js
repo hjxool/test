@@ -35,6 +35,7 @@ const app = express();
 // });
 
 // 测试 用formidable工具保存文件到本地(服务器)
+// 并实验是否能创建文件夹 答案是不能
 const formidable = require('formidable');
 app.use(express.static(__dirname));
 app.get('/', (req, res) => {
@@ -43,7 +44,7 @@ app.get('/', (req, res) => {
 app.post('/test', (req, res) => {
 	let form = formidable({
 		multiples: true,
-		uploadDir: __dirname,
+		uploadDir: __dirname + '/src',
 		keepExtensions: true,
 	});
 	form.parse(req, (err, fields, files) => {
@@ -53,7 +54,7 @@ app.post('/test', (req, res) => {
 		}
 		console.log(fields);
 		console.log(files);
-		res.send('ok');
+		res.send(files.file.newFilename);
 	});
 });
 
