@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登记</title>
+  <style>
+    .box {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .box1 {
+      width: 70%;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    .title {
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .box2 {
+      height: 40px;
+      border: 1px solid gainsboro;
+    }
+
+    .input {
+      outline: 0;
+      border: none;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <div class="box1">
+      <h2>添加记录</h2>
+
+      <div class="title">事项</div>
+      <div class="box2">
+        <input onchange="bind_dom(event,'item')" class="input" type="text">
+      </div>
+
+      <div class="title">时间</div>
+      <div class="box2">
+        <input onchange="bind_dom(event,'time')" class="input" type="text">
+      </div>
+
+      <div class="title">类型</div>
+      <div class="box2">
+        <input onchange="bind_dom(event,'type')" class="input" type="text">
+      </div>
+
+      <div class="title">金额</div>
+      <div class="box2">
+        <input onchange="bind_dom(event,'item')" class="input" type="text">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let form = {}
+    function bind_dom (e, key) {
+      form[key] = e.target.value
+    }
+  </script>
+</body>
+
+</html>
