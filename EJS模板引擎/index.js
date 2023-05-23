@@ -54,15 +54,26 @@ const ejs = require('ejs');
 // console.log(res);
 
 // 测试 express中使用ejs
+// const express = require('express');
+// const app = express();
+// // view engine和views是固定写法
+// app.set('view engine', 'ejs');
+// app.set('views', `${__dirname}`);
+// app.get('/', (req, res) => {
+// 	let text = 'hahahahah';
+// 	res.render('test3', { title: text });
+// });
+
+// 测试 ejs模板中能否用js语句 答案是可以
 const express = require('express');
 const app = express();
-// view engine和views是固定写法
 app.set('view engine', 'ejs');
 app.set('views', `${__dirname}`);
 app.get('/', (req, res) => {
-	let text = 'hahahahah';
+	let text = '';
 	res.render('test3', { title: text });
 });
+
 app.listen('80', () => {
 	console.log('80端口正在监听');
 });

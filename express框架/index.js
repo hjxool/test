@@ -136,8 +136,21 @@ const app = express();
 // 	res.sendFile(__dirname + '/src/index.html');
 // });
 
-app.listen('5500', () => {
-	console.log('5500端口监听');
+// 测试 express自身能否解析请求体 答案可以
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+// app.use(express.static(`${__dirname}/src`));
+// app.get('/', (req, res) => {
+// 	console.log('首页');
+// 	res.redirect('/hhh.html');
+// });
+// app.post('/login', (req, res) => {
+// 	console.log(req.body);
+// 	res.send('收到');
+// });
+
+app.listen('80', () => {
+	console.log('80端口监听');
 });
 // const t = require('./test.js');
 // console.log(t);
