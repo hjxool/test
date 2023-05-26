@@ -1,21 +1,21 @@
 const mg = require('mongoose');
 mg.connect('mongodb://127.0.0.1:27017/customdb');
 mg.connection.once('open', () => {
-	// 首先要创建文档结构对象 其实就是定义数据类型
 	let dataType = new mg.Schema({
-		name: String,
+		name: {
+			type: Number,
+			enum: ['苹果', '菠萝'],
+		},
 		price: String,
 		num: Number,
 	});
-	// 然后创建模型对象 其实就是指定要操作所连接数据库下哪个集合,并限制集合下文档字段数据类型
-	// 如果没有对应集合则会新建
 	let obj = mg.model('test2', dataType);
 	// 测试 新增文档
 	obj
 		.create({
-			name: 'eee3',
-			price: '300',
-			num: 200,
+			name: 22,
+			price: '30',
+			num: 220,
 		})
 		.then(
 			(data) => {
@@ -23,6 +23,7 @@ mg.connection.once('open', () => {
 				console.log('创建成功' + data);
 			},
 			(err) => {
+				mg.disconnect();
 				console.log('创建失败' + err);
 			}
 		);
@@ -33,7 +34,3 @@ mg.connection.on('error', () => {
 mg.connection.on('close', () => {
 	console.log('连接关闭');
 });
-// 测试关闭连接
-// setTimeout(() => {
-// 	mg.disconnect();
-// }, 2000);
