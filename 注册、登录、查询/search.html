@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>查询</title>
+  <style>
+    #text {
+      width: 600px;
+      height: 400px;
+    }
+  </style>
+</head>
+
+<body>
+  <button onclick="getdata()">获取数据</button><br>
+  <textarea id="text" cols="30" rows="10"></textarea>
+
+  <script>
+    let id = location.search.substring(1).split('=')[1]
+    function getdata () {
+      fetch('http://127.0.0.1:30/search', {
+        method: 'post',
+        body: JSON.stringify({ token: id }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json()).then(res => {
+        if (res.code !== 200) {
+          alert('登录过期')
+          return
+        }
+        document.querySelector('#text').value = JSON.stringify(res.data, null, 4);
+      })
+    }
+  </script>
+</body>
+
+</html>
