@@ -17,19 +17,21 @@
   <script>
     function register () {
       let dom = document.querySelectorAll('.input')
-      fetch('http://127.0.0.1:30/register', {
+      fetch('http://127.0.0.1/register', {
         method: 'post',
         body: JSON.stringify({ name: dom[0].value, password: dom[1].value }),
         headers: {
           'Content-Type': 'application/json'
         }
-      }).then(res => res.json()).then(res => {
-        if (res.code !== 200) {
-          alert('注册失败')
-          return
-        }
-        location.href = './login.html'
       })
+        .then(res => res.json())
+        .then(res => {
+          if (res.code !== 200) {
+            alert(res.msg)
+            return
+          }
+          location.href = './login.html'
+        })
     }
   </script>
 </body>

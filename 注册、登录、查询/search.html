@@ -14,25 +14,40 @@
 </head>
 
 <body>
-  <button onclick="getdata()">获取数据</button><br>
+  <button onclick="getdata()">获取数据</button>
+  <button onclick="loginout()">退出登录</button><br>
   <textarea id="text" cols="30" rows="10"></textarea>
 
   <script>
-    let id = location.search.substring(1).split('=')[1]
+    // token方式
+    let token = location.search.substring(1).split('=')[1]
+    history.replaceState(null, null, 'http://127.0.0.1/search')//清除地址栏token
+
     function getdata () {
-      fetch('http://127.0.0.1:30/search', {
+      fetch('http://127.0.0.1/search', {
         method: 'post',
-        body: JSON.stringify({ token: id }),
+        body: '',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          customKey: `${token}`,// token方式
         }
-      }).then(res => res.json()).then(res => {
-        if (res.code !== 200) {
-          alert('登录过期')
-          return
-        }
-        document.querySelector('#text').value = JSON.stringify(res.data, null, 4);
       })
+        .then(res => res.json())
+        .then(res => {
+          if (res.code !== 200) {
+            alert(res.msg)
+            location.href = './login.html'
+            return
+          }
+          document.querySelector('#text').value = JSON.stringify(res.data, null, 4);
+        })
+    }
+    function loginout () {
+      fetch('http://127.0.0.1/loginout')
+        .then(res => res.json())
+        .then(res => {
+          location.href = './login.html'
+        })
     }
   </script>
 </body>
