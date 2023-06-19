@@ -40,5 +40,45 @@ router.post('/adddata', (req, res) => {
 			res.json(json(data));
 		});
 });
+router.get('/downloadfile', (req, res) => {
+	res.download('./main.js');
+});
+const jwt = require('jsonwebtoken');
+router.get('/get_token', (req, res) => {
+	let token = jwt.sign(
+		{
+			test: 'hhhh',
+		},
+		'mykey',
+		{ expiresIn: 60 * 10 }
+	);
+	res.json(json(token));
+});
+router.get('/downloadfile2', (req, res) => {
+	// header携带token
+	let token = req.get('token');
+	// query参数携带token
+	// let token = req.query.token;
+	if (token !== 'undefined' && token !== null) {
+		jwt.verify(token, 'mykey', (err, data) => {
+			if (err) {
+				res.json(json(null, '无效token'));
+				return;
+			}
+			// 如果是从headers中取token说明客户端没法在新页签中打开下载
+			// res.download('./main.js');
+			// 所以需要重定向 到一个新页面下载
+			// 测试 在当前页重定向到文件下载url 答案不是新页签发送的get不能触发浏览器下载
+			// res.redirect('http://127.0.0.1:30/api/file1');
+			// 测试 收到请求把连接发送给客户端 让其在新页签打开 使用另一文件接口下载
+			res.json(json('http://127.0.0.1:30/api/file1'));
+		});
+	} else {
+		res.json(json(null, '无效token'));
+	}
+});
+router.get('/file1', (req, res) => {
+	res.download('./main.js');
+});
 
 module.exports = router;

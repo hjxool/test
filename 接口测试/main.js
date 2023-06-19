@@ -29,3 +29,33 @@ function post() {
 			document.querySelector('#text').value = JSON.stringify(res, null, 4);
 		});
 }
+function download() {
+	window.open('http://127.0.0.1:30/api/downloadfile');
+}
+let token;
+function get_token() {
+	fetch('http://127.0.0.1:30/api/get_token')
+		.then((res) => {
+			console.log(res);
+			return res.json();
+		})
+		.then((res) => {
+			console.log(res);
+			token = res.data;
+		});
+}
+function download2() {
+	// headers携带token
+	fetch('http://127.0.0.1:30/api/downloadfile2', {
+		headers: {
+			token: token,
+		},
+	})
+		.then((res) => res.json())
+		.then((res) => {
+			window.open(res.data);
+		});
+
+	// query携带token
+	// window.open(`http://127.0.0.1:30/api/downloadfile2?token=${token}`);
+}
