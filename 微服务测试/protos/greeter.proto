@@ -1,0 +1,27 @@
+// proto文件 语句结尾需要加;号
+syntax = 'proto3'; // 1.设置proto版本
+
+package test1; // 包名
+
+// 2.定义服务
+service Greeter{
+  // 3.定义远程调用方法 rpc、returns是固定写法
+  rpc fn1(fn1Req) returns (fn1Res) {}
+}
+
+// 4.定义形参和返回值数据结构
+// message在不同语言中生成不同的结果 在js中得到的是对象 在go语言中得到的是结构体 诸如此类
+message fn1Req{
+  // 定义对象中接收的参数类型 int32、bool、double、string
+  // 类型后的字段表示 形参名
+  // 参数后的数字表示 传参顺序
+  string name = 1;
+  int64 age = 2;
+  string sex = 3;
+  bool flag = 4;
+}
+message fn1Res{
+  int32 code = 1;
+  string message = 2;
+  string result = 3;
+}
