@@ -35,14 +35,46 @@
 // 测试 任意类型属性后可以添加？号吗 答：不能加？号
 // let a: {name: string, [key:string]?:unknown}
 // 测试 函数返回值声明可以在括号后加：类型吗 答：不行
-var a;
-a = function (p1, p2) {
-    return p1 + p2;
-};
-a = function (a, b) {
-    return a + b;
-};
+// let a: (p1: number, p2: number) => unknown
+// a = (p1, p2) => {
+//   return p1 + p2
+// }
+// a = (a: number, b): number => {
+//   return a + b
+// }
+// a = (a) => {
+//   return '可以少参数但不能多'
+// }
 // 测试 箭头函数声明类型
 // let a = (p1: number, p2: number): number => {
 //   return 1
 // }
+// 测试 声明数组元素类型
+// let a: string[]
+// a = ['1', '2']
+// let b: Array<number>
+// b = [1,2,'b']
+// b = 1
+// b = [1, 2]
+// 测试 元组
+// let a: [number, number]
+// a = [1, 2]
+// a = ['1', 2]
+// a = [1,2,3]
+// 测试 枚举
+// enum test {
+//   aaa = '123',
+//   bbb = 'qqqq'
+// }
+// let eee = {
+//   name: 'test',
+//   ccc: test.aaa
+// }
+// 测试 类型别名
+// type type1 = { name: string, age?: number }
+// let a: type1
+// a = { name: 'sss', age: 1 }
+// 测试 合并后同名的全局变量如何编译 答：会报错
+let a = 'sss';
+// 测试 合并后同名的全局变量如何编译
+let a = 10;
