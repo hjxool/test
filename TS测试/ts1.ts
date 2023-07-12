@@ -91,3 +91,56 @@
 
 // 测试 合并后同名的全局变量如何编译 答：会报错
 // let a = 'sss'
+
+// 测试 类 答：只声明不赋值相当于空
+// class Dog {
+//   name: string
+//   age: number
+//   constructor(a: string, b: number) {
+//     this.name = a
+//     this.age = b
+//   }
+// }
+// class Dog2 extends Dog {
+//   hhh: unknown
+//   constructor(a: string, b: number, c: string) {
+//     super(a, b)
+//     this.hhh = c
+//   }
+//   readonly hhh2: string
+//   readonly fn() {
+
+//   }
+// }
+// let a = new Dog2('asd', 1, '继承')
+// console.log(a)
+
+// 测试 基类
+// abstract class P {
+//   aaa: string
+//   constructor(a) {
+//     this.aaa = a
+//   }
+// }
+// let p = new P('sd')
+
+// 测试 抽象类中定义抽象方法，子类继承可以不重写吗 答：会报错，且抽象方法中不能写内容
+// abstract class Phone {
+//   name: string
+//   constructor(name: string) {
+//     this.name = name
+//   }
+//   abstract fn(): void {
+//     return
+//   }
+// }
+// class smartPhone extends Phone {
+//   color: string
+//   constructor(name: string, color: string) {
+//     super(name)
+//     this.color = color
+//   }
+//   fn(): void {
+//     console.log('重写')
+//   }
+// }
