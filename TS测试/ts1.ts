@@ -144,3 +144,108 @@
 //     console.log('重写')
 //   }
 // }
+
+// 测试 定义接口，类实现接口时可以增加新属性吗？ 答:可以增加自定义属性方法 但必须满足接口属性方法
+// interface customClass {
+//   name: string;
+// }
+
+// class test implements customClass {
+//   name: string;
+//   age: number;
+//   constructor(a: string, b: number) {
+//     this.name = a
+//     this.age = b
+//   }
+//   fn(): void {
+//     console.log(111)
+//   }
+// }
+
+// 测试 定义私有属性
+// class Person {
+//   private name: string
+//   private age: number
+//   constructor(a: string, b: number) {
+//     this.name = a
+//     this.age = b
+//   }
+//   get(key: string) {
+//     return this[key]
+//   }
+//   set(key: string, value: unknown) {
+//     this[key] = value
+//   }
+// }
+// let a = new Person('111', 222)
+// console.log(a.get('name'))
+// a.set('name', 'uuuu')
+// console.log(a)
+
+// 测试 TS存取器
+// class Person {
+//   private _name: string
+//   private _age: number
+//   constructor(a: string, b: number) {
+//     this._name = a
+//     this._age = b
+//   }
+//   get name() {
+//     console.log('触发get')
+//     return this._name
+//   }
+//   set name(value: string) {
+//     console.log('触发set')
+//     return
+//     // this._name = value
+//   }
+// }
+// let a = new Person('aaa', 111)
+// a.name = 'bbb'
+// console.log(a.name)
+
+// 测试 protected关键字
+// class A {
+//   protected key: string;
+//   constructor(a: string) {
+//     this.key = a;
+//   }
+// }
+// class B extends A {
+//   fn() {
+//     return this.key; // 子类中可以访问
+//   }
+// }
+// let a = new A('a')
+// a.key // 报错 不能访问
+// let b = new B('b')
+// b.key // 报错 同样不能访问
+
+// 测试 语法糖定义类
+// class A {
+//   constructor(private _name: string, private _age: number) { }
+//   get name() {
+//     return this._name
+//   }
+//   set age(value: number) {
+//     this._age = value
+//   }
+// }
+// let a = new A('asdasd', 111)
+// console.log(a.name, a.age)
+
+// 测试 泛型指定跟数据实际类型不符会如何 答:报错
+// function fn<aa>(p: aa): aa {
+//   return p
+// }
+// fn<string>(10)
+
+// 测试 多个泛型 答:泛型不能使用运算符
+// function fn<aa, bb>(p1: bb, p2: aa): bb {
+//   return p1 + p2
+// }
+
+// 测试 类语法糖public能否省略 答:不能
+class A {
+  constructor(public a: number, private b: number) { }
+}
