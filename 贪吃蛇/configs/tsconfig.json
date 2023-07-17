@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    "target": "ESNext",
-    "outDir": "../js",
-    "noEmitOnError": true,
-    "allowJs": true,
-    "moduleResolution": "node"
-  }
-}

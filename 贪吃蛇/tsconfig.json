@@ -1,0 +1,11 @@
+{
+  "include": [
+    "./src/**/*"
+  ],
+  "compilerOptions": {
+    "target": "ESNext",
+    "outDir": "./js",
+    "noEmitOnError": true,
+    "moduleResolution": "Node",
+  }
+}

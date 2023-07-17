@@ -1,9 +1,12 @@
 {
+  "include": [
+    "./**/*"
+  ],
   "compilerOptions": {
     "target": "ES6",
     // "module": "ES6",
     "outDir": "./js",
-    "outFile": "./js/main.js",
+    // "outFile": "./js/main.js",
     "removeComments": true,
     // "noEmitOnError": true,
   }
