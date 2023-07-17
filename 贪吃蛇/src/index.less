@@ -1,7 +1,14 @@
+// 设置变量
+@bg: #b7d4a8;
+
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+}
+.row_layout{
+    display: flex;
+    align-items: center;
 }
 #main {
 	width: 100%;
@@ -10,5 +17,22 @@
 	display: grid;
 	align-items: center;
 	justify-items: center;
-	color: red;
+}
+.box{
+    width: 360px;
+    height: 420px;
+    background: @bg;
+    border: 10px solid;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    >.stage{
+        flex-grow: 1;
+        border: 2px solid;
+        margin: 10px 10px 0 10px;
+    }
+    >.score{
+        padding: 20px;
+        justify-content: space-between;
+    }
 }

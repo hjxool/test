@@ -1,11 +1,11 @@
-import vue from '../js/main.js';
+import vue from "../js/main.js";
 const { createApp, toRefs } = vue;
 createApp({
     setup(props) {
-        let obj;
-        obj = {
-            aaa: '123'
+        let data = {
+            score: 0,
+            level: 1,
         };
-        return { ...toRefs(obj) };
-    }
-}).mount('#main');
+        return { ...toRefs(data) };
+    },
+}).mount("#main");
