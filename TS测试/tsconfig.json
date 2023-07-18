@@ -1,13 +1,13 @@
 {
   "include": [
-    "./**/*"
+    "./*"
   ],
   "compilerOptions": {
-    "target": "ES6",
+    "target": "ESNext",
     // "module": "ES6",
     "outDir": "./js",
     // "outFile": "./js/main.js",
     "removeComments": true,
-    // "noEmitOnError": true,
+    "noEmitOnError": true,
   }
 }

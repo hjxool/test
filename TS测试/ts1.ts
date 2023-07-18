@@ -246,6 +246,17 @@
 // }
 
 // 测试 类语法糖public能否省略 答:不能
+// class A {
+//   constructor(public a: number, private b: number) { }
+// }
+
+// 测试 类中存取器是实例类型结构吗？ 答：是
 class A {
-  constructor(public a: number, private b: number) { }
+  private _a: string = 'asd'
+  get aa() {
+    return this._a
+  }
 }
+// let t: { _a: string } = new A()
+// let t: { aaa: string } = new A()
+let t: { aa: string } = new A()

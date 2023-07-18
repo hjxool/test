@@ -6,9 +6,9 @@
 	padding: 0;
 	box-sizing: border-box;
 }
-.row_layout{
-    display: flex;
-    align-items: center;
+.row_layout {
+	display: flex;
+	align-items: center;
 }
 #main {
 	width: 100%;
@@ -18,21 +18,48 @@
 	align-items: center;
 	justify-items: center;
 }
-.box{
-    width: 360px;
-    height: 420px;
-    background: @bg;
-    border: 10px solid;
-    border-radius: 40px;
-    display: flex;
-    flex-direction: column;
-    >.stage{
-        flex-grow: 1;
-        border: 2px solid;
-        margin: 10px 10px 0 10px;
-    }
-    >.score{
-        padding: 20px;
-        justify-content: space-between;
-    }
+.box {
+	width: 360px;
+	height: 420px;
+	background: @bg;
+	border: 10px solid;
+	border-radius: 40px;
+	display: flex;
+	flex-direction: column;
+	> .stage {
+		flex-grow: 1;
+		border: 2px solid;
+		margin: 10px 10px 0 10px;
+		position: relative;
+		#snake > div {
+			width: 10px;
+			height: 10px;
+			background: black;
+			border: 1px solid @bg;
+			position: absolute;
+		}
+		#food {
+			width: 10px;
+			height: 10px;
+			background: @bg;
+			position: absolute;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			align-content: space-between;
+			> div {
+				width: 4px;
+				height: 4px;
+				background: black;
+				border-radius: 50%;
+			}
+		}
+	}
+	> .score {
+		padding: 20px;
+		justify-content: space-between;
+		> .row_layout {
+			font-weight: bold;
+		}
+	}
 }

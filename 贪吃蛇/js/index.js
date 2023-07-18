@@ -1,11 +1,17 @@
 import vue from "../js/main.js";
-const { createApp, toRefs } = vue;
+const { createApp } = vue;
+import { Food, Score } from "./class.js";
 createApp({
-    setup(props) {
-        let data = {
-            score: 0,
-            level: 1,
+    data() {
+        return {
+            food: {},
+            panel: {}
         };
-        return { ...toRefs(data) };
     },
+    mounted() {
+        this.food = new Food();
+        this.food.change();
+        this.panel = new Score();
+    },
+    methods: {},
 }).mount("#main");
