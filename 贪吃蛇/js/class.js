@@ -4,10 +4,10 @@ class Food {
         this.element = document?.getElementById('food') || null;
     }
     get x() {
-        return this.element.offsetLeft;
+        return this.element?.offsetLeft;
     }
     get y() {
-        return this.element.offsetTop;
+        return this.element?.offsetTop;
     }
     change() {
         // 随机生成的位置0~max-10
@@ -23,21 +23,42 @@ class Food {
 }
 class Score {
     // 设置默认值及类型
-    _score = 0;
-    _level = 1;
-    get level() {
-        console.log('duqu');
-        return this._level;
+    score = 0;
+    level = 1;
+    maxLevel;
+    upScore;
+    constructor(max, up) {
+        this.maxLevel = max;
+        this.upScore = up;
     }
-    set level(val) {
-        console.log('shezhi');
-        this._level = val;
+    addScore() {
+        this.score++;
+        // 每10分升一级
+        if (this.score % this.upScore === 0) {
+            this.levelUp();
+        }
     }
-    get score() {
-        return this._score;
-    }
-    set score(val) {
-        this._score = val;
+    levelUp() {
+        if (this.level < this.maxLevel) {
+            this.level++;
+        }
     }
 }
-export { Food, Score };
+class Snake {
+    element = document.getElementById('snake');
+    head = this.element.querySelector('div'); // snake标签并没有开启定位 所以子元素是相对外层容易定位
+    body = this.element.getElementsByTagName('div');
+    get x() {
+        return this.head.offsetLeft;
+    }
+    get y() {
+        return this.head.offsetTop;
+    }
+    set x(val) {
+        this.head.style.left = val + 'px';
+    }
+    set y(val) {
+        this.head.style.top = val + 'px';
+    }
+}
+export { Food, Score, Snake };
