@@ -47,9 +47,14 @@ class Score {
   }
 }
 class Snake {
-  element: HTMLElement = document.getElementById('snake')
-  head: HTMLElement = this.element.querySelector('div') // snake标签并没有开启定位 所以子元素是相对外层容易定位
-  body: HTMLCollection = this.element.getElementsByTagName('div')
+  element: HTMLElement
+  head: HTMLElement
+  body: HTMLCollection
+  constructor() {
+    this.element = document.getElementById('snake')
+    this.head = this.element.querySelector('div') // snake标签并没有开启定位 所以子元素是相对外层容易定位
+    this.body = this.element.getElementsByTagName('div')
+  }
 
   get x(): number {
     return this.head.offsetLeft
@@ -63,6 +68,39 @@ class Snake {
   set y(val: number) {
     this.head.style.top = val + 'px'
   }
+  // 当吃到食物 增加身体
+  addBody(): void {
+    let body = document.createElement('div')
+    this.element.appendChild(body)
+    console.log(this.body) // 看下是否增加完就立即能看到节点变化 答:可以
+  }
 }
-
-export { Food, Score, Snake }
+class GameControl {
+  direction: string = ''
+  snake: Snake
+  food: Food
+  score: Score
+  isLive: boolean = true
+  constructor() {
+    this.snake = new Snake()
+    this.food = new Food()
+    this.score = new Score(10, 10)
+    this.init()
+  }
+  init() {
+    document.addEventListener('keydown', this.move.bind(this))
+    this.food.change() //临时
+  }
+  move(event: KeyboardEvent) {
+    // ArrowRight ArrowDown ArrowLeft ArrowUp
+    switch (event.key) {
+      case 'ArrowRight':
+      case 'ArrowDown':
+      case 'ArrowLeft':
+      case 'ArrowUp':
+        this.direction = event.key
+        break;
+    }
+  }
+}
+export { Food, Score, Snake, GameControl }
