@@ -1,7 +1,9 @@
 class Food {
   element: HTMLElement
+  snake: Snake
   constructor() {
-    this.element = document?.getElementById('food') || null
+    this.element = document?.getElementById('food')
+    this.snake = new Snake()
   }
   get x() {
     return this.element?.offsetLeft
@@ -19,6 +21,14 @@ class Food {
     let top = Math.round(Math.random() * Math.floor(maxHeight / 10)) * 10
     this.element.style.left = left + 'px'
     this.element.style.top = top + 'px'
+    // 不能和蛇身体重叠 位置重叠就重新生成
+    for (let i = 0; i < this.snake.body.length; i++) {
+      let t: HTMLElement = this.snake.body[i] as HTMLElement
+      if (t.offsetLeft === left && t.offsetTop === top) {
+        this.change()
+        break
+      }
+    }
   }
 }
 class Score {
@@ -72,7 +82,7 @@ class Snake {
   addBody(): void {
     let body = document.createElement('div')
     this.element.appendChild(body)
-    console.log(this.body) // 看下是否增加完就立即能看到节点变化 答:可以
+    // console.log(this.body) // 看下是否增加完就立即能看到节点变化 答:可以
   }
 }
 class GameControl {
@@ -84,7 +94,7 @@ class GameControl {
   constructor() {
     this.snake = new Snake()
     this.food = new Food()
-    this.score = new Score(10, 10)
+    this.score = new Score(10, 1)
     this.init()
   }
   init() {
