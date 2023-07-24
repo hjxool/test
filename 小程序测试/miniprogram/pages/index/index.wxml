@@ -1,0 +1,4 @@
+<view class="a" bindtap="fn2">
+  <text class="b" bindtap="fn1">{{msg}}</text>
+  <button class="b" catchtap="fn3">跳转页面</button>
+</view>
