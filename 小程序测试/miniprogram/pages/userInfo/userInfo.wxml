@@ -1,0 +1,4 @@
+<!--pages/userInfo/userInfo.wxml-->
+<view class="box">
+  <button catchtap="get_user_info">获取用户头像</button>
+</view>

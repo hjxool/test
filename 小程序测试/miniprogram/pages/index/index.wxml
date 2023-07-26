@@ -1,4 +1,10 @@
 <view class="a" bindtap="fn2">
   <text class="b" bindtap="fn1">{{msg}}</text>
-  <button class="b" catchtap="fn3">跳转页面</button>
+  <button class="b" catchtap="fn3">跳转logs页面</button>
+  <button class="b2" catchtap="fn4">跳转获取用户权限页面</button>
+  <view class="row">
+    <text wx:if="{{show === 1}}">1111</text>
+    <text wx:elif="{{show === 2}}">222</text>
+    <text wx:else>000</text>
+  </view>
 </view>
