@@ -1,0 +1,12 @@
+<!--pages/swiper/swiper.wxml-->
+<swiper indicator-dots autoplay interval="2000" duration="500">
+  <swiper-item>
+   <view class="img img1"></view>
+  </swiper-item>
+  <swiper-item>
+   <view class="img img2"></view>
+  </swiper-item>
+  <swiper-item>
+   <view class="img img3"></view>
+  </swiper-item>
+</swiper>

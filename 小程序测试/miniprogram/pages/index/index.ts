@@ -49,6 +49,12 @@ Page({
       url:'/pages/userInfo/userInfo'
     })
   },
+  // 跳转轮播
+  fn5(){
+    wx.navigateTo({
+      url:'/pages/swiper/swiper'
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

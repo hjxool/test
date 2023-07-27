@@ -7,4 +7,5 @@
     <text wx:elif="{{show === 2}}">222</text>
     <text wx:else>000</text>
   </view>
+  <button class="b2" catchtap="fn5">跳转轮播图页</button>
 </view>

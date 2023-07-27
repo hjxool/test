@@ -11,6 +11,7 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/userInfo/userInfo",
-    "components/empower/empower"
+    "components/empower/empower",
+    "pages/swiper/swiper"
   ]
 }
