@@ -1,5 +1,7 @@
 <view class="a" bindtap="fn2">
   <text class="b" bindtap="fn1">{{msg}}</text>
+  <!-- <text class="b">测试函数返回：{{fn6('aaaa')}} 答：不能</text> -->
+  <component1></component1>
   <button class="b" catchtap="fn3">跳转logs页面</button>
   <button class="b2" catchtap="fn4">跳转获取用户权限页面</button>
   <view class="row">

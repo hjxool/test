@@ -1,3 +1,5 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "component1": "/components/c1/c1"
+  }
 }
