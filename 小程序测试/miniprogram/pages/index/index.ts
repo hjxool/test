@@ -4,8 +4,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    msg:'修改前数据',
-    show:0
+    msg: '修改前数据',
+    show: 0
   },
 
   /**
@@ -17,24 +17,37 @@ Page({
     // 没有数据代理
     // this.data.msg = '11111'
     this.setData({
-      msg:'修改后数据'
+      msg: '修改后数据'
     })
     // console.log(this.data.msg)
   },
   // 绑定事件
   // 子元素事件
-  fn1(){
-    console.log(1111)
+  fn1(e) {
+    console.log(111)
   },
   // 父元素事件
-  fn2(){
-    console.log(2222)
+  fn2(e) {
+    // console.log(e) // 事件对象只有简单的定位
+    // 获取节点详细信息
+    let query = this.createSelectorQuery()
+    let d = query.select('.a')
+    console.log('查看获取的节点元素', d)
+    // 获取相对页面的绝对定位
+    d.boundingClientRect(res => {
+      console.log('绝对定位', res)
+    })
+    // 获取滚动距离
+    d.scrollOffset(res => {
+      console.log('滚动距离', res)
+    })
+    query.exec()// 注意必须执行这一步才可以
   },
   // 阻止冒泡事件 跳转页面
-  fn3(){
+  fn3() {
     console.log(333)
     wx.navigateTo({
-      url:'/pages/logs/logs'
+      url: '/pages/logs/logs'
     })
     // wx.redirectTo({
     //   url:'/pages/logs/logs'
@@ -44,20 +57,24 @@ Page({
     // })
   },
   // 跳转测试用户信息
-  fn4(){
+  fn4() {
     wx.navigateTo({
-      url:'/pages/userInfo/userInfo'
+      url: '/pages/userInfo/userInfo'
     })
   },
   // 跳转轮播
-  fn5(){
+  fn5() {
     wx.navigateTo({
-      url:'/pages/swiper/swiper'
+      url: '/pages/swiper/swiper'
     })
   },
   // 返回内容
-  fn6(pp:string):string{
+  fn6(pp: string): string {
     return pp
+  },
+  // 测试能否收到额外参数
+  fn7(event, p) {
+    console.log(event, p)
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

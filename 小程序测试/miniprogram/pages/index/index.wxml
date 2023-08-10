@@ -1,13 +1,16 @@
 <view class="a" bindtap="fn2">
-  <text class="b" bindtap="fn1">{{msg}}</text>
+  <text class="b no_shrink" bindtap="fn1">{{msg}}</text>
   <!-- <text class="b">测试函数返回：{{fn6('aaaa')}} 答：不能</text> -->
-  <component1></component1>
-  <button class="b" catchtap="fn3">跳转logs页面</button>
-  <button class="b2" catchtap="fn4">跳转获取用户权限页面</button>
-  <view class="row">
+  <component1 class="no_shrink"></component1>
+  <button class="b no_shrink" catchtap="fn3">跳转logs页面</button>
+  <button class="b2 no_shrink" catchtap="fn4">跳转获取用户权限页面</button>
+  <view class="row no_shrink">
     <text wx:if="{{show === 1}}">1111</text>
     <text wx:elif="{{show === 2}}">222</text>
     <text wx:else>000</text>
   </view>
-  <button class="b2" catchtap="fn5">跳转轮播图页</button>
+  <button class="b2 no_shrink" catchtap="fn5">跳转轮播图页</button>
+  <button class="no_shrink" catchtap="fn7" data-cc="test">测试事件传递额外参数<view data-xx2="nn">hhhh</view></button>
+  <view class="no_shrink" hidden="{{false}}">测试hidden是否会挂载到页面</view>
+  <view class="block no_shrink">占位块，测试滚动信息</view>
 </view>

@@ -4,8 +4,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+  // justify-content: space-evenly;
   border: 2rpx solid;
+  overflow: auto;
   >.b{
     background: red;
     color: #fff;
@@ -17,4 +18,13 @@
     display: flex;
     align-items: center;
   }
+  .block{
+    width: 200rpx;
+    height: 500px;
+    background: red;
+    margin: 20rpx;
+  }
+}
+.no_shrink{
+  flex-shrink: 0;
 }

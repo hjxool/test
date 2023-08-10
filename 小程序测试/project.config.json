@@ -19,7 +19,8 @@
     },
     "condition": false,
     "es6": true,
-    "enhance": true
+    "enhance": true,
+    "uglifyFileName": false
   },
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
