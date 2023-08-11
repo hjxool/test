@@ -10,7 +10,8 @@
     <text wx:else>000</text>
   </view>
   <button class="b2 no_shrink" catchtap="fn5">跳转轮播图页</button>
-  <button class="no_shrink" catchtap="fn7" data-cc="test">测试事件传递额外参数<view data-xx2="nn">hhhh</view></button>
+  <button class="b2 no_shrink" catchtap="fn7" data-cc="test">测试事件传递额外参数<view data-xx2="nn">hhhh</view></button>
+  <button class="b2 no_shrink" catchtap="fn8">跳转测试通过app示例进行页面间通信</button>
   <view class="no_shrink" hidden="{{false}}">测试hidden是否会挂载到页面</view>
   <view class="block no_shrink">占位块，测试滚动信息</view>
 </view>

@@ -11,6 +11,7 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/userInfo/userInfo",
-    "pages/swiper/swiper"
+    "pages/swiper/swiper",
+    "pages/pageInfo/pageInfo"
   ]
 }

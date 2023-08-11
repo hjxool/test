@@ -20,6 +20,7 @@ Page({
       msg: '修改后数据'
     })
     // console.log(this.data.msg)
+    this.app = getApp()
   },
   // 绑定事件
   // 子元素事件
@@ -75,6 +76,24 @@ Page({
   // 测试能否收到额外参数
   fn7(event, p) {
     console.log(event, p)
+  },
+  // 跳转测试页面通信
+  fn8() {
+    // 测试存数据到App实例
+    this.app.pageInfo('参数1', '参数2')
+    wx.navigateTo({
+      url: '/pages/pageInfo/pageInfo',
+      events: {
+        sonToFather(data) {
+          console.log('index页收到的数据', data)
+        }
+      },
+      success(res) {
+        console.log('成功回调', res)
+        // 向被打开页发送数据
+        res.eventChannel.emit('fatherToSon', '我是index页')
+      }
+    })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

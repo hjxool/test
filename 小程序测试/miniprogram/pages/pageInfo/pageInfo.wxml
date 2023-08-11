@@ -1,0 +1,2 @@
+<button catchtap="fn1">获取其他页面数据</button>
+<button catchtap="fn2">向被打开前页面发送数据</button>
