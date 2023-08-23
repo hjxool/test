@@ -4,10 +4,13 @@ mg.connection.once('open', () => {
 	// 首先要创建文档结构对象 其实就是定义数据类型
 	let dataType = new mg.Schema({
 		name: String,
-		price: String,
-		num: Number,
-		list: Array,
-		obj: Object,
+		list: [{ aaa: Number }],
+		obj: {
+			test1: {
+				test2: Number,
+			},
+			test3: String,
+		},
 	});
 	// 然后创建模型对象 其实就是指定要操作所连接数据库下哪个集合,并限制集合下文档字段数据类型
 	// 如果没有对应集合则会新建
@@ -15,16 +18,13 @@ mg.connection.once('open', () => {
 	// 测试 新增文档
 	obj
 		.create({
-			name: '测试多层级对象及数组',
-			list: [
-				{ aaa: 1, bbb: 2 },
-				{ aaa: 33, bbb: 55 },
-			],
+			name: '测试多层级对象及数组3',
+			list: [{ aaa: 1 }, { aaa: 33 }],
 			obj: {
-				ooo: {
-					yyy: 1,
+				test1: {
+					test2: 1,
 				},
-				pp: 'ss',
+				test3: 'ss',
 			},
 		})
 		.then(
