@@ -1,0 +1,2 @@
+<view wx:if="{{!isManager}}">管理员</view>
+<view wx:if="{{isManager===1}}">普通用户</view>

@@ -1,0 +1,12 @@
+page {
+  background: #f6f6f6;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+page,text,view,navigator,swiper,swiper-item,image{
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
