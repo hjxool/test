@@ -1,6 +1,12 @@
 <view class="house_box">
   <view class="type_box row_layout" wx:for="{{list}}" wx:key="name">
-    <view class="{{img}}"></view>
-    <view class="title">{{name}}</view>
+    <view class="img {{item.img}}"></view>
+    <view class="title">{{item.name}}</view>
+    <!-- 价位 -->
+    <view class="row_layout flex_shrink">
+      <view class="text1">均价</view>
+      <view class="iconfont icon-renminbi"></view>
+      <view class="text2">{{item.price}}</view>
+    </view>
   </view>
 </view>

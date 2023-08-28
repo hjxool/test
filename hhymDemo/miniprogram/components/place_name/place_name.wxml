@@ -5,11 +5,12 @@
     <text class="name flex_grow text_ellipsis">{{address}}</text>
 
     <view class="row_layout flex_shrink">
-      <view class="col_layout icon">
-        <view class="iconfont icon-a-013_gongsidizhi"></view>
+      <view class="col_layout icon" catch:tap="turn_to_map">
+        <view class="iconfont icon-a-013_ditudingwei"></view>
         <text class="title">地图</text>
       </view>
-      <view class="col_layout icon">
+
+      <view class="col_layout icon" catch:tap="show_phone">
         <view class="iconfont icon-a-013_dianhua"></view>
         <text class="title">电话</text>
       </view>

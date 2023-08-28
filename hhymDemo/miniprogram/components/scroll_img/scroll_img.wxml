@@ -1,10 +1,10 @@
-<view class="img_box">
+<view class="img_box" catch:tap="turn_to">
   <!-- 轮播图主体 -->
-  <swiper class="swiper" autoplay="{{true}}" interval="{{interval}}" duration="{{duration}}">
-    <swiper-item wx:for="{{img}}" wx:key="*this">
+  <swiper class="swiper" bindchange="current_img" autoplay="{{true}}" interval="{{interval}}" duration="{{duration}}">
+    <swiper-item wx:for="{{img_list}}" wx:key="*this">
       <view class="img {{item}}"></view>
     </swiper-item>
   </swiper>
   <!-- 右小角小图标 -->
-  <view class="count row_layout">1 / 20</view>
+  <view class="count row_layout">{{img_index}} / {{img_list.length}}</view>
 </view>

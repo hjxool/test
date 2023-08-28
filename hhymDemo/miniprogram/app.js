@@ -14,6 +14,8 @@ App({
       });
     }
 
-    this.globalData = {};
+    this.globalData = {
+      pop_content: '', //弹窗展示内容
+    };
   }
 });

@@ -10,7 +10,41 @@
 .house_box>.type_box:not(:last-child){
   border-bottom: 1px solid #F5F5F5;
 }
-.img1{
+.house_box>.type_box>.img{
   width: 200rpx;
+  height: 90%;
+}
+.img1{
   background: greenyellow;
+}
+.img2{
+  background: blueviolet;
+}
+.house_box>.type_box>.title{
+  font-weight: bold;
+  font-size: 36rpx;
+  margin-left: 40rpx;
+  margin-right: auto;
+  align-self: flex-start;
+  position: relative;
+  top: 30rpx;
+}
+.house_box>.type_box>.row_layout{
+  align-self: flex-end;
+}
+.house_box>.type_box>.row_layout>.text1{
+  font-size: 36rpx;
+  margin-right: 20rpx;
+}
+.house_box>.type_box>.row_layout>.iconfont{
+  color: #e96900;
+  font-size: 24rpx;
+  margin-right: 6rpx;
+  align-self: flex-end;
+  position:relative;
+  bottom: 14rpx;
+}
+.house_box>.type_box>.row_layout>.text2{
+  color: #e96900;
+  font-size: 50rpx;
 }

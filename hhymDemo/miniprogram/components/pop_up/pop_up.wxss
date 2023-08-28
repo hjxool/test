@@ -1,0 +1,17 @@
+.tip{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 200rpx;
+  background: #fff;
+  border-top-left-radius: 20rpx;
+  border-top-right-radius: 20rpx;
+  display: grid;
+  grid-template-rows: 1fr 20rpx 1fr;
+}
+.tip>.box{
+  justify-content: center;
+}
+.tip>.line{
+  background: #F5F5F5;
+}

@@ -1,8 +1,10 @@
 <!-- 轮播组件 -->
 <scrollImg></scrollImg>
 <!-- 店名地址 -->
-<placeName></placeName>
+<placeName catch:popevent="popup"></placeName>
 <!-- 选择时间 -->
 <selectTime></selectTime>
 <!-- 房型选择 -->
 <houseType class="flex_grow"></houseType>
+<!-- 电话提示 -->
+<popup class="popup" wx:if="{{pop_show}}" catch:popevent="popup"></popup>

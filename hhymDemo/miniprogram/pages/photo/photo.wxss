@@ -1,0 +1,25 @@
+.photo_box {
+  height: 100%;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(auto-fill, 320rpx);
+  grid-auto-flow: 320rpx;
+  padding: 0 20rpx;
+}
+.photo_box>.img{
+  border-radius: 20rpx;
+  margin-top: 20rpx;
+}
+.photo_box>.img:nth-child(2n){
+  margin-left: 20rpx;
+}
+.img1 {
+  background: red;
+}
+.img2 {
+  background: yellow;
+}
+.img3 {
+  background: palegreen;
+}

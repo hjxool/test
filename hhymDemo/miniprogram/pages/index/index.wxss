@@ -1,6 +1,7 @@
 .index{
   height: 100%;
-  overflow: auto;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  position: relative;
 }

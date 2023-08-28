@@ -1,0 +1,3 @@
+<view class="photo_box">
+  <view class="img {{item}}" wx:for="{{list}}" wx:key="*this"></view>
+</view>

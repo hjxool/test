@@ -7,6 +7,6 @@
     <view class="text">{{end_text}}</view>
   </view>
 
-  <view class="flex_shrink total">共{{total}}晚</view>
+  <view class="flex_shrink total">共{{total}}天</view>
   <view class="iconfont icon-arrow-right-01-sharp"></view>
 </view>

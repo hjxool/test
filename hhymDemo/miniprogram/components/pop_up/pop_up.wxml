@@ -1,0 +1,5 @@
+<view class="tip" wx:if="{{type==='phone'}}">
+  <view class="box row_layout">13345678974</view>
+  <view class="line"></view>
+  <view class="box row_layout" catch:tap="close_pop">取消</view>
+</view>
