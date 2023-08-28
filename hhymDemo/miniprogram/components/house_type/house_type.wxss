@@ -1,0 +1,16 @@
+.house_box{
+  height: 100%;
+  background: #fff;
+  border-radius: 20rpx;
+  margin: 0 20rpx 20rpx 20rpx;
+  padding: 20rpx;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+.house_box>.type_box:not(:last-child){
+  border-bottom: 1px solid #F5F5F5;
+}
+.img1{
+  width: 200rpx;
+  background: greenyellow;
+}

@@ -1,0 +1,8 @@
+<!-- 轮播组件 -->
+<scrollImg></scrollImg>
+<!-- 店名地址 -->
+<placeName></placeName>
+<!-- 选择时间 -->
+<selectTime></selectTime>
+<!-- 房型选择 -->
+<houseType class="flex_grow"></houseType>

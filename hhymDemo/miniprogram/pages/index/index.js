@@ -6,7 +6,6 @@ Page({
   data: {
     isManager: 2, // 0管理员 1普通用户 2加载时不显示
   },
-
   /**
    * 生命周期函数--监听页面加载
    */
@@ -14,7 +13,9 @@ Page({
     wx.showLoading({
       title: '',
     })
-    let {result} = await wx.login().then(async res => {
+    let {
+      result
+    } = await wx.login().then(async res => {
       wx.hideLoading()
       if (res.code) {
         console.log('登陆成功')
@@ -26,7 +27,8 @@ Page({
       }
     })
     this.setData({
-      isManager: result
+      // isManager: result
+      isManager: 1
     })
   },
 

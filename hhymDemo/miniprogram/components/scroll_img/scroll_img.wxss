@@ -1,0 +1,38 @@
+/* 轮播图样式 */
+.img_box {
+  height: 260rpx;
+  position: relative;
+  margin: 0 20rpx;
+  border-radius: 20rpx;
+  overflow: hidden;
+}
+.img_box .swiper{
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.img_box .img{
+  height: 100%;
+}
+.img_box .img1 {
+  background: red;
+}
+.img_box .img2 {
+  background: yellow;
+}
+.img_box .img3 {
+  background: palegreen;
+}
+/* 轮播图统计数量 */
+.img_box > .count{
+  position: absolute;
+  width: 100rpx;
+  height: 40rpx;
+  background: rgba(0, 0, 0, 0.6);
+  bottom: 20rpx;
+  right: 20rpx;
+  border-radius: 20rpx;
+  color: #fff;
+  font-size: 20rpx;
+  justify-content: center;
+}

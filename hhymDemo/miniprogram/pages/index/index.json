@@ -1,3 +1,6 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "user":"/components/user/user",
+    "manager":"/components/manager/manager"
+  }
 }

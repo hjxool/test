@@ -1,0 +1,18 @@
+<view class="place_box">
+  <view class="name">{{place_name}}</view>
+
+  <view class="address row_layout">
+    <text class="name flex_grow text_ellipsis">{{address}}</text>
+
+    <view class="row_layout flex_shrink">
+      <view class="col_layout icon">
+        <view class="iconfont icon-a-013_gongsidizhi"></view>
+        <text class="title">地图</text>
+      </view>
+      <view class="col_layout icon">
+        <view class="iconfont icon-a-013_dianhua"></view>
+        <text class="title">电话</text>
+      </view>
+    </view>
+  </view>
+</view>

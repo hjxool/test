@@ -1,0 +1,6 @@
+<view class="house_box">
+  <view class="type_box row_layout" wx:for="{{list}}" wx:key="name">
+    <view class="{{img}}"></view>
+    <view class="title">{{name}}</view>
+  </view>
+</view>

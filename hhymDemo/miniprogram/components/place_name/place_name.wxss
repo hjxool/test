@@ -1,0 +1,33 @@
+.place_box {
+  background: #fff;
+  border-radius: 20rpx;
+  margin: 20rpx;
+}
+.place_box>.name {
+  font-weight: bold;
+  padding: 20rpx;
+  font-size: 40rpx;
+}
+.place_box>.address {
+  padding: 20rpx;
+  justify-content: space-between;
+  border-top: 1px solid #F5F5F5;
+}
+.place_box>.address>.name {
+  font-size: 32rpx;
+}
+.place_box>.address .icon{
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+.place_box>.address .icon>.title{
+  font-size: 24rpx;
+}
+.place_box>.address .icon>.iconfont{
+  color: gray;
+  font-size: 52rpx;
+}
+.place_box>.address .icon:first-child{
+  margin-right: 40rpx;
+}

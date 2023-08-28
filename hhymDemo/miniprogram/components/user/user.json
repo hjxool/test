@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "scrollImg": "/components/scroll_img/scroll_img",
+    "placeName": "/components/place_name/place_name",
+    "selectTime": "/components/select_time/select_time",
+    "houseType": "/components/house_type/house_type"
+  }
+}

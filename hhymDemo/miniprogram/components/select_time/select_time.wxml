@@ -1,0 +1,12 @@
+<view class="time_box row_layout">
+  <view class="row_layout flex_grow">
+    <view class="date">{{start_time_text}}</view>
+    <view class="text">{{start_text}}</view>
+
+    <view class="date">{{end_time_text}}</view>
+    <view class="text">{{end_text}}</view>
+  </view>
+
+  <view class="flex_shrink total">共{{total}}晚</view>
+  <view class="iconfont icon-arrow-right-01-sharp"></view>
+</view>
