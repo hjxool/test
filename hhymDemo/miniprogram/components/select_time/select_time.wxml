@@ -1,10 +1,10 @@
-<view class="time_box row_layout">
+<view class="time_box row_layout" catchtap="show_calendar">
   <view class="row_layout flex_grow">
     <view class="date">{{start_time_text}}</view>
-    <view class="text">{{start_text}}</view>
+    <view class="text">{{start_text}}入住</view>
 
     <view class="date">{{end_time_text}}</view>
-    <view class="text">{{end_text}}</view>
+    <view class="text">{{end_text}}离店</view>
   </view>
 
   <view class="flex_shrink total">共{{total}}天</view>

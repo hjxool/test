@@ -28,5 +28,9 @@ page,text,view,navigator,swiper,swiper-item,image{
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
+.animation{
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+}
 /* icon图片 */
 @import '/static/icon.wxss'

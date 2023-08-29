@@ -7,6 +7,26 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.3);
+  /* background: rgba(0, 0, 0, 0.3); */
   z-index: 990;
+  animation-name: pop_show;
+}
+@keyframes pop_show{
+  from{
+    background: transparent;
+  }
+  to{
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+.pop_hide{
+  animation-name: pop_hide;
+}
+@keyframes pop_hide{
+  from{
+    background: rgba(0, 0, 0, 0.5);
+  }
+  to{
+    background: transparent;
+  }
 }

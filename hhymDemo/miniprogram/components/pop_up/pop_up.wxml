@@ -1,5 +1,33 @@
-<view class="tip" wx:if="{{type==='phone'}}">
-  <view class="box row_layout">13345678974</view>
-  <view class="line"></view>
-  <view class="box row_layout" catch:tap="close_pop">取消</view>
+<!-- 电话 -->
+<view class="phone_tip {{pop_hide?'phone_hide':''}} animation" wx:if="{{type==='phone'}}">
+  <view class="phone row_layout">13345678974</view>
+  <view class="phone_line"></view>
+  <view class="phone row_layout" catch:tap="close_pop">取消</view>
+</view>
+<!-- 日历 -->
+<view class="calendar col_layout {{pop_hide?'calendar_hide':''}} animation" wx:if="{{type==='calendar'}}">
+  <!-- 头 -->
+  <view class="head row_layout flex_shrink">
+    <view class="title">选择日期</view>
+    <view class="iconfont icon-guanbi" catchtap="close_pop"></view>
+  </view>
+  <!-- 提示 -->
+  <view class="tip row_layout flex_shrink">*超过20天为包月均价</view>
+
+  <view class="flex_grow">
+    <!-- 周列表 -->
+    <view class="week">
+      <view class="text" wx:for="{{weeks}}" wx:key="*this">{{item}}</view>
+    </view>
+    <!-- 滚动显示月和天 -->
+    <scroll-view class="scroll" scroll-y="{{true}}" bindscrolltolower="add_month" lower-threshold="{{10}}">
+      <!-- 列表渲染月份及其天数 -->
+      <view class="month" wx:for="{{date_list}}" wx:key="title" wx:for-item="month">
+        <view class="text bold">{{month.title}}</view>
+        <view class="day">
+          <view class="text {{day.date<date_boundary?'gray':''}}" wx:for="{{month.days}}" wx:key="date" wx:for-item="day">{{day.text}}</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
 </view>
