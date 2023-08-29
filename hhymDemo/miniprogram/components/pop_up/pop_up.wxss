@@ -105,6 +105,14 @@
 .calendar > .flex_grow .white {
   color: #fff;
 }
+.calendar > .flex_grow .bg {
+  width: 100%;
+  height: 100%;
+  background: rgba(30, 144, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
 .calendar > .flex_grow .bold {
   font-weight: bold;
   align-self: end;
@@ -116,15 +124,15 @@
   grid-auto-rows: 600rpx; */
   height: 847.38rpx;
 }
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   display: none;
 }
-.calendar > .flex_grow > .scroll  .month {
+.calendar > .flex_grow > .scroll .month {
   display: grid;
   grid-template-rows: 80rpx auto;
   height: 600rpx;
 }
-.calendar > .flex_grow > .scroll  .month > .day {
+.calendar > .flex_grow > .scroll .month > .day {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(5, 1fr);

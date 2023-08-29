@@ -25,7 +25,9 @@
       <view class="month" wx:for="{{date_list}}" wx:key="title" wx:for-item="month">
         <view class="text bold">{{month.title}}</view>
         <view class="day">
-          <view class="text {{day.date<date_boundary?'gray':''}}" wx:for="{{month.days}}" wx:key="date" wx:for-item="day">{{day.text}}</view>
+          <view class="text {{day.date<date_boundary?'gray':''}} {{(day.date==start_day||day.date==end_day)?'bg white':''}}"
+           wx:for="{{month.days}}" wx:key="date" wx:for-item="day"
+           catch:tap="select_day" data-date="{{day.date}}">{{day.text}}</view>
         </view>
       </view>
     </scroll-view>

@@ -80,11 +80,13 @@ Component({
       }
     },
     // 打开日历
-    show_calendar(){
-      let app = getApp()
-      app.globalData.pop_content = 'calendar'
-      this.triggerEvent('popevent', 'open pop')
-    }
+    show_calendar() {
+      let app = getApp();
+      app.globalData.pop_content = "calendar";
+      app.globalData.start_time = this.data.start_date.getTime();
+      app.globalData.end_time = this.data.end_date.getTime();
+      this.triggerEvent("popevent", "open pop");
+    },
   },
   observers: {
     // 当开始|结束日期发生变化重新计算总天数

@@ -13,6 +13,11 @@ Component({
       this.setData({
         type: app.globalData.pop_content,
       });
+      // 一打开弹窗就读取入住时间
+      this.setData({
+        start_day: app.globalData.start_time,
+        end_day: app.globalData.end_time,
+      });
       // 一加载组件就生成当月及下月日期列表
       this.init_day_list();
     },
@@ -26,6 +31,8 @@ Component({
     weeks: ["日", "一", "二", "三", "四", "五", "六"],
     date_list: [], // 日期列表
     date_boundary: 0, // 当天之前的所有天数全部灰掉
+    start_day: -1, //入住开始时间
+    end_day: -1, //入住结束时间
   },
 
   /**
@@ -81,7 +88,10 @@ Component({
       let cur_week = date.getDay(); //获取当月1号是周几
       // 当月1号以前的日期用空格代替
       for (let index = 0; index < cur_week; index++) {
-        t.days.push({ date: 0, text: "" });
+        t.days.push({
+          date: 0,
+          text: "",
+        });
       }
       let total_day = new Date(year, month, 0).getDate(); //获取当月总天数
       // 将当月日期填入
@@ -96,7 +106,10 @@ Component({
       // 计算剩余天数 剩余天数用空格
       let last = 35 - t.days.length;
       for (let index = 0; index < last; index++) {
-        t.days.push({ date: 0, text: "" });
+        t.days.push({
+          date: 0,
+          text: "",
+        });
       }
       return t;
     },
@@ -118,6 +131,36 @@ Component({
       this.setData({
         date_list: list,
       });
+    },
+    // 选择时间
+    select_day(e) {
+      let cur_date = e.target.dataset.date;
+      // 选择时间只能是当天后的
+      if (cur_date < this.data.date_boundary) {
+        return;
+      }
+      // 首先开始时间不可能未选中(-1)
+      // 结束时间已选再次选时间则是开始时间
+      if (this.data.end_day !== -1) {
+        this.setData({
+          start_day: cur_date,
+          end_day: -1,
+        });
+        return
+      }
+      // 结束时间未选且选中时间小于开始时间
+      if (this.data.end_day === -1 && cur_date <= this.data.start_day) {
+        this.setData({
+          start_day: cur_date,
+        });
+        return;
+      }
+      if (this.data.end_day === -1) {
+        this.setData({
+          end_day: cur_date,
+        });
+        return;
+      }      
     },
   },
 });
