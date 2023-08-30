@@ -1,4 +1,4 @@
-<view class="house_box">
+<view class="house_box" bind:tap="turn_to_house">
   <view class="type_box row_layout" wx:for="{{list}}" wx:key="name">
     <view class="img {{item.img}}"></view>
     <view class="title">{{item.name}}</view>

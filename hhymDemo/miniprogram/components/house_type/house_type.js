@@ -30,6 +30,11 @@ Component({
    * 组件的方法列表
    */
   methods: {
-
+    // 跳转到房间详情页
+    turn_to_house(e){
+      wx.navigateTo({
+        url: '/pages/house/house',
+      })
+    }
   }
 })
