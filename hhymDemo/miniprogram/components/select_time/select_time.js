@@ -12,17 +12,21 @@ Component({
   data: {
     total: 1, //总共天数
     start_time_text: "08月29日", //开始时间格式化文字
-    start_text: "明天", //提示今天、明天、后天、周几
+    start_text: "", //提示今天、明天、后天、周几
     end_time_text: "08月30日", //结束时间格式化文字
-    end_text: "后天",
+    end_text: "",
     start_date: null, //开始日期对象
     end_date: null, //结束日期对象
   },
   lifetimes: {
     attached() {
-      this.data.start_date = new Date();
-      let t = this.data.start_date.getTime() + 24 * 60 * 60 * 1000;
-      this.data.end_date = new Date(t);
+      // 时间要跟日历里的统一
+      let nowt = new Date();
+      this.data.start_date = new Date(
+        `${nowt.getFullYear()}/${nowt.getMonth() + 1}/${nowt.getDate()}`
+      );
+      let nextt = this.data.start_date.getTime() + 24 * 60 * 60 * 1000;
+      this.data.end_date = new Date(nextt);
       this.setData({
         start_time_text: this.format_date_text(this.data.start_date),
         end_time_text: this.format_date_text(this.data.end_date),
@@ -54,9 +58,9 @@ Component({
       let select_time = date.getTime();
       if (select_time < tomorrow) {
         return "今天";
-      } else if (select_time > tomorrow && select_time < after_tomorrow) {
+      } else if (select_time >= tomorrow && select_time < after_tomorrow) {
         return "明天";
-      } else if (select_time > after_tomorrow && select_time < three_day) {
+      } else if (select_time >= after_tomorrow && select_time < three_day) {
         return "后天";
       } else {
         // 超出后天开始计算是周几
@@ -85,7 +89,10 @@ Component({
       app.globalData.pop_content = "calendar";
       app.globalData.start_time = this.data.start_date.getTime();
       app.globalData.end_time = this.data.end_date.getTime();
-      this.triggerEvent("popevent", "open pop");
+      this.triggerEvent("popevent", {
+        type: "open pop",
+        source: "select_time",
+      });
     },
   },
   observers: {
@@ -93,10 +100,14 @@ Component({
     "start_date, end_date": function (start, end) {
       // 当天时间不是从00点开始，所以间隔时间(毫秒)除以一天应该向上取整
       let t = Math.ceil(
-        (end.getTime() - start.getTime()) / (24 * 60 * 60 * 100)
+        (end.getTime() - start.getTime()) / (24 * 60 * 60 * 1000)
       );
       this.setData({
-        today: t,
+        total: t,
+        start_time_text: this.format_date_text(start),
+        end_time_text: this.format_date_text(end),
+        start_text: this.format_text(start),
+        end_text: this.format_text(end),
       });
     },
   },

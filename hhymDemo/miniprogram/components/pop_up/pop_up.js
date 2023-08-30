@@ -40,11 +40,15 @@ Component({
    */
   methods: {
     // 关闭弹窗
-    close_pop() {
+    close_pop(source) {
       this.setData({
         pop_hide: true,
       });
-      this.triggerEvent("popevent", "close pop");
+      // 有两种 一种是事件触发 一种是传入参数
+      this.triggerEvent("popevent", {
+        type: "close pop",
+        source: source.target?.dataset.source || source,
+      });
     },
     // 生成当月和下月的日期列表
     init_day_list() {
@@ -142,11 +146,13 @@ Component({
       // 首先开始时间不可能未选中(-1)
       // 结束时间已选再次选时间则是开始时间
       if (this.data.end_day !== -1) {
+        // 特殊情况 再次点击开始或结束元素是 dataset中的值被清空
+        // 是因为点到里层的元素上了
         this.setData({
           start_day: cur_date,
           end_day: -1,
         });
-        return
+        return;
       }
       // 结束时间未选且选中时间小于开始时间
       if (this.data.end_day === -1 && cur_date <= this.data.start_day) {
@@ -160,7 +166,15 @@ Component({
           end_day: cur_date,
         });
         return;
-      }      
+      }
+    },
+    // 确认保存所选时间
+    confirm_time() {
+      let app = getApp();
+      // 存的是时间戳
+      app.globalData.start_time = this.data.start_day;
+      app.globalData.end_time = this.data.end_day;
+      this.close_pop("calendar");
     },
   },
 });

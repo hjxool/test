@@ -2,18 +2,18 @@
 <view class="phone_tip {{pop_hide?'phone_hide':''}} animation" wx:if="{{type==='phone'}}">
   <view class="phone row_layout">13345678974</view>
   <view class="phone_line"></view>
-  <view class="phone row_layout" catch:tap="close_pop">取消</view>
+  <view class="phone row_layout" catch:tap="close_pop" data-source="phone">取消</view>
 </view>
 <!-- 日历 -->
 <view class="calendar col_layout {{pop_hide?'calendar_hide':''}} animation" wx:if="{{type==='calendar'}}">
   <!-- 头 -->
   <view class="head row_layout flex_shrink">
     <view class="title">选择日期</view>
-    <view class="iconfont icon-guanbi" catchtap="close_pop"></view>
+    <view class="iconfont icon-guanbi" catchtap="close_pop" data-source="calendar"></view>
   </view>
   <!-- 提示 -->
   <view class="tip row_layout flex_shrink">*超过20天为包月均价</view>
-
+  <!-- 滚动日历 -->
   <view class="flex_grow">
     <!-- 周列表 -->
     <view class="week">
@@ -25,11 +25,17 @@
       <view class="month" wx:for="{{date_list}}" wx:key="title" wx:for-item="month">
         <view class="text bold">{{month.title}}</view>
         <view class="day">
-          <view class="text {{day.date<date_boundary?'gray':''}} {{(day.date==start_day||day.date==end_day)?'bg white':''}}"
-           wx:for="{{month.days}}" wx:key="date" wx:for-item="day"
-           catch:tap="select_day" data-date="{{day.date}}">{{day.text}}</view>
+          <view class="text {{day.date<date_boundary?'gray':''}} {{(day.date==start_day||day.date==end_day)?'bg white col_layout':''}} {{end_day==-1?'':day.date==start_day?'bg_left':day.date==end_day?'bg_right':''}} {{(day.date>start_day&&day.date<end_day)?'bg2 row_layout':''}}" wx:for="{{month.days}}" wx:for-item="day" catch:tap="select_day" data-date="{{day.date}}">
+            {{day.text}}
+            <text class="text" wx:if="{{day.date==start_day}}" data-date="{{day.date}}">入住</text>
+            <text class="text" wx:if="{{day.date==end_day}}" data-date="{{day.date}}">离店</text>
+          </view>
         </view>
       </view>
     </scroll-view>
+  </view>
+  <!-- 确认提交 -->
+  <view class="submit col_layout">
+    <button class="button" catch:tap="confirm_time">确定</button>
   </view>
 </view>

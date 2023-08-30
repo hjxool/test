@@ -39,7 +39,7 @@ Component({
     show_phone(){
       let app = getApp()
       app.globalData.pop_content = 'phone'
-      this.triggerEvent('popevent','open pop')
+      this.triggerEvent('popevent',{type:'open pop',source:'place'})
     }
   }
 })
