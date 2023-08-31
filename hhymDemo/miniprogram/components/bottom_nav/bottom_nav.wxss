@@ -1,0 +1,24 @@
+.nav_box{
+  justify-content: space-evenly;
+  background: #Fff;
+  border-top-left-radius: 20rpx;
+  border-top-right-radius: 20rpx;
+  padding: 20rpx 0;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+.nav_box>.col_layout{
+  align-items: center;
+}
+.nav_box>.col_layout>.default_icon{
+  font-size: 40rpx;
+  color: #333;
+}
+.nav_box>.col_layout>.default_color{
+  font-size: 28rpx;
+  color: #333;
+}
+.nav_box>.col_layout>.active_color{
+  color: #d43c33;
+}

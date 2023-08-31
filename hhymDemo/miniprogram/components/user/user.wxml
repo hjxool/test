@@ -1,10 +1,17 @@
-<!-- 轮播组件 -->
-<scrollImg></scrollImg>
-<!-- 店名地址 -->
-<placeName catch:popevent="popup"></placeName>
-<!-- 选择时间 -->
-<selectTime id="select_time" catch:popevent="popup"></selectTime>
-<!-- 房型选择 -->
-<houseType id="house_type" class="flex_grow"></houseType>
-<!-- 电话提示 -->
+<block wx:if="{{cur_page===0}}">
+  <!-- 轮播组件 -->
+  <scrollImg></scrollImg>
+  <!-- 店名地址 -->
+  <placeName catch:popevent="popup"></placeName>
+  <!-- 选择时间 -->
+  <selectTime id="select_time" catch:popevent="popup"></selectTime>
+  <!-- 房型选择 -->
+  <houseType id="house_type" class="flex_grow"></houseType>
+</block>
+<block wx:if="{{cur_page===1}}">
+  <orderList class="flex_grow"></orderList>
+</block>
+<!-- 底部导航栏 -->
+<bottomNav catch:navevent="nav_bar"></bottomNav>
+<!-- 通用弹窗组件 -->
 <popup class="popup {{pop_hide?'pop_hide':''}} animation" wx:if="{{pop_show}}" catch:popevent="popup"></popup>

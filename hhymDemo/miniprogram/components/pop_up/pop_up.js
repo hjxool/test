@@ -138,7 +138,7 @@ Component({
     },
     // 选择时间
     select_day(e) {
-      let cur_date = e.target.dataset.date;
+      let cur_date = e.currentTarget.dataset.date;
       // 选择时间只能是当天后的
       if (cur_date < this.data.date_boundary) {
         return;

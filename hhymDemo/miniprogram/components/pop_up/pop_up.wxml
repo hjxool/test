@@ -27,8 +27,8 @@
         <view class="day">
           <view class="text {{day.date<date_boundary?'gray':''}} {{(day.date==start_day||day.date==end_day)?'bg white col_layout':''}} {{end_day==-1?'':day.date==start_day?'bg_left':day.date==end_day?'bg_right':''}} {{(day.date>start_day&&day.date<end_day)?'bg2 row_layout':''}}" wx:for="{{month.days}}" wx:for-item="day" catch:tap="select_day" data-date="{{day.date}}">
             {{day.text}}
-            <text class="text" wx:if="{{day.date==start_day}}" data-date="{{day.date}}">入住</text>
-            <text class="text" wx:if="{{day.date==end_day}}" data-date="{{day.date}}">离店</text>
+            <text class="text" wx:if="{{day.date==start_day}}">入住</text>
+            <text class="text" wx:if="{{day.date==end_day}}">离店</text>
           </view>
         </view>
       </view>

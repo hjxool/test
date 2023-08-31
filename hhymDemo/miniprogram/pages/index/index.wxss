@@ -4,4 +4,8 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  box-sizing: border-box;
+}
+.style1{
+  padding-bottom: 120rpx;
 }

@@ -1,1 +1,21 @@
-<text>管理员</text>
+<view class="control col_layout">
+  <!-- 日历和待确认订单 -->
+  <view class="head">
+    <view class="box1 row_layout">
+      <view class="iconfont icon-yuding-active icon icon1"></view>
+      <view class="col_layout">
+        <view class="tip_num">2</view>
+        <view class="title">日历</view>
+      </view>
+    </view>
+    <view class="box1 row_layout">
+      <view class="iconfont icon-duigou1 icon icon2"></view>
+      <view class="col_layout">
+        <view class="tip_num">10</view>
+        <view class="title">待确认订单</view>
+      </view>
+    </view>
+  </view>
+  <!-- 图表 -->
+  <!-- 功能模块 -->
+</view>

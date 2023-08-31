@@ -5,6 +5,8 @@
     "placeName": "/components/place_name/place_name",
     "selectTime": "/components/select_time/select_time",
     "houseType": "/components/house_type/house_type",
-    "popup": "/components/pop_up/pop_up"
+    "popup": "/components/pop_up/pop_up",
+    "bottomNav": "/components/bottom_nav/bottom_nav",
+    "orderList": "/components/order_list/order_list"
   }
 }

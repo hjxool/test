@@ -1,0 +1,35 @@
+.control {
+  height: 100%;
+  padding: 40rpx 20rpx;
+}
+/* 头部 */
+.head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.head > .box1 {
+  background: #fff;
+  padding: 20rpx 40rpx;
+  border-radius: 20rpx;
+}
+.head > .box1:first-child {
+  margin-right: 32rpx;
+}
+.head > .box1 > .icon {
+  font-size: 60rpx;
+  margin-right: 40rpx;
+}
+.head > .box1 > .icon1 {
+  color: #e6a23c;
+}
+.head > .box1 > .icon2 {
+  color: #67c23a;
+}
+.head > .box1 > .col_layout > .tip_num {
+  font-size: 48rpx;
+  font-weight: bold;
+}
+.title {
+  font-size: 28rpx;
+  color: #808080;
+}

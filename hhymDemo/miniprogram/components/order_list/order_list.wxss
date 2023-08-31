@@ -1,0 +1,32 @@
+.order_box {
+  height: 100%;
+  overflow-x: hidden;
+}
+.order_box > .order {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 32rpx;
+  display: flex;
+  margin: 20rpx 20rpx 0;
+}
+.order_box > .order > .flex_grow > .color {
+  color: rgba(128, 128, 128, 1);
+  font-size: 28rpx;
+}
+.order_box > .order > .flex_grow > .color:not(:last-child){
+  margin-bottom: 20rpx;
+}
+.order_box > .order > .col_layout {
+  align-items: flex-end;
+  justify-content: space-between;
+  font-size: 32rpx;
+}
+.order_box > .order > .col_layout>.gray{
+  color: #A9A9A9;
+}
+.order_box > .order > .col_layout>.alert{
+  color: #e6a23c;
+}
+.order_box > .order > .col_layout>.green{
+  color: #67c23a;
+}

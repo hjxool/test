@@ -13,6 +13,7 @@ Component({
   data: {
     pop_show: false, //显示弹窗
     pop_hide: true, //隐藏弹窗动画
+    cur_page: 0, // 当前页
   },
   /**
    * 组件的方法列表
@@ -54,6 +55,12 @@ Component({
           pop_hide: false,
         });
       }
+    },
+    // 底部导航栏跳转
+    nav_bar(e) {
+      this.setData({
+        cur_page: e.detail,
+      });
     },
   },
 });
