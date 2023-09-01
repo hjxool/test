@@ -1,7 +1,7 @@
-<view class="control col_layout">
+<view class="control col_layout" catch:tap="close_pop">
   <!-- 日历和待确认订单 -->
   <view class="head">
-    <view class="box1 row_layout">
+    <view class="box1 row_layout" bind:tap="turn_to_page" data-page="calendar">
       <view class="iconfont icon-yuding-active icon icon1"></view>
       <view class="col_layout">
         <view class="tip_num">2</view>
@@ -17,5 +17,26 @@
     </view>
   </view>
   <!-- 图表 -->
+  <view class="flex_grow body col_layout">
+    <view class="row_layout" catch:tap="show_titles">
+      <view class="title">
+        {{echart_title}}
+
+        <view class="select_box" wx:if="{{echarts_select_show}}">
+          <view class="text" wx:for="{{titles}}" wx:key="title" catch:tap="change_echart" data-title="{{item.title}}">{{item.title}}</view>
+        </view>
+      </view>
+
+      <view class="iconfont icon-jiantou_zuoyouqiehuan icon"></view>
+    </view>
+
+    <ec-canvas id="echart" class="flex_grow" canvas-id="bar" ec="{{ec}}"></ec-canvas>
+  </view>
   <!-- 功能模块 -->
+  <view class="foot flex_shrink">
+    <view class="box3 col_layout" wx:for="{{modules}}" wx:key="title">
+      <view class="iconfont {{item.icon}} icon"></view>
+      <view class="text">{{item.title}}</view>
+    </view>
+  </view>
 </view>

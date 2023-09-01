@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4227996 */
-  src: url('//at.alicdn.com/t/c/font_4227996_zd426aaxv7q.woff2?t=1693475636121') format('woff2'),
-       url('//at.alicdn.com/t/c/font_4227996_zd426aaxv7q.woff?t=1693475636121') format('woff'),
-       url('//at.alicdn.com/t/c/font_4227996_zd426aaxv7q.ttf?t=1693475636121') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_4227996_zdxycz56yza.woff2?t=1693537681661') format('woff2'),
+       url('//at.alicdn.com/t/c/font_4227996_zdxycz56yza.woff?t=1693537681661') format('woff'),
+       url('//at.alicdn.com/t/c/font_4227996_zdxycz56yza.ttf?t=1693537681661') format('truetype');
 }
 
 .iconfont {
@@ -13,12 +13,24 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-duigou1:before {
-  content: "\e744";
+.icon-jiantou_zuoyouqiehuan:before {
+  content: "\eb0d";
 }
 
-.icon-rili:before {
-  content: "\e625";
+.icon-tixianguize:before {
+  content: "\e632";
+}
+
+.icon-kehu:before {
+  content: "\e697";
+}
+
+.icon-guize:before {
+  content: "\e78b";
+}
+
+.icon-duigou1:before {
+  content: "\e744";
 }
 
 .icon-quanbudingdan:before {
