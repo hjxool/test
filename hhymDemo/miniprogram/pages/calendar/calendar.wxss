@@ -1,0 +1,80 @@
+.index {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+}
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* 图例 */
+.index > .row_layout {
+  justify-content: center;
+}
+.index > .row_layout > .icon {
+  margin-right: 20rpx;
+  width: 40rpx;
+  height: 40rpx;
+}
+.index > .row_layout > .icon1 {
+  background: #1e90ff;
+}
+.index > .row_layout > .icon2 {
+  background: #00bfff;
+}
+.index > .row_layout > .icon3 {
+  background: #ff4500;
+}
+.index > .row_layout > .title {
+  font-size: 32rpx;
+}
+.index > .row_layout > .title:not(:last-child) {
+  margin-right: 20rpx;
+}
+/* 日历 */
+.index > .flex_grow {
+  padding: 0 32rpx;
+  display: grid;
+  grid-template-rows: 80rpx auto;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 20rpx;
+  margin: 40rpx;
+}
+.index > .flex_grow > .week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  align-items: center;
+  justify-items: center;
+}
+.index > .flex_grow .text {
+  font-size: 32rpx;
+}
+.index > .flex_grow > .scroll {
+  height: calc(1206rpx - 42rpx - 80rpx - 80rpx);
+}
+::-webkit-scrollbar {
+  display: none;
+}
+.index > .flex_grow > .scroll .month {
+  display: grid;
+  grid-template-rows: 80rpx auto;
+  height: 600rpx;
+}
+.index > .flex_grow .text {
+  font-size: 32rpx;
+}
+.index > .flex_grow .gray {
+  color: rgba(128, 128, 128, 0.6);
+}
+.index > .flex_grow .bold {
+  font-weight: bold;
+  align-self: end;
+}
+.index > .flex_grow > .scroll .month > .day {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+}

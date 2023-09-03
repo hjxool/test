@@ -1,0 +1,28 @@
+<view class="index col_layout">
+  <!-- 图例 -->
+  <view class="row_layout flex_shrink">
+    <block wx:for="{{legend}}" wx:key="title">
+      <view class="icon {{item.icon}}"></view>
+      <view class="title">{{item.title}}</view>
+    </block>
+  </view>
+  <!-- 日历 -->
+  <view class="flex_grow">
+    <!-- 周列表 -->
+    <view class="week">
+      <view class="text" wx:for="{{weeks}}" wx:key="*this">{{item}}</view>
+    </view>
+    <!-- 滚动显示月和天 -->
+    <scroll-view class="scroll" scroll-y="{{true}}" bindscrolltolower="add_month" lower-threshold="{{10}}">
+      <!-- 列表渲染月份及其天数 -->
+      <view class="month" wx:for="{{date_list}}" wx:key="title" wx:for-item="month">
+        <view class="text bold">{{month.title}}</view>
+        <view class="day">
+          <view class="text center {{day.date<date_boundary?'gray':''}}" wx:for="{{month.days}}" wx:for-item="day">
+            {{day.text}}
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

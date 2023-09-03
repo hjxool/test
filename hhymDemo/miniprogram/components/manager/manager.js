@@ -1,16 +1,9 @@
 // 引入echart
 import * as echarts from "../ec-canvas/echarts.js";
 let chart = null;
-// 初始化echart方法
-function init_echart(canvas, width, height, dpr) {
-  // 保存echart对象
-  chart = echarts.init(canvas, null, {
-    width,
-    height,
-    devicePixelRatio: dpr,
-  });
-  canvas.setChart(chart);
-  let options = {
+// echart配置
+function bar_options() {
+  return {
     // 提示框
     tooltip: {
       trigger: "axis", //坐标轴触发
@@ -83,6 +76,17 @@ function init_echart(canvas, width, height, dpr) {
       },
     ],
   };
+}
+// 初始化echart方法
+function init_echart(canvas, width, height, dpr) {
+  // 保存echart对象
+  chart = echarts.init(canvas, null, {
+    width,
+    height,
+    devicePixelRatio: dpr,
+  });
+  canvas.setChart(chart);
+  let options = bar_options();
   chart.setOption(options);
   return chart;
 }
@@ -154,8 +158,11 @@ Component({
       });
     },
     // 跳转对应页面
-    turn_to_page(e){
-      console.log(e)
-    }
+    turn_to_page(e) {
+      let page = e.currentTarget.dataset.page
+      wx.navigateTo({
+        url: '/pages/calendar/calendar',
+      })
+    },
   },
 });
