@@ -1,0 +1,40 @@
+/* 主页 */
+.index {
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  padding: 20rpx;
+}
+/* 单个列表项 */
+.box{
+  margin-bottom: 40rpx;
+}
+.box>.flex_grow{
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 20rpx;
+}
+.box>.flex_shrink{
+  margin-left: 20rpx;
+}
+/* 内容文字 */
+.text{
+  font-size: 28rpx;
+  color: #808080;
+}
+.text:not(:last-child){
+  margin-bottom: 20rpx;
+}
+/* 图标 */
+.icon{
+  font-size: 60rpx;
+}
+.icon:first-child{
+  margin-right: 32rpx;
+}
+.icon1{
+  color: #67c23a;
+}
+.icon2{
+  color: #e6a23c;
+}

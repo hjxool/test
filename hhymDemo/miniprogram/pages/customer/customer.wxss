@@ -1,0 +1,51 @@
+.index {
+  height: 100%;
+  overflow: hidden;
+}
+/* 头部检索 */
+.head {
+  padding: 40rpx;
+  align-self: center;
+}
+.head > .title {
+  font-size: 32rpx;
+  margin-right: 20rpx;
+}
+.head > .input {
+  width: 320rpx;
+  height: 60rpx;
+  border: 1px solid #808080;
+  box-sizing: border-box;
+  border-radius: 20rpx;
+  padding: 0 20rpx;
+}
+/* 列表内容 */
+.body {
+  box-sizing: border-box;
+  padding: 20rpx;
+  margin: 0 40rpx 40rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  overflow: auto;
+}
+.body > .box {
+  padding: 20rpx;
+}
+.body > .box:not(:last-child) {
+  border-bottom: 1px solid #808080;
+}
+.body > .box > .row_layout:not(:last-child) {
+  margin-bottom: 20rpx;
+}
+.body > .box .title {
+  font-size: 32rpx;
+  flex-shrink: 0;
+}
+.body > .box .text {
+  font-size: 28rpx;
+  color: #808080;
+  overflow: hidden;
+}
+.body > .box .flex_grow {
+  word-wrap: break-word;
+}

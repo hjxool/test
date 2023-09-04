@@ -8,10 +8,10 @@
         <view class="title">日历</view>
       </view>
     </view>
-    <view class="box1 row_layout">
+    <view class="box1 row_layout" bind:tap="turn_to_page" data-page="confirm">
       <view class="iconfont icon-duigou1 icon icon2"></view>
       <view class="col_layout">
-        <view class="tip_num">10</view>
+        <view class="tip_num">{{confirm_num}}</view>
         <view class="title">待确认订单</view>
       </view>
     </view>
@@ -30,11 +30,11 @@
       <view class="iconfont icon-jiantou_zuoyouqiehuan icon"></view>
     </view>
 
-    <ec-canvas id="echart" class="flex_grow" canvas-id="bar" ec="{{ec}}"></ec-canvas>
+    <ec-canvas style="display:{{echart_show?'':'none'}};" id="echart" class="flex_grow" canvas-id="bar" ec="{{ec}}"></ec-canvas>
   </view>
   <!-- 功能模块 -->
   <view class="foot flex_shrink">
-    <view class="box3 col_layout" wx:for="{{modules}}" wx:key="title">
+    <view class="box3 col_layout" wx:for="{{modules}}" wx:key="title" bind:tap="turn_to_page" data-page="{{item.page}}">
       <view class="iconfont {{item.icon}} icon"></view>
       <view class="text">{{item.title}}</view>
     </view>

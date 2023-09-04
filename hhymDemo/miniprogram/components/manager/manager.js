@@ -94,17 +94,10 @@ Component({
   options: {
     addGlobalClass: true,
   },
-  /**
-   * 组件的属性列表
-   */
   properties: {},
-
-  /**
-   * 组件的初始数据
-   */
   data: {
     modules: [
-      { title: "客户列表", icon: "icon-kehu", page: "" },
+      { title: "客户列表", icon: "icon-kehu", page: "customer" },
       { title: "订单列表", icon: "icon-quanbudingdan", page: "" },
       { title: "计价规则", icon: "icon-guize", page: "" },
       { title: "单价设置", icon: "icon-tixianguize", page: "" },
@@ -118,20 +111,29 @@ Component({
     ec: {
       onInit: init_echart,
     },
+    echart_show: true, //图表显示
+    confirm_num: 0, //待确认订单数
   },
   lifetimes: {
     // 组件实例进入节点树时执行
     attached() {
+      let st = new Date("2023/7/1");
+      let et = new Date("2023/7/7");
+      this.list = [];
+      for (let index = 0; index < 10; index++) {
+        let t = {
+          name: "张三",
+          start_time: st.getTime(),
+          end_time: et.getTime(),
+          room: ["A01", "A02"],
+        };
+        this.list.push(t);
+      }
       this.setData({
         echart_title: this.data.titles[0].title,
+        confirm_num: this.list.length,
       });
     },
-    //#region
-    // 组件布局完成后执行
-    // ready() {
-    //   this.init_echart();
-    // },
-    //#endregion
   },
   /**
    * 组件的方法列表
@@ -159,10 +161,67 @@ Component({
     },
     // 跳转对应页面
     turn_to_page(e) {
-      let page = e.currentTarget.dataset.page
+      let page = e.currentTarget.dataset.page;
+      let fn2 = (data) => {
+        // 刷新数据的时机 一是从其他页面返回时 二是扫码进入小程序时
+        this.get_data();
+        chart.setOption({
+          series: [
+            {
+              data: [120, 102, 141, 174, 190, 250, 220],
+            },
+            { data: [300, 270, 340, 344, 300, 320, 310] },
+          ],
+        });
+        setTimeout(() => {
+          this.setData({
+            echart_show: true,
+          });
+        }, 200);
+      };
+      // 跳转不同页面触发不同事件
+      // 跳转页只负责把获取的所有数据对应传入页面
+      let fn;
+      switch (page) {
+        case "confirm":
+          fn = (res) => {
+            res.eventChannel.emit("comfirm_list", this.list);
+          };
+          break;
+        case "calendar":
+        case "customer":
+          fn = (res) => {
+            let list = [];
+            for (let index = 0; index < 3; index++) {
+              let t = {
+                name: "xxx1",
+                phone: "13356569874",
+                weChat: "yyuujj",
+                pet_name: "asdad",
+                pet_detail: "asdasdasd2222",
+                orders: [1, 2, 3, 4],
+                pay: "750",
+              };
+              list.push(t);
+            }
+            res.eventChannel.emit("customer_list", list);
+          };
+          break;
+      }
       wx.navigateTo({
-        url: '/pages/calendar/calendar',
-      })
+        url: `/pages/${page}/${page}`,
+        events: {
+          message: fn2,
+        },
+        success: fn,
+      });
+      this.setData({
+        echart_show: false,
+      });
+    },
+    // 刷新页面数据
+    get_data() {
+      console.log("refresh");
     },
   },
 });
