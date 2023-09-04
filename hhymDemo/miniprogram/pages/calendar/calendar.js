@@ -19,8 +19,7 @@ Page({
     });
   },
   onUnload(){
-    let channel = this.getOpenerEventChannel()
-    channel.emit('message',{msg:'calendar'})
+    this.channel.emit('message',{msg:'calendar'})
   },
    // 生成当月和下月的日期列表
    init_day_list() {

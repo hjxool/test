@@ -98,7 +98,7 @@ Component({
   data: {
     modules: [
       { title: "客户列表", icon: "icon-kehu", page: "customer" },
-      { title: "订单列表", icon: "icon-quanbudingdan", page: "" },
+      { title: "订单列表", icon: "icon-quanbudingdan", page: "order" },
       { title: "计价规则", icon: "icon-guize", page: "" },
       { title: "单价设置", icon: "icon-tixianguize", page: "" },
     ],
@@ -205,6 +205,22 @@ Component({
               list.push(t);
             }
             res.eventChannel.emit("customer_list", list);
+          };
+          break;
+        case "order":
+          fn = (res) => {
+            let list = [];
+            for (let index = 0; index < 3; index++) {
+              let t = {
+                start: new Date("2023/7/1"),
+                end: new Date("2023/8/1"),
+                name: "张三",
+                price: 750,
+                room: ["A01", "A02"],
+              };
+              list.push(t);
+            }
+            res.eventChannel.emit("order_list", list);
           };
           break;
       }

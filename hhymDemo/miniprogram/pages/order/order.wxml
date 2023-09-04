@@ -1,0 +1,34 @@
+<view class="index col_layout">
+  <!-- 切换时间 -->
+  <view class="head row_layout flex_shrink">
+    <picker mode="date" value="{{select_date}}" start="2023-8-1" bindchange="select_time">
+      <view class="title">
+        时间筛选: {{select_date?select_date:'无'}}
+      </view>
+    </picker>
+  </view>
+  <!-- 订单列表 -->
+  <view class="body flex_grow">
+    <view class="box" wx:for="{{list}}">
+      <view class="row_layout">
+        <view class="title">时间：</view>
+        <view class="text">{{item.start_text}}-{{item.end_text}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">金额：</view>
+        <view class="text">{{item.price}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">客户名：</view>
+        <view class="text">{{item.name}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">房间：</view>
+        <view class="text">{{item.room_text}}</view>
+      </view>
+    </view>
+  </view>
+</view>
