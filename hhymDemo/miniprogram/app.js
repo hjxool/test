@@ -1,4 +1,22 @@
-// app.js
+// 生成房间总列表
+function init_room(list) {
+  for (let index = 1; index <= 13; index++) {
+    if (index <= 11) {
+      let t = {
+        label: `标准间${index}`,
+        check: false,
+      };
+      list.push(t);
+    } else {
+      let i = index - 11;
+      let t = {
+        label: `豪华间${i}`,
+        check: false,
+      };
+      list.push(t);
+    }
+  }
+}
 App({
   onLaunch: function () {
     if (!wx.cloud) {
@@ -17,24 +35,29 @@ App({
       pop_content: "", //弹窗展示内容
       start_time: 0, //入住开始时间戳
       end_time: 0, //入住结束时间戳
+      rooms: [], //房间总列表
     };
-    // 生成房间总列表
-    this.globalData.rooms = [];
-    for (let index = 1; index <= 13; index++) {
-      if (index <= 11) {
-        let t = {
-          label: `标准间${index}`,
-          check: false,
-        };
-        this.globalData.rooms.push(t);
-      } else {
-        let i = index - 11;
-        let t = {
-          label: `豪华间${i}`,
-          check: false,
-        };
-        this.globalData.rooms.push(t);
-      }
+    init_room(this.globalData.rooms);
+  },
+  async mycall(name, data) {
+    let body = { name };
+    // 如果有传参
+    if (data) {
+      body.data = data;
     }
+    let { result } = await wx.cloud.callFunction(body);
+    // 如果返回结果失败
+    if (result.code !== 200) {
+      wx.showToast({
+        title: result.msg,
+        icon: "none",
+      });
+      setTimeout(() => {
+        wx.hideToast();
+      }, 1000);
+      return false;
+    }
+    // 如果返回结果成功 则返回成功的值
+    return result.data || true;
   },
 });

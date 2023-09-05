@@ -1,0 +1,44 @@
+.index {
+  height: 100%;
+  padding: 20rpx;
+  overflow: hidden;
+}
+/* 设置 */
+.index > .box {
+  padding: 0 40rpx;
+}
+.index>.box>.box2{
+  display: grid;
+  grid-template-columns: 200rpx auto;
+  align-items: center;
+  padding: 20rpx 0;
+}
+.index>.box .title{
+  justify-self: end;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+.index > .box .input {
+  width: 300rpx;
+  height: 60rpx;
+  border: 1px solid #808080;
+  box-sizing: border-box;
+  border-radius: 20rpx;
+  padding: 0 20rpx;
+}
+/* 按钮 */
+.index > .buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 80rpx;
+  justify-content: center;
+  height: 120rpx;
+}
+.index > .buttons > .button {
+  border-radius: 40rpx;
+  width: 90%;
+}
+.index > .buttons > .button:first-child {
+  background: cornflowerblue;
+  color: #ffffff;
+}

@@ -9,22 +9,24 @@ Component({
   lifetimes: {
     // 组件实例进入页面节点树时执行
     attached() {
-      let app = getApp();
+      this.app = getApp();
       this.setData({
-        type: app.globalData.pop_content,
+        type: this.app.globalData.pop_content,
       });
       if (this.data.type === "calendar") {
         // 一打开弹窗就读取入住时间
         this.setData({
-          start_day: app.globalData.start_time,
-          end_day: app.globalData.end_time,
+          start_day: this.app.globalData.start_time,
+          end_day: this.app.globalData.end_time,
         });
         // 一加载组件就生成当月及下月日期列表
         this.init_day_list();
       }
       if (this.data.type === "add_rule") {
         this.setData({
-          "rule_form.rooms": JSON.parse(JSON.stringify(app.globalData.rooms)),
+          "rule_form.rooms": JSON.parse(
+            JSON.stringify(this.app.globalData.rooms)
+          ),
         });
       }
     },
@@ -188,10 +190,9 @@ Component({
     },
     // 确认保存所选时间
     confirm_time() {
-      let app = getApp();
       // 存的是时间戳
-      app.globalData.start_time = this.data.start_day;
-      app.globalData.end_time = this.data.end_day;
+      this.app.globalData.start_time = this.data.start_day;
+      this.app.globalData.end_time = this.data.end_day;
       this.close_pop("calendar");
     },
     // 新增规则表单输入框高亮
@@ -203,11 +204,11 @@ Component({
     // 失去高亮
     add_blur(e) {
       let data = {
-        "rule_form.focus": -1
-      }
+        "rule_form.focus": -1,
+      };
       if (e.currentTarget.dataset.index === 2) {
         // 只有输入框失去焦点才取值
-        data["rule_form.items[2].value"] = e.detail.value
+        data["rule_form.items[2].value"] = e.detail.value;
       }
       this.setData(data);
     },
@@ -291,6 +292,16 @@ Component({
         setTimeout(() => {
           wx.hideToast();
         }, 1000);
+        return;
+      }
+      let data = {
+        start: new Date(form[0].value).getTime(),
+        end: new Date(form[1].value).getTime(),
+        price: parseInt(form[2].value),
+        room: form[3].value,
+      };
+      let res = await this.app.mycall("rule_list", data);
+      if (!res) {
         return;
       }
       this.close_pop("add_rule");

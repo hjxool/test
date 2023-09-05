@@ -7,7 +7,8 @@
     "pages/confirm/confirm",
     "pages/customer/customer",
     "pages/order/order",
-    "pages/price_rule/price_rule"
+    "pages/price_rule/price_rule",
+    "pages/room_price/room_price"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

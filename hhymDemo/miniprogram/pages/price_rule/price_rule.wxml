@@ -1,6 +1,6 @@
 <view class="index">
   <!-- 规则列表 -->
-  <view class="box row_layout" wx:for="{{list}}">
+  <view class="box row_layout" wx:for="{{list}}" wx:key="_id">
     <view class="col_layout flex_grow">
       <view class="time flex_shrink">{{item.start_text}}~{{item.end_text}}</view>
 

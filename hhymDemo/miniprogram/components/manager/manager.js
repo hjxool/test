@@ -100,7 +100,7 @@ Component({
       { title: "客户列表", icon: "icon-kehu", page: "customer" },
       { title: "订单列表", icon: "icon-quanbudingdan", page: "order" },
       { title: "计价规则", icon: "icon-guize", page: "price_rule" },
-      { title: "单价设置", icon: "icon-tixianguize", page: "" },
+      { title: "单价设置", icon: "icon-tixianguize", page: "room_price" },
     ],
     echart_title: "",
     titles: [

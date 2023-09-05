@@ -1,0 +1,13 @@
+<view class="index col_layout">
+  <view class="flex_grow box">
+    <view class="box2" wx:for="{{sets}}" wx:key="*this">
+      <view class="title">{{item.title}}</view>
+      <input class="input" type="digit" bindfocus="focus" bindblur="blur" data-index="{{index}}" style="border-color: {{focus===index?'#1E90FF':''}};" />
+    </view>
+  </view>
+
+  <view class="buttons flex_shrink">
+    <button class="button" catch:tap="save">保存</button>
+    <button class="button" catch:tap="page_back" type="default" plain="true">返回</button>
+  </view>
+</view>
