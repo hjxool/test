@@ -164,3 +164,78 @@
   color: #fff;
   font-weight: normal;
 }
+/* 增加规则 */
+.add_rule {
+  padding: 20rpx 20rpx 20rpx 40rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  animation-name: add_rule_show;
+}
+@keyframes add_rule_show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.add_rule_hide {
+  animation-name: add_rule_hide;
+}
+@keyframes add_rule_hide {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.add_rule > .row_layout:not(:last-child) {
+  margin-bottom: 20rpx;
+}
+.add_rule .title {
+  font-size: 32rpx;
+}
+.add_rule .input {
+  width: 300rpx;
+  height: 60rpx;
+  border: 1px solid #808080;
+  box-sizing: border-box;
+  border-radius: 20rpx;
+  padding: 0 20rpx;
+}
+.add_rule .rooms {
+  display: grid;
+  grid-template-columns: repeat(2, 200rpx);
+  grid-auto-rows: 60rpx;
+}
+.add_rule .room_text {
+  font-size: 28rpx;
+  color: #808080;
+}
+.add_rule .all_icon {
+  font-size: 50rpx;
+}
+.add_rule .all1 {
+  color: #808080;
+}
+.add_rule .all2 {
+  color: #00bfff;
+}
+.add_rule .all3 {
+  color: #1e90ff;
+}
+.add_rule > .submit {
+  display: grid;
+  grid-template-columns: repeat(2, 200rpx);
+  grid-template-rows: 80rpx;
+  justify-content: center;
+}
+.add_rule > .submit > .button {
+  width: 80%;
+  background: rgb(30, 144, 255);
+  border-radius: 80rpx;
+  color: #fff;
+  font-weight: normal;
+  white-space: nowrap;
+}

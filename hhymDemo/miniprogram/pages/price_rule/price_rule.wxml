@@ -1,0 +1,24 @@
+<view class="index">
+  <!-- 规则列表 -->
+  <view class="box row_layout" wx:for="{{list}}">
+    <view class="col_layout flex_grow">
+      <view class="time flex_shrink">{{item.start_text}}~{{item.end_text}}</view>
+
+      <view class="row row_layout">
+        <view class="title flex_shrink">定价：</view>
+        <view class="text">{{item.price}}</view>
+      </view>
+
+      <view class="row row_layout">
+        <view class="title flex_shrink" style="align-self: flex-start;">房间：</view>
+        <view class="text">{{item.room_text}}</view>
+      </view>
+    </view>
+
+    <view class="flex_shrink iconfont icon-quxiao"></view>
+  </view>
+  <!-- 增加规则 -->
+  <view class="iconfont icon-xinzeng add" catch:tap="add_rule"></view>
+  <!-- 通用弹窗组件 -->
+  <popup class="popup {{pop_hide?'pop_hide':''}} animation" wx:if="{{pop_show}}" catch:popevent="popup"></popup>
+</view>

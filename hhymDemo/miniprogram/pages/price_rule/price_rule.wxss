@@ -1,0 +1,77 @@
+.index {
+  height: 100%;
+  padding: 20rpx;
+  position: relative;
+  overflow-x: hidden;
+}
+/* 规则列表 */
+.box:not(:last-child) {
+  margin-bottom: 20rpx;
+}
+.box > .col_layout {
+  padding: 20rpx;
+  margin-right: 40rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  justify-content: center;
+}
+.box > .col_layout > .time {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+.box > .col_layout > .row {
+  font-size: 32rpx;
+}
+.box > .col_layout > .row:not(:last-child) {
+  margin-bottom: 10rpx;
+}
+.box > .col_layout > .row > .text {
+  color: #808080;
+  word-break: break-word;
+}
+.box > .flex_shrink {
+  font-size: 60rpx;
+  color: #e6a23c;
+}
+/* 新增规则 */
+.add {
+  position: absolute;
+  bottom: 40rpx;
+  right: 40rpx;
+  font-size: 80rpx;
+  color: #4c89fb;
+}
+/* 弹窗 */
+.popup {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  /* background: rgba(0, 0, 0, 0.3); */
+  z-index: 990;
+  animation-name: pop_show;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@keyframes pop_show {
+  from {
+    background: transparent;
+  }
+  to {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+.pop_hide {
+  animation-name: pop_hide;
+}
+@keyframes pop_hide {
+  from {
+    background: rgba(0, 0, 0, 0.5);
+  }
+  to {
+    background: transparent;
+  }
+}

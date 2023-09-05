@@ -99,7 +99,7 @@ Component({
     modules: [
       { title: "客户列表", icon: "icon-kehu", page: "customer" },
       { title: "订单列表", icon: "icon-quanbudingdan", page: "order" },
-      { title: "计价规则", icon: "icon-guize", page: "" },
+      { title: "计价规则", icon: "icon-guize", page: "price_rule" },
       { title: "单价设置", icon: "icon-tixianguize", page: "" },
     ],
     echart_title: "",
@@ -223,6 +223,9 @@ Component({
             res.eventChannel.emit("order_list", list);
           };
           break;
+        default:
+          fn = (res)=>{}
+          break
       }
       wx.navigateTo({
         url: `/pages/${page}/${page}`,

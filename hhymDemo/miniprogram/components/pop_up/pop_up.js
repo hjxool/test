@@ -13,13 +13,20 @@ Component({
       this.setData({
         type: app.globalData.pop_content,
       });
-      // 一打开弹窗就读取入住时间
-      this.setData({
-        start_day: app.globalData.start_time,
-        end_day: app.globalData.end_time,
-      });
-      // 一加载组件就生成当月及下月日期列表
-      this.init_day_list();
+      if (this.data.type === "calendar") {
+        // 一打开弹窗就读取入住时间
+        this.setData({
+          start_day: app.globalData.start_time,
+          end_day: app.globalData.end_time,
+        });
+        // 一加载组件就生成当月及下月日期列表
+        this.init_day_list();
+      }
+      if (this.data.type === "add_rule") {
+        this.setData({
+          "rule_form.rooms": JSON.parse(JSON.stringify(app.globalData.rooms)),
+        });
+      }
     },
   },
   /**
@@ -33,6 +40,17 @@ Component({
     date_boundary: 0, // 当天之前的所有天数全部灰掉
     start_day: -1, //入住开始时间
     end_day: -1, //入住结束时间
+    rule_form: {
+      // 表单项
+      items: [
+        { label: "开始：", value: "" },
+        { label: "结束：", value: "" },
+        { label: "定价：", value: 0 },
+        { label: "房间：", value: [], all: 0 },
+      ],
+      focus: -1, //输入框高亮样式
+      rooms: [], //全部房间列表
+    },
   },
 
   /**
@@ -47,7 +65,7 @@ Component({
       // 有两种 一种是事件触发 一种是传入参数
       this.triggerEvent("popevent", {
         type: "close pop",
-        source: source.target?.dataset.source || source,
+        source: source.currentTarget?.dataset.source || source,
       });
     },
     // 生成当月和下月的日期列表
@@ -175,6 +193,107 @@ Component({
       app.globalData.start_time = this.data.start_day;
       app.globalData.end_time = this.data.end_day;
       this.close_pop("calendar");
+    },
+    // 新增规则表单输入框高亮
+    add_focus(e) {
+      this.setData({
+        "rule_form.focus": e.currentTarget.dataset.index,
+      });
+    },
+    // 失去高亮
+    add_blur(e) {
+      let data = {
+        "rule_form.focus": -1
+      }
+      if (e.currentTarget.dataset.index === 2) {
+        // 只有输入框失去焦点才取值
+        data["rule_form.items[2].value"] = e.detail.value
+      }
+      this.setData(data);
+    },
+    // 新增规则表单 选择时间
+    select_time(e) {
+      let index = e.currentTarget.dataset.index;
+      this.setData({
+        [`rule_form.items[${index}].value`]: e.detail.value,
+      });
+    },
+    // 全选房间
+    all_room() {
+      let t = this.data.rule_form.items[3];
+      this.setData({
+        "rule_form.items[3].all": t.all === 2 ? 0 : 2,
+      });
+      this.data.rule_form.items[3].value = [];
+      if (t.all) {
+        let list = this.data.rule_form.items[3].value;
+        for (let val of this.data.rule_form.rooms) {
+          val.check = true;
+          list.push(val.label);
+        }
+        this.setData({
+          "rule_form.rooms": this.data.rule_form.rooms,
+        });
+      } else {
+        for (let val of this.data.rule_form.rooms) {
+          val.check = false;
+        }
+        this.setData({
+          "rule_form.rooms": this.data.rule_form.rooms,
+        });
+      }
+    },
+    // 单选房间
+    select_room(e) {
+      let { value } = e.detail;
+      for (let val of this.data.rule_form.rooms) {
+        for (let val2 of value) {
+          if (val.label === val2) {
+            val.check = true;
+            break;
+          }
+        }
+      }
+      let item = this.data.rule_form.items[3];
+      item.value = value;
+      // 统计全选标识
+      switch (true) {
+        case value.length === this.data.rule_form.rooms.length:
+          item.all = 2;
+          break;
+        case value.length > 0 &&
+          value.length < this.data.rule_form.rooms.length:
+          item.all = 1;
+          break;
+        case value.length === 0:
+          item.all = 0;
+          break;
+      }
+      this.setData({
+        "rule_form.items[3].all": item.all,
+      });
+    },
+    // 确认新增规则
+    async confirm_add_rule() {
+      let form = this.data.rule_form.items;
+      let result = true;
+      for (let val of form) {
+        if (!val.value.length) {
+          result = false;
+          break;
+        }
+      }
+      if (!result) {
+        wx.showToast({
+          title: "有未填写内容",
+          icon: "none",
+        });
+        setTimeout(() => {
+          wx.hideToast();
+        }, 1000);
+        return;
+      }
+      this.close_pop("add_rule");
     },
   },
 });

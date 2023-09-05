@@ -13,11 +13,28 @@ App({
         traceUser: true,
       });
     }
-
     this.globalData = {
       pop_content: "", //弹窗展示内容
       start_time: 0, //入住开始时间戳
       end_time: 0, //入住结束时间戳
     };
+    // 生成房间总列表
+    this.globalData.rooms = [];
+    for (let index = 1; index <= 13; index++) {
+      if (index <= 11) {
+        let t = {
+          label: `标准间${index}`,
+          check: false,
+        };
+        this.globalData.rooms.push(t);
+      } else {
+        let i = index - 11;
+        let t = {
+          label: `豪华间${i}`,
+          check: false,
+        };
+        this.globalData.rooms.push(t);
+      }
+    }
   },
 });

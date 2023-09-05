@@ -12,7 +12,7 @@
     <view class="box" wx:for="{{list}}">
       <view class="row_layout">
         <view class="title">时间：</view>
-        <view class="text">{{item.start_text}}-{{item.end_text}}</view>
+        <view class="text">{{item.start_text}}~{{item.end_text}}</view>
       </view>
 
       <view class="row_layout">

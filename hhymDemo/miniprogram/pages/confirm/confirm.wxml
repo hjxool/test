@@ -2,7 +2,7 @@
   <view class="box row_layout" wx:for="{{list}}">
     <view class="flex_grow">
       <view class="text">客户名：{{item.name}}</view>
-      <view class="text">预定时间：{{item.start}}-{{item.end}}</view>
+      <view class="text">预定时间：{{item.start}}~{{item.end}}</view>
       <view class="text">房间：{{item.room_text}}</view>
     </view>
 
