@@ -15,7 +15,7 @@
       </view>
     </view>
 
-    <view class="flex_shrink iconfont icon-quxiao"></view>
+    <view class="flex_shrink iconfont icon-quxiao" catch:tap="del_rule" data-id="{{item._id}}"></view>
   </view>
   <!-- 增加规则 -->
   <view class="iconfont icon-xinzeng add" catch:tap="add_rule"></view>

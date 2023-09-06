@@ -301,10 +301,9 @@ Component({
         room: form[3].value,
       };
       let res = await this.app.mycall("rule_list", data);
-      if (!res) {
-        return;
+      if (res) {
+        this.close_pop("add_rule");
       }
-      this.close_pop("add_rule");
     },
   },
 });

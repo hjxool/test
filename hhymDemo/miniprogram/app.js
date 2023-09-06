@@ -39,14 +39,17 @@ App({
     };
     init_room(this.globalData.rooms);
   },
+  // 通用请求方法
   async mycall(name, data) {
-    let body = { name };
+    console.log("我看看传入的是什么勾八", data);
+    let body = { name, data: {} };
     // 如果有传参
     if (data) {
       body.data = data;
     }
     let { result } = await wx.cloud.callFunction(body);
-    // 如果返回结果失败
+    console.log("返回的是什么垃圾", result);
+    // 如果返回结果失败 通知失败结果 成功则让前端决定如何做
     if (result.code !== 200) {
       wx.showToast({
         title: result.msg,
@@ -56,8 +59,8 @@ App({
         wx.hideToast();
       }, 1000);
       return false;
+    }else{
+      return result;
     }
-    // 如果返回结果成功 则返回成功的值
-    return result.data || true;
   },
 });

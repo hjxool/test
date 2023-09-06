@@ -3,7 +3,7 @@
     <view class="img {{item.img}}"></view>
     <view class="title">{{item.name}}</view>
     <!-- 价位 -->
-    <view class="row_layout flex_shrink">
+    <view class="row_layout flex_shrink" style="display:{{item.price?'':'none'}};">
       <view class="text1">均价</view>
       <view class="iconfont icon-renminbi"></view>
       <view class="text2">{{item.price}}</view>

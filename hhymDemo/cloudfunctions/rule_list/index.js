@@ -26,6 +26,26 @@ exports.main = async (event, context) => {
     });
     // 参数为空则查询 否则新增
     if (params.length) {
+      // 有可能传入的不是所需字段
+      let count = 0;
+      for (let val of params) {
+        if (
+          val[0] == "start" ||
+          val[0] == "end" ||
+          val[0] == "price" ||
+          val[0] == "room"
+        ) {
+          count++;
+        }
+      }
+      // 如果对应字段数量不匹配 则验证失败
+      if (count !== 4) {
+        return {
+          msg: "传参错误:" + JSON.stringify(event),
+          code: 200,
+          data: result,
+        };
+      }
       // 新增前判断是否有重复
       for (let val of result) {
         if (val.start === event.start || val.end === event.end) {

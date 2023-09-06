@@ -2,7 +2,7 @@
   <view class="flex_grow box">
     <view class="box2" wx:for="{{sets}}" wx:key="*this">
       <view class="title">{{item.title}}</view>
-      <input class="input" type="digit" bindfocus="focus" bindblur="blur" data-index="{{index}}" style="border-color: {{focus===index?'#1E90FF':''}};" />
+      <input class="input" type="{{index==2?'number':index==4?'number':'digit'}}" value="{{item.value}}" bindfocus="focus" bindblur="blur" data-index="{{index}}" style="border-color: {{focus===index?'#1E90FF':''}};" />
     </view>
   </view>
 

@@ -8,27 +8,7 @@ Page({
     this.app = getApp();
     this.channel = this.getOpenerEventChannel();
     // 进入页面时查询规则列表
-    wx.showLoading({
-      title: "加载中",
-      mask: true,
-    });
-    let res = await this.app.mycall("rule_list");
-    console.log(res);
-    for (let val of res) {
-      val.start_text = this.format_date_text(val.start);
-      val.end_text = this.format_date_text(val.end);
-      if (val.room.length === 13) {
-        val.room_text = "全部";
-      } else {
-        val.room_text = this.format_room_text(val.room);
-      }
-    }
-    this.setData({
-      list: res,
-    });
-    setTimeout(() => {
-      wx.hideLoading();
-    }, 700);
+    this.get_data()
   },
   onUnload() {
     this.channel.emit("message", {
@@ -79,12 +59,25 @@ Page({
         });
       }, 300);
       // 关闭弹窗后刷新列表
-      wx.showLoading({
-        title: "加载中",
-        mask: true,
-      });
-      let res = await this.app.mycall("rule_list");
-      for (let val of res) {
+      this.get_data()
+    }
+  },
+  // 删除规则
+  async del_rule(e) {
+    let _id = e.currentTarget.dataset.id;
+    await this.app.mycall("rule_list", { type: "delete", _id });
+    this.get_data()
+  },
+  // 查询规则列表
+  async get_data(){
+    wx.showLoading({
+      title: "加载中",
+      mask: true,
+    });
+    let res = await this.app.mycall("rule_list");
+    console.log("规则列表查询结果", res);
+    if (res && res.data) {
+      for (let val of res.data) {
         val.start_text = this.format_date_text(val.start);
         val.end_text = this.format_date_text(val.end);
         if (val.room.length === 13) {
@@ -94,11 +87,11 @@ Page({
         }
       }
       this.setData({
-        list: res,
+        list: res.data,
       });
-      setTimeout(() => {
-        wx.hideLoading();
-      }, 700);
     }
-  },
+    setTimeout(() => {
+      wx.hideLoading();
+    }, 500);
+  }
 });
