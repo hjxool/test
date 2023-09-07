@@ -5,13 +5,13 @@
       <view class="time flex_shrink">{{item.start_text}}~{{item.end_text}}</view>
 
       <view class="row row_layout">
-        <view class="title flex_shrink">定价：</view>
-        <view class="text">{{item.price}}</view>
+        <view class="title flex_shrink">标间定价：</view>
+        <view class="text">{{item.price1}}</view>
       </view>
 
       <view class="row row_layout">
-        <view class="title flex_shrink" style="align-self: flex-start;">房间：</view>
-        <view class="text">{{item.room_text}}</view>
+        <view class="title flex_shrink">豪华间定价：</view>
+        <view class="text">{{item.price2}}</view>
       </view>
     </view>
 

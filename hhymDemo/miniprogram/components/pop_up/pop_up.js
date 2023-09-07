@@ -2,38 +2,6 @@ Component({
   options: {
     addGlobalClass: true,
   },
-  /**
-   * 组件的属性列表
-   */
-  properties: {},
-  lifetimes: {
-    // 组件实例进入页面节点树时执行
-    attached() {
-      this.app = getApp();
-      this.setData({
-        type: this.app.globalData.pop_content,
-      });
-      if (this.data.type === "calendar") {
-        // 一打开弹窗就读取入住时间
-        this.setData({
-          start_day: this.app.globalData.start_time,
-          end_day: this.app.globalData.end_time,
-        });
-        // 一加载组件就生成当月及下月日期列表
-        this.init_day_list();
-      }
-      if (this.data.type === "add_rule") {
-        this.setData({
-          "rule_form.rooms": JSON.parse(
-            JSON.stringify(this.app.globalData.rooms)
-          ),
-        });
-      }
-    },
-  },
-  /**
-   * 组件的初始数据
-   */
   data: {
     type: "", //展示什么内容
     pop_hide: false, // 显示动画
@@ -42,22 +10,50 @@ Component({
     date_boundary: 0, // 当天之前的所有天数全部灰掉
     start_day: -1, //入住开始时间
     end_day: -1, //入住结束时间
+    tip: {
+      month: 0, //日历提示
+      half_month: 0, //日历提示
+      price1: 0,
+      price2: 0,
+    },
     rule_form: {
       // 表单项
       items: [
         { label: "开始：", value: "" },
         { label: "结束：", value: "" },
-        { label: "定价：", value: 0 },
-        { label: "房间：", value: [], all: 0 },
+        { label: "标间定价：", value: 0 },
+        { label: "豪华间定价：", value: 0 },
       ],
       focus: -1, //输入框高亮样式
-      rooms: [], //全部房间列表
     },
   },
-
-  /**
-   * 组件的方法列表
-   */
+  lifetimes: {
+    // 组件实例进入页面节点树时执行
+    async attached() {
+      this.app = getApp();
+      this.setData({
+        type: this.app.globalData.pop_content,
+      });
+      if (this.data.type === "calendar") {
+        // 获取实时包月天数和半月天数
+        let { data } = await this.app.mycall("set_price");
+        // 一打开弹窗就读取入住时间
+        this.setData({
+          "tip.month": data.month_day,
+          "tip.half_month": data.half_month_day,
+          start_day: this.app.globalData.start_time,
+          end_day: this.app.globalData.end_time,
+          "tip.price1": data.price1,
+          "tip.price2": data.price2,
+        });
+        // 初始化日历列表前 先查计价规则 生成日历的时候就将规则时间段内的价格标注出来
+        let res2 = await this.app.mycall("rule_list");
+        this.rule_list = res2.data;
+        // 一加载组件就生成当月及下月日期列表
+        this.init_day_list();
+      }
+    },
+  },
   methods: {
     // 关闭弹窗
     close_pop(source) {
@@ -100,6 +96,26 @@ Component({
       let year = date.getFullYear();
       let month = date.getMonth() + 1;
       let day = date.getDate();
+      // 因为每过12个月会加一年 要判断传入日期在不在规则范围内只需要将时间跨度统一到月
+      // 如果在 标记出是哪几个规则
+      let rule_index = [];
+      let i = 0;
+      for (let val of this.rule_list) {
+        let s = new Date(val.start);
+        let e = new Date(val.end);
+        let sm = s.getMonth() + 1;
+        let em = e.getMonth() + 1;
+        // 计算公式 ((结束年 - 开始年) - 1) * 12 + (12 - 开始月) + 结束月
+        let current_month =
+          (year - s.getFullYear() - 1) * 12 + (12 - sm) + month;
+        let total_month =
+          (e.getFullYear() - s.getFullYear() - 1) * 12 + (12 - sm) + em;
+        if (current_month <= total_month && current_month >= 0) {
+          // 以当前规则开始时间为基准 最小不能小于0 最大不能超过 规则范围
+          rule_index.push(i);
+        }
+        i++;
+      }
       let t = {
         title: `${year}年${month}月`,
         days: [],
@@ -113,8 +129,10 @@ Component({
       // 当月1号以前的日期用空格代替
       for (let index = 0; index < cur_week; index++) {
         t.days.push({
-          date: 0,
-          text: "",
+          date: 0, //时间戳 0表示空格
+          text: "", //显示日期文字
+          price1: 0, //当天价格 0表示正常价格 不显示
+          price2: 0,
         });
       }
       let total_day = new Date(year, month, 0).getDate(); //获取当月总天数
@@ -124,7 +142,18 @@ Component({
         let d2 = {
           date: d.getTime(),
           text: index,
+          price1: this.data.tip.price1,
+          price2: this.data.tip.price2,
         };
+        // 遍历可能的规则索引 匹配具体时间戳是否在范围内
+        // 因为传入的日期是一整个月 所以每一个日期都有可能落在不同的规则里 因此每天都要遍历
+        for (let val of rule_index) {
+          let r = this.rule_list[val];
+          if (d2.date >= r.start && d2.date < r.end) {
+            d2.price1 = r.price1;
+            d2.price2 = r.price2;
+          }
+        }
         t.days.push(d2);
       }
       // 计算剩余天数 剩余天数用空格
@@ -133,6 +162,7 @@ Component({
         t.days.push({
           date: 0,
           text: "",
+          price: 0,
         });
       }
       return t;
@@ -206,9 +236,10 @@ Component({
       let data = {
         "rule_form.focus": -1,
       };
-      if (e.currentTarget.dataset.index === 2) {
+      let index = e.currentTarget.dataset.index;
+      if (index === 2 || index === 3) {
         // 只有输入框失去焦点才取值
-        data["rule_form.items[2].value"] = e.detail.value;
+        data[`rule_form.items[${index}].value`] = e.detail.value;
       }
       this.setData(data);
     },
@@ -217,61 +248,6 @@ Component({
       let index = e.currentTarget.dataset.index;
       this.setData({
         [`rule_form.items[${index}].value`]: e.detail.value,
-      });
-    },
-    // 全选房间
-    all_room() {
-      let t = this.data.rule_form.items[3];
-      this.setData({
-        "rule_form.items[3].all": t.all === 2 ? 0 : 2,
-      });
-      this.data.rule_form.items[3].value = [];
-      if (t.all) {
-        let list = this.data.rule_form.items[3].value;
-        for (let val of this.data.rule_form.rooms) {
-          val.check = true;
-          list.push(val.label);
-        }
-        this.setData({
-          "rule_form.rooms": this.data.rule_form.rooms,
-        });
-      } else {
-        for (let val of this.data.rule_form.rooms) {
-          val.check = false;
-        }
-        this.setData({
-          "rule_form.rooms": this.data.rule_form.rooms,
-        });
-      }
-    },
-    // 单选房间
-    select_room(e) {
-      let { value } = e.detail;
-      for (let val of this.data.rule_form.rooms) {
-        for (let val2 of value) {
-          if (val.label === val2) {
-            val.check = true;
-            break;
-          }
-        }
-      }
-      let item = this.data.rule_form.items[3];
-      item.value = value;
-      // 统计全选标识
-      switch (true) {
-        case value.length === this.data.rule_form.rooms.length:
-          item.all = 2;
-          break;
-        case value.length > 0 &&
-          value.length < this.data.rule_form.rooms.length:
-          item.all = 1;
-          break;
-        case value.length === 0:
-          item.all = 0;
-          break;
-      }
-      this.setData({
-        "rule_form.items[3].all": item.all,
       });
     },
     // 确认新增规则
@@ -297,9 +273,20 @@ Component({
       let data = {
         start: new Date(form[0].value).getTime(),
         end: new Date(form[1].value).getTime(),
-        price: parseInt(form[2].value),
-        room: form[3].value,
+        price1: Number(form[2].value),
+        price2: Number(form[3].value),
       };
+      // 开始时间不能大于结束时间
+      if (data.start >= data.end) {
+        wx.showToast({
+          title: "开始时间不能大于等于结束时间，结束时间表示离店时间不计价",
+          icon: "none",
+        });
+        setTimeout(() => {
+          wx.hideToast();
+        }, 2000);
+        return;
+      }
       let res = await this.app.mycall("rule_list", data);
       if (res) {
         this.close_pop("add_rule");

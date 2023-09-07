@@ -99,25 +99,28 @@
 .calendar > .flex_grow .text {
   font-size: 32rpx;
 }
+.calendar > .flex_grow .text2 {
+  font-size: 20rpx;
+}
+.calendar > .flex_grow .col_layout {
+  align-items: center;
+  justify-content: space-evenly;
+}
 .calendar > .flex_grow .gray {
   color: rgba(128, 128, 128, 0.6);
 }
 .calendar > .flex_grow .white {
   color: #fff;
 }
+.calendar > .flex_grow .red {
+  color: #e6a23c;
+}
 .calendar > .flex_grow .bg {
-  width: 100%;
-  height: 100%;
   background: rgba(30, 144, 255, 0.8);
-  align-items: center;
-  justify-content: space-evenly;
   border-radius: 10rpx;
 }
 .calendar > .flex_grow .bg2 {
-  width: 100%;
-  height: 100%;
   background: rgba(30, 144, 255, 0.1);
-  justify-content: center;
 }
 .calendar > .flex_grow .bg_left {
   border-top-right-radius: 0;
@@ -150,8 +153,6 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(5, 1fr);
-  align-items: center;
-  justify-items: center;
 }
 .calendar > .submit {
   padding-bottom: 60rpx;
@@ -190,11 +191,17 @@
     opacity: 0;
   }
 }
-.add_rule > .row_layout:not(:last-child) {
+.add_rule > .grid_layout {
+  display: grid;
+  grid-template-columns: 200rpx auto;
+  align-items: center;
+}
+.add_rule > .grid_layout:not(:last-child) {
   margin-bottom: 20rpx;
 }
 .add_rule .title {
   font-size: 32rpx;
+  justify-self: end;
 }
 .add_rule .input {
   width: 300rpx;
@@ -204,26 +211,8 @@
   border-radius: 20rpx;
   padding: 0 20rpx;
 }
-.add_rule .rooms {
-  display: grid;
-  grid-template-columns: repeat(2, 200rpx);
-  grid-auto-rows: 60rpx;
-}
-.add_rule .room_text {
-  font-size: 28rpx;
-  color: #808080;
-}
-.add_rule .all_icon {
-  font-size: 50rpx;
-}
-.add_rule .all1 {
-  color: #808080;
-}
-.add_rule .all2 {
-  color: #00bfff;
-}
-.add_rule .all3 {
-  color: #1e90ff;
+.add_rule .input2 {
+  width: 160rpx;
 }
 .add_rule > .submit {
   display: grid;

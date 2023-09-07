@@ -12,7 +12,7 @@
     <view class="iconfont icon-guanbi" catchtap="close_pop" data-source="calendar"></view>
   </view>
   <!-- 提示 -->
-  <view class="tip row_layout flex_shrink">*超过20天为包月均价</view>
+  <view class="tip row_layout flex_shrink">*超过{{tip.month}}天为包月优惠、{{tip.half_month}}天为半月优惠</view>
   <!-- 滚动日历 -->
   <view class="flex_grow">
     <!-- 周列表 -->
@@ -25,10 +25,12 @@
       <view class="month" wx:for="{{date_list}}" wx:key="title" wx:for-item="month">
         <view class="text bold">{{month.title}}</view>
         <view class="day">
-          <view class="text {{day.date<date_boundary?'gray':''}} {{(day.date==start_day||day.date==end_day)?'bg white col_layout':''}} {{end_day==-1?'':day.date==start_day?'bg_left':day.date==end_day?'bg_right':''}} {{(day.date>start_day&&day.date<end_day)?'bg2 row_layout':''}}" wx:for="{{month.days}}" wx:for-item="day" catch:tap="select_day" data-date="{{day.date}}">
+          <view class="text col_layout {{day.date<date_boundary?'gray':''}} {{(day.date==start_day||day.date==end_day)?'bg white':''}} {{end_day==-1?'':day.date==start_day?'bg_left':day.date==end_day?'bg_right':''}} {{(day.date>start_day&&day.date<end_day)?'bg2':''}}" wx:for="{{month.days}}" wx:for-item="day" catch:tap="select_day" data-date="{{day.date}}">
             {{day.text}}
             <text class="text" wx:if="{{day.date==start_day}}">入住</text>
             <text class="text" wx:if="{{day.date==end_day}}">离店</text>
+            <!-- 入住等标识 -->
+            <text class="text2 {{day.price1==tip.price1?'gray':'red'}}" wx:if="{{day.date!=start_day&&day.date!=end_day&&day.price1}}">￥{{day.price1}}|{{day.price2}}</text>
           </view>
         </view>
       </view>
@@ -41,31 +43,14 @@
 </view>
 <!-- 增加规则 -->
 <view class="add_rule {{pop_hide?'add_rule_hide':''}} animation" wx:if="{{type==='add_rule'}}" catch:tap="add_blur">
-  <view class="row_layout" wx:for="{{rule_form.items}}" wx:key="label">
+  <view class="grid_layout" wx:for="{{rule_form.items}}" wx:key="label">
     <view class="title flex_shrink" style="align-self:{{index===3?'flex-start':''}};">{{item.label}}</view>
     <!-- 时间选择 -->
     <picker wx:if="{{!index||index===1}}" mode="date" value="{{item.value}}" start="2023-8-1" bindchange="select_time" data-index="{{index}}" catch:tap="add_focus">
-      <view class="input row_layout"
-       style="border-color: {{rule_form.focus===index?'#1E90FF':''}};"
-       >{{item.value?item.value:'无'}}</view>
+      <view class="input row_layout" style="border-color: {{rule_form.focus===index?'#1E90FF':''}};">{{item.value?item.value:'无'}}</view>
     </picker>
     <!-- 定价 -->
-    <input wx:if="{{index===2}}" class="input" type="digit" bindfocus="add_focus" bindblur="add_blur" data-index="{{index}}" style="border-color: {{rule_form.focus===index?'#1E90FF':''}};" />
-    <!-- 房间多选 -->
-    <view class="col_layout" wx:if="{{index===3}}">
-      <!-- 全选 -->
-      <view class="row_layout" style="align-self: flex-start;" catch:tap="all_room">
-        <view class="iconfont all_icon {{!item.all?'icon-weixuan all1':item.all==1?'icon-fuxuankuang-weiquanxuan all2':'icon-quanxuan all3'}}"></view>
-        <view class="{{!item.all?'all1':item.all==1?'all2':'all3'}}" style="font-size: 32rpx;">全选</view>
-      </view>
-      <!-- 可选项 -->
-      <checkbox-group class="rooms" bindchange="select_room">
-        <label class="row_layout" wx:for="{{rule_form.rooms}}" wx:key="label" wx:for-item="r">
-          <checkbox value="{{r.label}}" checked="{{r.check}}" />
-          <view class="room_text">{{r.label}}</view>
-        </label>
-      </checkbox-group>
-    </view>
+    <input wx:if="{{index===2||index===3}}" value="{{item.value}}" class="input input2" type="digit" bindfocus="add_focus" bindblur="add_blur" data-index="{{index}}" style="border-color: {{rule_form.focus===index?'#1E90FF':''}};" />
   </view>
   <!-- 按钮 -->
   <view class="submit">

@@ -30,13 +30,9 @@ Component({
             start_date: new Date(st),
             end_date: new Date(et),
           });
-          // 计算开始到结束相隔几天
-          let d = Math.ceil((et - st) / (24 * 60 * 60 * 1000));
+          // 计算均价
           let dom2 = this.selectComponent("#house_type");
-          dom2.setData({
-            "list[0].price": d >= 20 ? 88 * 0.6 : 88,
-            "list[1].price": d >= 20 ? 118 * 0.6 : 118,
-          });
+          dom2.calculate_average_price()
         }
       } else if (event.detail.type === "open pop") {
         this.setData({

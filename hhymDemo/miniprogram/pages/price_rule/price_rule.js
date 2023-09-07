@@ -23,20 +23,6 @@ Page({
     let d = date.getDate();
     return `${y}.${m}.${d}`;
   },
-  // 生成房间文字
-  format_room_text(list) {
-    let t = "";
-    let index = 0;
-    for (let val of list) {
-      if (index === list.length - 1) {
-        t += `${val}`;
-      } else {
-        t += `${val}、`;
-        index++;
-      }
-    }
-    return t;
-  },
   // 打开弹窗
   add_rule() {
     let app = getApp();
@@ -80,11 +66,6 @@ Page({
       for (let val of res.data) {
         val.start_text = this.format_date_text(val.start);
         val.end_text = this.format_date_text(val.end);
-        if (val.room.length === 13) {
-          val.room_text = "全部";
-        } else {
-          val.room_text = this.format_room_text(val.room);
-        }
       }
       this.setData({
         list: res.data,

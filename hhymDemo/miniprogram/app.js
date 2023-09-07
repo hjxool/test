@@ -1,22 +1,3 @@
-// 生成房间总列表
-function init_room(list) {
-  for (let index = 1; index <= 13; index++) {
-    if (index <= 11) {
-      let t = {
-        label: `标准间${index}`,
-        check: false,
-      };
-      list.push(t);
-    } else {
-      let i = index - 11;
-      let t = {
-        label: `豪华间${i}`,
-        check: false,
-      };
-      list.push(t);
-    }
-  }
-}
 App({
   onLaunch: function () {
     if (!wx.cloud) {
@@ -35,9 +16,9 @@ App({
       pop_content: "", //弹窗展示内容
       start_time: 0, //入住开始时间戳
       end_time: 0, //入住结束时间戳
-      rooms: [], //房间总列表
+      // rooms: [], //房间总列表
     };
-    init_room(this.globalData.rooms);
+    // init_room(this.globalData.rooms);
   },
   // 通用请求方法
   async mycall(name, data) {
@@ -59,8 +40,29 @@ App({
         wx.hideToast();
       }, 1000);
       return false;
-    }else{
+    } else {
       return result;
     }
   },
 });
+//#region
+// 生成房间总列表
+// function init_room(list) {
+//   for (let index = 1; index <= 13; index++) {
+//     if (index <= 11) {
+//       let t = {
+//         label: `标准间${index}`,
+//         check: false,
+//       };
+//       list.push(t);
+//     } else {
+//       let i = index - 11;
+//       let t = {
+//         label: `豪华间${i}`,
+//         check: false,
+//       };
+//       list.push(t);
+//     }
+//   }
+// }
+//#endregion

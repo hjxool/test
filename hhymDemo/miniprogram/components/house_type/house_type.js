@@ -49,14 +49,14 @@ Component({
     async calculate_average_price() {
       let start = this.app.globalData.start_time;
       let end = this.app.globalData.end_time;
-      let d = Math.ceil((end - start) / (24 * 60 * 60 * 1000));
-      if (d > this.month_day) {
+      let total_day = Math.ceil((end - start) / (24 * 60 * 60 * 1000));
+      if (total_day > this.month_day) {
         // 达到优先规则条件 则不计算计价规则
         this.setData({
           "list[0].price": this.base_price1 * this.month_discount,
           "list[1].price": this.base_price2 * this.month_discount,
         });
-      } else if (d <= this.month_day && d > this.half_month_day) {
+      } else if (total_day <= this.month_day && total_day > this.half_month_day) {
         this.setData({
           "list[0].price": this.base_price1 * this.half_month_discount,
           "list[1].price": this.base_price2 * this.half_month_discount,
@@ -71,20 +71,56 @@ Component({
         // 计算方式 遍历规则列表 挨个对比 所选日期 是否在 规则时间段内 如果匹配则应用规则内价格
         // 有几天算几天 跟基础价格相加再除以对应天数得到均价
         // 注意规则列表里存的是时间戳
+        let rule_price1 = 0; //标间规则价累加
+        let rule_price2 = 0; //豪华间规则价累加
+        let rule_day = 0; //经过了多少个规则 除此以外的天数都是普通价
         for (let val of this.rule_list) {
-          // 结束日期是离店日 不算规则时间
-          if (start >= val.start && start < val.end) {
-            // 开始时间在范围内则计算离结束有几天
-            let d = Math.ceil((val.end - start) / (24 * 60 * 60 * 1000));
-            d * val.price;
+          if (start >= val.end) {
+            continue;
           }
-          if (end > val.start && end <= val.end) {
-            // 结束时间在范围内则计算经过了几天
-            let d = Math.ceil((end - val.start) / (24 * 60 * 60 * 1000));
-            d * val.price;
+          let d;
+          // 规则不会交叠 所选开始小于规则结束且大于等于规则开始的只会有一个
+          if (start >= val.start) {
+            //所选开始在内 判断所选结束在内还是外
+            if (end <= val.end) {
+              // 所选在内 计算规则价格
+              d = Math.ceil((end - start) / (24 * 60 * 60 * 1000));
+            } else {
+              // 所选结束大于规则结束 计算在当前规则内重叠的天数
+              d = Math.ceil((val.end - start) / (24 * 60 * 60 * 1000));
+            }
+          } else {
+            // 所选开始小于规则开始 说明所选开始不在当前规则内
+            // 则继续判断所选结束是否在当前规则内
+            if (end <= val.end && end > val.start) {
+              d = Math.ceil((end - val.start) / (24 * 60 * 60 * 1000));
+            } else {
+              // 所选结束不在当前规则内 则判断是小于规则开始还是大于规则结束
+              if (end <= val.start) {
+                // 小于当前规则开始 说明在规则前结束 跳出循环
+                break;
+              } else if (end >= val.end) {
+                // 大于当前规则结束 说明覆盖了全部天数
+                d = Math.ceil((val.end - val.start) / (24 * 60 * 60 * 1000));
+              } else {
+                // 在当前规则中 计算覆盖的天数
+                d = Math.ceil((end - val.start) / (24 * 60 * 60 * 1000));
+              }
+            }
           }
-          // 以上是包含的情况
+          rule_price1 += d * val.price1;
+          rule_price2 += d * val.price2;
+          rule_day += d;
         }
+        let total_price1 =
+          (total_day - rule_day) * this.base_price1 + rule_price1;
+        let total_price2 =
+          (total_day - rule_day) * this.base_price2 + rule_price2;
+        // 计算标间和豪华间均价
+        this.setData({
+          "list[0].price": Math.round((total_price1 / total_day) * 10) / 10,
+          "list[1].price": Math.round((total_price2 / total_day) * 10) / 10,
+        });
       }
     },
   },
