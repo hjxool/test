@@ -1,24 +1,25 @@
-.nav_box{
-  justify-content: space-evenly;
-  background: #Fff;
+.nav_box {
+  background: #fff;
   border-top-left-radius: 20rpx;
   border-top-right-radius: 20rpx;
-  padding: 20rpx 0;
+  padding: 20rpx 0 40rpx 0;
   position: absolute;
   bottom: 0;
   width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
-.nav_box>.col_layout{
+.nav_box > .col_layout {
   align-items: center;
 }
-.nav_box>.col_layout>.default_icon{
+.nav_box > .col_layout > .default_icon {
   font-size: 40rpx;
   color: #333;
 }
-.nav_box>.col_layout>.default_color{
+.nav_box > .col_layout > .default_color {
   font-size: 28rpx;
   color: #333;
 }
-.nav_box>.col_layout>.active_color{
+.nav_box > .col_layout > .active_color {
   color: #d43c33;
 }

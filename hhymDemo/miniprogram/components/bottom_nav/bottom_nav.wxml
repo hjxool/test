@@ -1,4 +1,4 @@
-<view class="nav_box row_layout flex_shrink">
+<view class="nav_box">
   <view class="col_layout" wx:for="{{navs}}" wx:key="title" catch:tap="select_page" data-page="{{index}}">
     <view class="default_icon iconfont {{item.icon}} {{index===selected?'active_color':''}}"></view>
     <text class="default_color {{index===selected?'active_color':''}}">{{item.title}}</text>

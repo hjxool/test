@@ -30,7 +30,7 @@
             <text class="text" wx:if="{{day.date==start_day}}">入住</text>
             <text class="text" wx:if="{{day.date==end_day}}">离店</text>
             <!-- 入住等标识 -->
-            <text class="text2 {{day.price1==tip.price1?'gray':'red'}}" wx:if="{{day.date!=start_day&&day.date!=end_day&&day.price1}}">￥{{day.price1}}|{{day.price2}}</text>
+            <text class="text2 red" wx:if="{{day.date!=start_day&&day.date!=end_day&&day.price1}}">￥{{day.price1}}|{{day.price2}}</text>
           </view>
         </view>
       </view>

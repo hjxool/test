@@ -1,0 +1,55 @@
+<view id="index" class="col_layout">
+  <view class="row1">
+    <view class="room{{item.id}} center" wx:for="{{room1_3}}" wx:key="id" catch:tap="select_room" data-room="{{item}}">
+      <view class="col_layout align">
+        <view class="text">{{item.name}}</view>
+        <view class="iconfont icon-maopajia1"></view>
+      </view>
+      <image src="../../static/icon1.jpg" class="disabled" wx:if="{{item.status}}" />
+    </view>
+    <view class="box1">
+      <view class="room{{item.id}} center" wx:for="{{room4_5}}" wx:key="id" catch:tap="select_room" data-room="{{item}}">
+        <view class="col_layout align">
+          <view class="text">{{item.name}}</view>
+          <view class="iconfont icon-maopajia1 icon1"></view>
+        </view>
+        <image src="../../static/icon1.jpg" class="disabled" wx:if="{{item.status}}" />
+      </view>
+    </view>
+  </view>
+
+  <view class="row2">
+    <view class="room{{item.id}} center" wx:for="{{room6_8}}" wx:key="id" catch:tap="select_room" data-room="{{item}}">
+      <view class="col_layout align">
+        <view class="text">{{item.name}}</view>
+        <view class="iconfont icon-maopajia1"></view>
+      </view>
+      <image src="../../static/icon1.jpg" class="disabled" wx:if="{{item.status}}" />
+    </view>
+  </view>
+
+  <view class="row3">
+    <view class="room{{item.id}} center" wx:for="{{room9_10}}" wx:key="id" catch:tap="select_room" data-room="{{item}}">
+      <view class="col_layout align">
+        <view class="text">{{item.name}}</view>
+        <view class="iconfont icon-maopajia1"></view>
+      </view>
+      <image src="../../static/icon1.jpg" class="disabled" wx:if="{{item.status}}" />
+    </view>
+    <view style="border-bottom:2px solid #808080;"></view>
+  </view>
+
+  <view style="border-right: 2px solid #808080;height:120rpx;"></view>
+
+  <view class="row4">
+    <view class="room{{item.id}} center" wx:for="{{room11_13}}" wx:key="id" catch:tap="select_room" data-room="{{item}}">
+      <view class="col_layout align">
+        <view class="text">{{item.name}}</view>
+        <view class="iconfont icon-maopajia1"></view>
+      </view>
+      <image src="../../static/icon1.jpg" class="disabled" wx:if="{{item.status}}" />
+    </view>
+  </view>
+  <!-- 通用弹窗组件 -->
+  <popup class="popup {{pop_hide?'pop_hide':''}} animation" wx:if="{{pop_show}}" catch:popevent="popup"></popup>
+</view>

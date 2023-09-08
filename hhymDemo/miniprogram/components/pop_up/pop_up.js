@@ -142,8 +142,8 @@ Component({
         let d2 = {
           date: d.getTime(),
           text: index,
-          price1: this.data.tip.price1,
-          price2: this.data.tip.price2,
+          price1: 0,
+          price2: 0,
         };
         // 遍历可能的规则索引 匹配具体时间戳是否在范围内
         // 因为传入的日期是一整个月 所以每一个日期都有可能落在不同的规则里 因此每天都要遍历
