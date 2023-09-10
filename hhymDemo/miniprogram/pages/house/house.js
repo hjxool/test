@@ -10,6 +10,7 @@ Page({
     pop_hide: true, //隐藏弹窗动画
   },
   onLoad(options) {
+    this.app = getApp();
     // 根据用户选择时间段 查询这段时间内成交的订单 看房间有无空闲
     for (let index = 1; index <= 3; index++) {
       let t = {
@@ -68,12 +69,17 @@ Page({
     });
   },
   // 打开确认选房提示信息
-  select_room(e) {
+  async select_room(e) {
     let room = e.currentTarget.dataset;
     // 状态占用不可选
     if (room.status) {
       return;
     }
+    // app.globalData.pop_content = "confirm_room";
+    // this.setData({
+    //   pop_show: true,
+    //   pop_hide: false,
+    // });
   },
   // 显示|隐藏弹窗
   popup(event) {
@@ -88,11 +94,6 @@ Page({
         });
       }, 300);
       // 此处只会收到确认弹窗
-    } else if (event.detail.type === "open pop") {
-      this.setData({
-        pop_show: true,
-        pop_hide: false,
-      });
     }
   },
 });

@@ -113,6 +113,14 @@ Component({
     },
     echart_show: true, //图表显示
     confirm_num: 0, //待确认订单数
+    pop_show: false, //显示弹窗
+    pop_hide: true, //隐藏弹窗动画
+    pop: {
+      photo: [
+        { name: "相册", value: "/photos", check: true },
+        { name: "房间", value: "/room_photo", check: false },
+      ],
+    },
   },
   lifetimes: {
     // 组件实例进入节点树时执行
@@ -224,8 +232,8 @@ Component({
           };
           break;
         default:
-          fn = (res)=>{}
-          break
+          fn = (res) => {};
+          break;
       }
       wx.navigateTo({
         url: `/pages/${page}/${page}`,
@@ -242,5 +250,36 @@ Component({
     get_data() {
       console.log("refresh");
     },
+    // 打开弹窗
+    open_pop(e) {
+      let pop = e.currentTarget.dataset.pop;
+      switch (pop) {
+        case "upload_photo":
+          this.save_path = this.data.pop.photo[0].value
+          this.setData({
+            pop_show: true,
+            pop_hide: false,
+            echart_show: false,
+          });
+          return;
+      }
+    },
+    // 关闭弹窗
+    close_pop2() {
+      this.setData({
+        pop_hide: true,
+      });
+      // 放完动画再销毁
+      setTimeout(() => {
+        this.setData({
+          pop_show: false,
+          echart_show: true,
+        });
+      }, 300);
+    },
+    // 切换选择上传路径
+    select_photo_save(e){
+      this.save_path = e.detail.value
+    }
   },
 });
