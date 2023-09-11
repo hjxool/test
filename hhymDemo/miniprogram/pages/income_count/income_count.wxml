@@ -1,0 +1,9 @@
+<view class="index col_layout">
+  <!-- 检索 -->
+  <view class="head row_layout flex_shrink">
+    <view class="title">客户名:</view>
+    <input class="input" confirm-type="search" style="border-color: {{on_focus?'#1E90FF':''}};" />
+  </view>
+  <!-- 图表 -->
+  <ec-canvas id="echart" class="body flex_grow" canvas-id="bar"></ec-canvas>
+</view>

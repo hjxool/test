@@ -1,4 +1,4 @@
-<view class="control col_layout" catch:tap="close_pop">
+<view class="control col_layout">
   <!-- 日历和待确认订单 -->
   <view class="head">
     <view class="box1 row_layout" bind:tap="turn_to_page" data-page="calendar">
@@ -16,22 +16,6 @@
       </view>
     </view>
   </view>
-  <!-- 图表 -->
-  <view class="flex_grow body col_layout">
-    <view class="row_layout" catch:tap="show_titles">
-      <view class="title">
-        {{echart_title}}
-
-        <view class="select_box" wx:if="{{echarts_select_show}}">
-          <view class="text" wx:for="{{titles}}" wx:key="title" catch:tap="change_echart" data-title="{{item.title}}">{{item.title}}</view>
-        </view>
-      </view>
-
-      <view class="iconfont icon-jiantou_zuoyouqiehuan icon"></view>
-    </view>
-
-    <ec-canvas style="display:{{echart_show?'':'none'}};" id="echart" class="flex_grow" canvas-id="bar" ec="{{ec}}"></ec-canvas>
-  </view>
   <!-- 功能模块 -->
   <view class="foot flex_shrink">
     <view class="box3 col_layout" wx:for="{{modules}}" wx:key="title" bind:tap="turn_to_page" data-page="{{item.page}}">
@@ -46,7 +30,7 @@
   <!-- 弹窗 -->
   <view class="popup {{pop_hide?'pop_hide':''}} animation" wx:if="{{pop_show}}">
     <!-- 上传图片 -->
-    <view class="upload_photo col_layout">
+    <view class="upload_photo col_layout {{pop_hide?'upload_photo_hide':''}} animation">
       <view class="row_layout" style="align-self: center;margin: 20rpx 0 40rpx 0;">
         <view style="font-size: 32rpx;">上传到：</view>
         <radio-group class="row_layout" bindchange="select_photo_save">
@@ -58,8 +42,8 @@
       </view>
 
       <view class="row">
-        <button class="button" type="primary">上传图片</button>
-        <button class="button" type="default" catch:tap="close_pop2">关闭</button>
+        <button class="button" type="primary" catch:tap="upload_photo">上传图片</button>
+        <button class="button" type="default" catch:tap="close_pop">关闭</button>
       </view>
     </view>
   </view>

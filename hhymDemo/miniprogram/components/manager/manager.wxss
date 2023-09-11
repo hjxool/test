@@ -34,38 +34,6 @@
   font-size: 28rpx;
   color: #808080;
 }
-/* 图表 */
-.body {
-  background: #fff;
-  border-radius: 20rpx;
-  padding: 20rpx;
-}
-.body > .row_layout > .title {
-  font-size: 32rpx;
-  color: #808080;
-  position: relative;
-}
-.body > .row_layout > .title > .select_box {
-  position: absolute;
-  bottom: calc(100% + 20rpx);
-  width: 180rpx;
-  padding: 0 20rpx;
-  background: rgba(25, 137, 250, 1);
-  border-radius: 20rpx;
-  color: #fff;
-}
-.body > .row_layout > .title > .select_box > .text {
-  font-size: 32rpx;
-  margin: 20rpx 0 10rpx 0;
-}
-.body > .row_layout > .title > .select_box > .text:last-child {
-  margin-bottom: 20rpx;
-}
-.body > .row_layout > .icon {
-  font-size: 32rpx;
-  color: #1e90ff;
-  margin-left: 20rpx;
-}
 /* 功能模块 */
 .foot {
   display: grid;
@@ -129,6 +97,26 @@
   padding: 20rpx;
   background: #fff;
   border-radius: 20rpx;
+  animation-name: opacity_show;
+}
+@keyframes opacity_show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.upload_photo_hide {
+  animation-name: opacity_hide;
+}
+@keyframes opacity_hide {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 .upload_photo > .row {
   display: grid;
