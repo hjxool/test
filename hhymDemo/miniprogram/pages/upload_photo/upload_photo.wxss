@@ -1,1 +1,30 @@
-/* pages/upload_photo/upload_photo.wxss */
+.index {
+  height: 100%;
+  overflow: hidden;
+}
+/* 头部检索 */
+.head {
+  padding: 40rpx;
+  align-self: center;
+}
+.head > .title {
+  font-size: 32rpx;
+  margin-right: 20rpx;
+}
+.head > .button {
+  font-size: 28rpx;
+  font-weight: normal;
+}
+/* 列表内容 */
+.body {
+  box-sizing: border-box;
+  padding: 20rpx;
+  margin: 0 40rpx 40rpx 40rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(auto-fill, 300rpx);
+  grid-auto-rows: 300rpx;
+}

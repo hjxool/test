@@ -22,29 +22,5 @@
       <view class="iconfont {{item.icon}} icon"></view>
       <view class="text">{{item.title}}</view>
     </view>
-    <view class="box3 col_layout" bind:tap="open_pop" data-pop="upload_photo">
-      <view class="iconfont icon-mn_shangchuantupian_fill icon"></view>
-      <view class="text">上传图片</view>
-    </view>
-  </view>
-  <!-- 弹窗 -->
-  <view class="popup {{pop_hide?'pop_hide':''}} animation" wx:if="{{pop_show}}">
-    <!-- 上传图片 -->
-    <view class="upload_photo col_layout {{pop_hide?'upload_photo_hide':''}} animation">
-      <view class="row_layout" style="align-self: center;margin: 20rpx 0 40rpx 0;">
-        <view style="font-size: 32rpx;">上传到：</view>
-        <radio-group class="row_layout" bindchange="select_photo_save">
-          <label class="row_layout" wx:for="{{pop.photo}}" wx:key="{{item.value}}" style="margin-right: 20rpx;">
-            <radio value="{{item.value}}" checked="{{item.check}}" />
-            <view>{{item.name}}</view>
-          </label>
-        </radio-group>
-      </view>
-
-      <view class="row">
-        <button class="button" type="primary" catch:tap="upload_photo">上传图片</button>
-        <button class="button" type="default" catch:tap="close_pop">关闭</button>
-      </view>
-    </view>
   </view>
 </view>

@@ -10,20 +10,15 @@ Component({
       { title: "计价规则", icon: "icon-guize", page: "price_rule" },
       { title: "单价设置", icon: "icon-tixianguize", page: "room_price" },
       { title: "收入统计", icon: "icon-shuzhuangtu", page: "income_count" },
+      { title: "上传图片", icon: "icon-mn_shangchuantupian_fill", page: "upload_photo" },
     ],
     confirm_num: 0, //待确认订单数
-    pop_show: false, //显示弹窗
-    pop_hide: true, //隐藏弹窗动画
-    pop: {
-      photo: [
-        { name: "相册", value: "/photos", check: true },
-        { name: "房间", value: "/room_photo", check: false },
-      ],
-    },
   },
   lifetimes: {
     // 组件实例进入节点树时执行
     attached() {
+      this.app = getApp();
+      // 临时 生成确认订单
       let st = new Date("2023/7/1");
       let et = new Date("2023/7/7");
       this.list = [];
@@ -116,39 +111,6 @@ Component({
     // 刷新页面数据
     get_data() {
       console.log("refresh");
-    },
-    // 打开弹窗
-    open_pop(e) {
-      let pop = e.currentTarget.dataset.pop;
-      switch (pop) {
-        case "upload_photo":
-          this.save_path = this.data.pop.photo[0].value;
-          this.setData({
-            pop_show: true,
-            pop_hide: false,
-          });
-          return;
-      }
-    },
-    // 关闭弹窗
-    close_pop() {
-      this.setData({
-        pop_hide: true,
-      });
-      // 放完动画再销毁
-      setTimeout(() => {
-        this.setData({
-          pop_show: false,
-        });
-      }, 300);
-    },
-    // 切换选择上传路径
-    select_photo_save(e) {
-      this.save_path = e.detail.value;
-    },
-    // 上传图片并存储文件路径到数据库
-    upload_photo() {
-      
     },
   },
 });

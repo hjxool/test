@@ -1,66 +1,67 @@
-// pages/upload_photo/upload_photo.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    path: [
+      { name: "相册", value: "photos" },
+      { name: "房间", value: "room_photo" },
+    ],
+    save_path: "", //存储路径
+    select_photo: "", //选中的图片
+    img_list: [], //文件列表
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-
+  async onLoad(options) {
+    this.app = getApp();
+    this.channel = this.getOpenerEventChannel();
+    this.setData({
+      save_path: this.data.path[0].value,
+    });
+    // 一开打页面先查一次相册文件列表
+    this.get_files();
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
   onUnload() {
-
+    this.channel.emit("message", {
+      msg: "upload_photo",
+    });
   },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
+  // 切换选择上传路径 同时刷新图片列表
+  select_photo_save(e) {
+    this.setData({
+      save_path: e.detail.value,
+    });
+    this.get_files();
   },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
+  // 上传图片并存储文件路径到数据库
+  async upload_photo() {
+    return;
+    let res = await wx
+      .chooseMedia({
+        maxDuration: 60,
+      })
+      .catch((err) => "err");
+    if (res !== "err") {
+      this.app.upload(res.tempFiles, this.save_path);
+    }
   },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
-  }
-})
+  // 查询文件列表
+  async get_files(file_name) {
+    wx.showLoading({
+      title: "加载中",
+      mask: true,
+    });
+    let params = {
+      cloud_path: this.data.save_path,
+    };
+    if (typeof file_name === "string") {
+      params.file_name = file_name;
+    }
+    let { data } = await this.app.mycall("files", {
+      type: "get",
+      params,
+    });
+    this.setData({
+      img_list: data || [],
+    });
+    setTimeout(() => {
+      wx.hideLoading();
+    }, 300);
+  },
+});

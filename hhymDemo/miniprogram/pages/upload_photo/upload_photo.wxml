@@ -1,2 +1,14 @@
-<!--pages/upload_photo/upload_photo.wxml-->
-<text>pages/upload_photo/upload_photo.wxml</text>
+<view class="index col_layout">
+  <view class="head row_layout flex_shrink">
+    <view class="title">上传到:</view>
+    <radio-group class="row_layout" bindchange="select_photo_save">
+      <label class="row_layout" wx:for="{{path}}" wx:key="value" style="margin-right: 20rpx;">
+        <radio value="{{item.value}}" checked="{{save_path===item.value}}" />
+        <view>{{item.name}}</view>
+      </label>
+    </radio-group>
+    <button class="button" catch:tap="upload_photo" type="primary" size="mini">{{select_photo?'更新对应图片':'上传新图片'}}</button>
+  </view>
+
+  <view class="body flex_grow"></view>
+</view>

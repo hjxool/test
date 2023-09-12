@@ -28,12 +28,12 @@ App({
     if (data) {
       body.data = data;
     }
-    let { result } = await wx.cloud.callFunction(body);
-    console.log("返回的是什么垃圾", result);
+    let res = await wx.cloud.callFunction(body).catch((err) => "err");
+    console.log("返回的是什么垃圾", res.result);
     // 如果返回结果失败 通知失败结果 成功则让前端决定如何做
-    if (result.code !== 200) {
+    if (res === "err" || res.result.code !== 200) {
       wx.showToast({
-        title: result.msg,
+        title: res.result?.msg || "error",
         icon: "none",
       });
       setTimeout(() => {
@@ -41,7 +41,51 @@ App({
       }, 1000);
       return false;
     } else {
-      return result;
+      return res.result;
+    }
+  },
+  // 封装的批量上传方法 不能用随机生成的本地文件名 用同名可以直接替换
+  async upload(file_list, cloud_path, type) {
+    wx.showLoading({
+      title: "上传中...",
+      mask: true,
+    });
+    let task = []; //存储异步上传任务
+    for (let val of file_list) {
+      let p = wx.cloud
+        .uploadFile({
+          cloudPath: `${cloud_path}/${val.file_name}`,
+          filePath: val.tempFilePath,
+        })
+        .then((res) => {
+          // 上传成功就存
+          this.mycall("files", {
+            type,
+            params: {
+              file_name: val.file_name, //文件名 唯一标识 用于新增和更新云存储
+              file_path: res.fileID, //文件引用路径
+              cloud_path, //放在哪个文件夹
+            },
+          });
+        })
+        .catch((err) => {
+          return "err";
+        });
+      task.push(p);
+    }
+    let res = await Promise.all(task).catch((err) => "err");
+    // 无论成功与否都关闭遮罩
+    setTimeout(() => {
+      wx.hideLoading();
+    }, 300);
+    if (res !== "err") {
+      // 全部上传成功 给个提示
+      wx.showToast({
+        title: "上传成功",
+      });
+      setTimeout(() => {
+        wx.hideToast();
+      }, 1000);
     }
   },
 });
