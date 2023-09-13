@@ -10,5 +10,10 @@
     <button class="button" catch:tap="upload_photo" type="primary" size="mini">{{select_photo?'更新对应图片':'上传新图片'}}</button>
   </view>
 
-  <view class="body flex_grow"></view>
+  <view class="body flex_grow">
+    <view class="img_box {{select_photo==item.file_name?'img_selected':''}}" wx:for="{{img_list}}" wx:key="file_name" catch:tap="select_photo" data-img="{{item}}">
+      <image class="bg" src="{{item.file_path}}" />
+      <view class="iconfont icon-queren icon" wx:if="{{select_photo==item.file_name}}"></view>
+    </view>
+  </view>
 </view>

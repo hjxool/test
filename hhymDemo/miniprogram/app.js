@@ -31,9 +31,9 @@ App({
     let res = await wx.cloud.callFunction(body).catch((err) => "err");
     console.log("返回的是什么垃圾", res.result);
     // 如果返回结果失败 通知失败结果 成功则让前端决定如何做
-    if (res === "err" || res.result.code !== 200) {
+    if (res === "err" || res?.result.code !== 200) {
       wx.showToast({
-        title: res.result?.msg || "error",
+        title: res?.result?.msg || "error",
         icon: "none",
       });
       setTimeout(() => {
@@ -58,11 +58,12 @@ App({
           filePath: val.tempFilePath,
         })
         .then((res) => {
+          let t = val.file_name.split('.')
           // 上传成功就存
           this.mycall("files", {
             type,
             params: {
-              file_name: val.file_name, //文件名 唯一标识 用于新增和更新云存储
+              file_name: t[0], //文件名 唯一标识 用于新增和更新云存储
               file_path: res.fileID, //文件引用路径
               cloud_path, //放在哪个文件夹
             },

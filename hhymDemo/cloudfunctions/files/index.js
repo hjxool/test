@@ -100,5 +100,7 @@ exports.main = async (event, context) => {
       return await add_files(params);
     case "put":
       return await update_files(params);
+    default:
+      return { msg: `参数错误:${event}`, code: 400 };
   }
 };
