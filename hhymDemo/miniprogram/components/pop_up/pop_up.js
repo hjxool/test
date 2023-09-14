@@ -16,6 +16,7 @@ Component({
       price1: 0,
       price2: 0,
     },
+    // 增加规则表单
     rule_form: {
       // 表单项
       items: [
@@ -25,6 +26,10 @@ Component({
         { label: "豪华间定价：", value: 0 },
       ],
       focus: -1, //输入框高亮样式
+    },
+    // 确认选房
+    confirm: {
+      img: "", //图片src
     },
   },
   lifetimes: {
@@ -291,6 +296,12 @@ Component({
       if (res) {
         this.close_pop("add_rule");
       }
+    },
+    // 确认选房 跳转填表页面
+    confirm_house() {
+      wx.redirectTo({
+        url: "/pages/info/info",
+      });
     },
   },
 });

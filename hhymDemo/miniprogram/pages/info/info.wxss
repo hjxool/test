@@ -1,0 +1,105 @@
+view {
+  box-sizing: border-box;
+}
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+.index {
+  height: 100%;
+  overflow: hidden;
+}
+/* 表单 */
+.form {
+  overflow-x: hidden;
+}
+.form > .row {
+  padding: 30rpx;
+  border-bottom: 8rpx solid rgba(128, 128, 128, 0.2);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.form > .row1 > .row_layout {
+  overflow-y: hidden;
+  padding-left: 20rpx;
+}
+.form > .row1 > .row_layout > .col_layout {
+  align-items: center;
+  margin-right: 20rpx;
+  margin-top: 20rpx;
+}
+.form > .row1 > .row_layout > .col_layout > .icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: rgba(255, 215, 0, 1);
+  margin-bottom: 20rpx;
+  position: relative;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: rgba(169, 169, 169, 1);
+}
+.form > .row1 > .row_layout > .col_layout > .name {
+  font-size: 28rpx;
+}
+.form > .row1 > .row_layout > .col_layout > .icon2 {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+  color: rgba(128, 128, 128, 0.2);
+}
+.form > .row1 > .row_layout > .col_layout > .icon > .del {
+  font-size: 28rpx;
+  color: red;
+  position: absolute;
+  top: -8rpx;
+  right: -6rpx;
+}
+.form > .row2 {
+  display: grid;
+  grid-template-columns: 120rpx auto;
+}
+.form .title {
+  font-size: 28rpx;
+  font-weight: bold;
+  font-family: fantasy;
+}
+.form .input1 {
+  background: transparent;
+  border: none;
+  text-align: right;
+}
+/* 合计 提交 */
+.foot {
+  padding: 10rpx 40rpx 60rpx;
+  border-top: 1px solid rgba(128, 128, 128, 0.2);
+  display: grid;
+  grid-template-columns: 80rpx auto 340rpx;
+  align-items: center;
+  overflow: hidden;
+}
+.foot .text1 {
+  font-size: 28rpx;
+  white-space: nowrap;
+}
+.foot .text2 {
+  color: #ff4500;
+}
+.foot .text3 {
+  font-size: 36rpx;
+}
+.foot > .row_layout {
+  white-space: nowrap;
+  text-emphasis: emphasis;
+  overflow: hidden;
+}
+.foot > .button {
+  border-radius: 20rpx;
+  background: rgba(255, 165, 0, 0.8);
+  color: #fff;
+  font-weight: normal;
+  font-size: 36rpx;
+}

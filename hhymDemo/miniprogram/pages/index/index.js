@@ -20,8 +20,8 @@ Page({
       }
     })
     this.setData({
-      isManager: result
-      // isManager: 1
+      // isManager: result
+      isManager: 1
     })
   },
 })

@@ -1,3 +1,29 @@
+/* 通用弹窗显示隐藏过渡 */
+.opacity_show {
+  padding: 20rpx 20rpx 20rpx 40rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  animation-name: opacity_show;
+}
+@keyframes opacity_show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.opacity_hide {
+  animation-name: opacity_hide;
+}
+@keyframes opacity_hide {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 /* 电话 */
 .phone_tip {
   position: absolute;
@@ -166,31 +192,6 @@
   font-weight: normal;
 }
 /* 增加规则 */
-.add_rule {
-  padding: 20rpx 20rpx 20rpx 40rpx;
-  background: #fff;
-  border-radius: 20rpx;
-  animation-name: add_rule_show;
-}
-@keyframes add_rule_show {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-.add_rule_hide {
-  animation-name: add_rule_hide;
-}
-@keyframes add_rule_hide {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
 .add_rule > .grid_layout {
   display: grid;
   grid-template-columns: 200rpx auto;
@@ -225,6 +226,32 @@
   background: rgb(30, 144, 255);
   border-radius: 80rpx;
   color: #fff;
+  font-weight: normal;
+  white-space: nowrap;
+}
+/* 确认选房 */
+.confirm_house > .img_box {
+  position: relative;
+  height: 700rpx;
+  width: 500rpx;
+}
+.confirm_house > .img_box > .bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+.confirm_house > .submit {
+  display: grid;
+  grid-template-columns: repeat(2, 200rpx);
+  grid-template-rows: 80rpx;
+  justify-content: center;
+  margin-top: 20rpx;
+}
+.confirm_house > .submit > .button {
+  width: 80%;
+  border-radius: 80rpx;
   font-weight: normal;
   white-space: nowrap;
 }

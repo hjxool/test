@@ -70,16 +70,38 @@ Page({
   },
   // 打开确认选房提示信息
   async select_room(e) {
-    let room = e.currentTarget.dataset;
+    let room = e.currentTarget.dataset.room;
     // 状态占用不可选
     if (room.status) {
       return;
     }
-    // app.globalData.pop_content = "confirm_room";
-    // this.setData({
-    //   pop_show: true,
-    //   pop_hide: false,
-    // });
+    this.app.globalData.pop_content = "confirm_room";
+    // 记录到全局变量 用于跳转页获取用户选的房间
+    this.app.globalData.room = `${room.id}`;
+    this.setData({
+      pop_show: true,
+      pop_hide: false,
+    });
+    // 查询对应房间图片
+    wx.showLoading({
+      title: "加载中",
+      mask: true,
+    });
+    let { data } = await this.app.mycall("files", {
+      type: "get",
+      params: {
+        cloud_path: "room_photo",
+        file_name: `${room.id}`,
+      },
+    });
+    if (data.length) {
+      // 获取弹窗组件实例修改图片src
+      let dom = this.selectComponent(".popup");
+      dom.setData({
+        "confirm.img": data[0].file_path,
+      });
+    }
+    wx.hideLoading();
   },
   // 显示|隐藏弹窗
   popup(event) {

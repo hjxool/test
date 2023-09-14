@@ -56,7 +56,10 @@ Component({
           "list[0].price": this.base_price1 * this.month_discount,
           "list[1].price": this.base_price2 * this.month_discount,
         });
-      } else if (total_day <= this.month_day && total_day > this.half_month_day) {
+      } else if (
+        total_day <= this.month_day &&
+        total_day > this.half_month_day
+      ) {
         this.setData({
           "list[0].price": this.base_price1 * this.half_month_discount,
           "list[1].price": this.base_price2 * this.half_month_discount,
@@ -116,6 +119,9 @@ Component({
           (total_day - rule_day) * this.base_price1 + rule_price1;
         let total_price2 =
           (total_day - rule_day) * this.base_price2 + rule_price2;
+        // 记录到全局变量中用于在提交订单时用单只对应房间总价加上如果有多只的价格得到订单总价
+        this.app.globalData.single_total_price1 = total_price1;
+        this.app.globalData.single_total_price2 = total_price2;
         // 计算标间和豪华间均价
         this.setData({
           "list[0].price": Math.round((total_price1 / total_day) * 10) / 10,

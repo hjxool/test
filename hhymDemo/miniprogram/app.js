@@ -16,9 +16,10 @@ App({
       pop_content: "", //弹窗展示内容
       start_time: 0, //入住开始时间戳
       end_time: 0, //入住结束时间戳
-      // rooms: [], //房间总列表
+      single_total_price1: 0, //所选时间段单只标间总价
+      single_total_price2: 0, //豪华间总价
+      room: "", //用户所选房间id
     };
-    // init_room(this.globalData.rooms);
   },
   // 通用请求方法
   async mycall(name, data) {
@@ -58,7 +59,7 @@ App({
           filePath: val.tempFilePath,
         })
         .then((res) => {
-          let t = val.file_name.split('.')
+          let t = val.file_name.split(".");
           // 上传成功就存
           this.mycall("files", {
             type,
@@ -90,24 +91,3 @@ App({
     }
   },
 });
-//#region
-// 生成房间总列表
-// function init_room(list) {
-//   for (let index = 1; index <= 13; index++) {
-//     if (index <= 11) {
-//       let t = {
-//         label: `标准间${index}`,
-//         check: false,
-//       };
-//       list.push(t);
-//     } else {
-//       let i = index - 11;
-//       let t = {
-//         label: `豪华间${i}`,
-//         check: false,
-//       };
-//       list.push(t);
-//     }
-//   }
-// }
-//#endregion

@@ -10,7 +10,8 @@
     "pages/price_rule/price_rule",
     "pages/room_price/room_price",
     "pages/upload_photo/upload_photo",
-    "pages/income_count/income_count"
+    "pages/income_count/income_count",
+    "pages/info/info"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

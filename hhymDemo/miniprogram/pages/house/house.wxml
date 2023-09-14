@@ -51,5 +51,5 @@
     </view>
   </view>
   <!-- 通用弹窗组件 -->
-  <popup class="popup {{pop_hide?'pop_hide':''}} animation" wx:if="{{pop_show}}" catch:popevent="popup"></popup>
+  <popup class="popup center {{pop_hide?'pop_hide':''}} animation" wx:if="{{pop_show}}" catch:popevent="popup"></popup>
 </view>

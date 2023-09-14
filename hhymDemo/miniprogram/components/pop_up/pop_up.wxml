@@ -42,7 +42,7 @@
   </view>
 </view>
 <!-- 增加规则 -->
-<view class="add_rule {{pop_hide?'add_rule_hide':''}} animation" wx:if="{{type==='add_rule'}}" catch:tap="add_blur">
+<view class="add_rule opacity_show {{pop_hide?'opacity_hide':''}} animation" wx:if="{{type==='add_rule'}}" catch:tap="add_blur">
   <view class="grid_layout" wx:for="{{rule_form.items}}" wx:key="label">
     <view class="title flex_shrink" style="align-self:{{index===3?'flex-start':''}};">{{item.label}}</view>
     <!-- 时间选择 -->
@@ -56,5 +56,16 @@
   <view class="submit">
     <button class="button" catch:tap="confirm_add_rule">确定</button>
     <button class="button" catch:tap="close_pop">取消</button>
+  </view>
+</view>
+<!-- 确认选房 -->
+<view class="confirm_house col_layout opacity_show {{pop_hide?'opacity_hide':''}} animation" wx:if="{{type==='confirm_room'}}">
+  <view class="img_box">
+    <image class="bg" src="{{confirm.img}}" />
+  </view>
+
+  <view class="submit">
+    <button class="button" catch:tap="close_pop" type="default">取消</button>
+    <button class="button" catch:tap="confirm_house" type="primary">确认</button>
   </view>
 </view>
