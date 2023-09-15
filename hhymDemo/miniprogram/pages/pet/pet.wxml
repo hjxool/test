@@ -1,0 +1,5 @@
+<view class="index col_layout">
+  <view class="flex_grow"></view>
+  <!-- 保存编辑或提交 -->
+  <view class="foot flex_shrink"></view>
+</view>

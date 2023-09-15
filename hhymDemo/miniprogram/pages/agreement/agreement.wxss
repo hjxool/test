@@ -1,0 +1,21 @@
+.index {
+  height: 100%;
+  overflow: auto;
+  padding: 0 28rpx 20rpx 20rpx;
+}
+view {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+.title {
+  font-size: 32rpx;
+  align-self: center;
+  margin: 40rpx 0;
+}
+.text {
+  font-size: 28rpx;
+}
+.text::before {
+  content: "";
+  display: inline-block;
+  width: 48rpx;
+}

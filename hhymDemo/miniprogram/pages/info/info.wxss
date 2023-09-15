@@ -25,7 +25,12 @@ view {
 }
 .form > .row1 > .row_layout {
   overflow-y: hidden;
-  padding-left: 20rpx;
+}
+.form > .row1 > .row_layout > .tip {
+  background: rgba(255, 255, 0, 0.4);
+  font-size: 24rpx;
+  padding: 10rpx 20rpx;
+  color: #66b9dd;
 }
 .form > .row1 > .row_layout > .col_layout {
   align-items: center;
@@ -36,17 +41,26 @@ view {
   width: 80rpx;
   height: 80rpx;
   border-radius: 50%;
-  background: rgba(255, 215, 0, 1);
   margin-bottom: 20rpx;
   position: relative;
   font-size: 32rpx;
-  font-weight: bold;
-  color: rgba(169, 169, 169, 1);
+  background: #cda59e;
+  color: #fff;
+}
+.form > .row1 > .row_layout > .col_layout > .icon2 {
+  background: #e4c6d0;
+}
+.form > .row1 > .row_layout > .col_layout > .icon3 {
+  background: #d3d6d4;
+}
+.form > .row1 > .row_layout > .col_layout > .icon4 {
+  background: #e9e7ef;
+  color: #a2acb8;
 }
 .form > .row1 > .row_layout > .col_layout > .name {
   font-size: 28rpx;
 }
-.form > .row1 > .row_layout > .col_layout > .icon2 {
+.form > .row1 > .row_layout > .col_layout > .add {
   font-size: 80rpx;
   margin-bottom: 20rpx;
   color: rgba(128, 128, 128, 0.2);
@@ -62,6 +76,9 @@ view {
   display: grid;
   grid-template-columns: 120rpx auto;
 }
+.form > .row2 > .row_layout {
+  justify-self: end;
+}
 .form .title {
   font-size: 28rpx;
   font-weight: bold;
@@ -71,6 +88,44 @@ view {
   background: transparent;
   border: none;
   text-align: right;
+}
+.form .input2 {
+  height: 150rpx;
+  border-radius: 20rpx;
+  background: rgba(211, 211, 211, 0.3);
+  width: 100%;
+  margin-top: 20rpx;
+}
+.form .text1 {
+  font-size: 28rpx;
+  color: #66b9dd;
+}
+/* 用户须知 */
+.form > .tips {
+  padding: 20rpx 20rpx 160rpx 20rpx;
+}
+.form > .tips .icon {
+  font-size: 32rpx;
+  color: #eb5757;
+  margin-right: 16rpx;
+}
+.form > .tips .icon2 {
+  font-size: 32rpx;
+  color: #66c9e8;
+}
+.form > .tips .title {
+  font-size: 32rpx;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+.form > .tips .text {
+  font-size: 24rpx;
+  margin: 32rpx 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+.form > .tips .text2 {
+  font-size: 28rpx;
+  color: #808080;
+  margin-left: 12rpx;
 }
 /* 合计 提交 */
 .foot {

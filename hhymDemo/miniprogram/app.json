@@ -11,7 +11,9 @@
     "pages/room_price/room_price",
     "pages/upload_photo/upload_photo",
     "pages/income_count/income_count",
-    "pages/info/info"
+    "pages/info/info",
+    "pages/agreement/agreement",
+    "pages/pet/pet"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

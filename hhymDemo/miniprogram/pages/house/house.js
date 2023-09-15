@@ -16,7 +16,7 @@ Page({
       let t = {
         id: index,
         status: 0, //0空闲 1占用
-        name: `标间${index}`,
+        name: `标准间${index}`,
       };
       if (index == 3) {
         t.name = "豪华间1";
@@ -27,7 +27,7 @@ Page({
       let t = {
         id: index,
         status: 0,
-        name: `标间${index - 1}`,
+        name: `标准间${index - 1}`,
       };
       this.data.room4_5.push(t);
     }
@@ -35,7 +35,7 @@ Page({
       let t = {
         id: index,
         status: 0,
-        name: `标间${index - 1}`,
+        name: `标准间${index - 1}`,
       };
       this.data.room6_8.push(t);
     }
@@ -43,7 +43,7 @@ Page({
       let t = {
         id: index,
         status: 0,
-        name: `标间${index - 1}`,
+        name: `标准间${index - 1}`,
       };
       this.data.room9_10.push(t);
     }
@@ -51,7 +51,7 @@ Page({
       let t = {
         id: index,
         status: 0,
-        name: `标间${index - 2}`,
+        name: `标准间${index - 2}`,
       };
       if (index == 11) {
         t.name = "豪华间2";

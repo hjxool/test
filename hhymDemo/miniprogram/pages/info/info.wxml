@@ -3,18 +3,23 @@
   <view class="form flex_grow">
     <!-- 宠物 -->
     <view class="row row1 col_layout">
-      <view class="title">住店宠物</view>
-      <view class="row_layout">
-        <view class="col_layout flex_shrink" wx:for="{{form.pet}}">
-          <view class="icon center">
+      <view class="row_layout" style="justify-content: space-between;">
+        <view class="title">住店宠物</view>
+        <view class="tip">每多一只加30，受折扣影响</view>
+      </view>
+      <view class="row_layout" style="padding-left: 20rpx;">
+        <!-- 编辑 -->
+        <view class="col_layout flex_shrink" wx:for="{{form.pet}}" wx:key="name" catch:tap="turn_to_page" data-page="pet" data-index="{{index}}">
+          <view class="icon center {{index?(index==1?'icon2':(index==2?'icon3':'icon4')):''}}">
             {{item.short}}
-            <view class="iconfont icon-jinzhite-circle-kuai del"></view>
+            <!-- 删除 -->
+            <view class="iconfont icon-jinzhite-circle-kuai del" catch:tap="del_pet" data-index="{{index}}"></view>
           </view>
           <view class="name">{{item.name}}</view>
         </view>
-
-        <view class="col_layout flex_shrink">
-          <view class="iconfont icon-xinzeng icon2"></view>
+        <!-- 添加 -->
+        <view class="col_layout flex_shrink" wx:if="{{form.pet.length<(room_type?4:2)}}" catch:tap="turn_to_page" data-page="pet">
+          <view class="iconfont icon-xinzeng add"></view>
           <view class="name">添加宠物</view>
         </view>
       </view>
@@ -23,12 +28,59 @@
     <view class="row row2">
       <view class="title">日期</view>
       <view class="row_layout">
+        <view class="text1">{{form.start}}~{{form.end}}</view>
+        <view class="text1" style="margin-left: 20rpx;">共{{form.total_day}}天</view>
       </view>
+    </view>
+    <!-- 房间 -->
+    <view class="row row2">
+      <view class="title">房间</view>
+      <view class="text1" style="justify-self: end;">{{form.room}}</view>
     </view>
     <!-- 联系人 -->
     <view class="row row2">
       <view class="title">联系人</view>
-      <input class="input1" placeholder="必填" />
+      <input class="input1" bindblur="save_value" data-item="name" value="{{form.name}}" placeholder="必填" />
+    </view>
+    <!-- 手机号 -->
+    <view class="row row2">
+      <view class="title">手机号</view>
+      <input class="input1" bindblur="save_value" data-item="phone" value="{{form.phone}}" placeholder="必填" />
+    </view>
+    <!-- 微信号 -->
+    <view class="row row2">
+      <view class="title">微信号</view>
+      <input class="input1" bindblur="save_value" data-item="weChat" value="{{form.weChat}}" placeholder="非必填" />
+    </view>
+    <!-- 从何了解 -->
+    <view class="row row3 col_layout">
+      <view class="title">从何知道好好养猫家</view>
+      <textarea class="input2" bindblur="save_value" data-item="know_form" value="{{form.know_form}}"></textarea>
+    </view>
+    <!-- 须知 -->
+    <view class="tips flex_shrink">
+      <view class="row_layout">
+        <view class="iconfont icon-xinghao icon"></view>
+        <view class="title">预定须知</view>
+      </view>
+      <view class="text">
+        测试测试测试啊实打实大送到家阿松地马上都i啊是觉得
+      </view>
+
+      <view class="row_layout">
+        <view class="iconfont icon-xinghao icon"></view>
+        <view class="title">取消政策</view>
+      </view>
+      <view class="text">
+        测试测试测试啊实打实大送到家阿松地马上都i啊是觉得
+      </view>
+      <!-- 服务协议 -->
+      <view class="row_layout" catch:tap="is_read">
+        <view class="iconfont icon-weixuan icon2" wx:if="{{!form.is_read}}"></view>
+        <view class="iconfont icon-quanxuan icon2" wx:if="{{form.is_read}}"></view>
+        <view class="text2">已阅读并同意</view>
+        <view class="icon2" catch:tap="turn_to_page" data-page="agreement">《服务协议》</view>
+      </view>
     </view>
   </view>
   <!-- 合计 提交 -->

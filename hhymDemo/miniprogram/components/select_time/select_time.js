@@ -20,12 +20,15 @@ Component({
   },
   lifetimes: {
     attached() {
+      this.app = getApp();
       // 时间要跟日历里的统一
       let nowt = new Date();
       this.data.start_date = new Date(
         `${nowt.getFullYear()}/${nowt.getMonth() + 1}/${nowt.getDate()}`
       );
+      this.app.globalData.start_time = this.data.start_date.getTime();
       let nextt = this.data.start_date.getTime() + 24 * 60 * 60 * 1000;
+      this.app.globalData.end_time = nextt;
       this.data.end_date = new Date(nextt);
       this.setData({
         start_time_text: this.format_date_text(this.data.start_date),
@@ -85,10 +88,9 @@ Component({
     },
     // 打开日历
     show_calendar() {
-      let app = getApp();
-      app.globalData.pop_content = "calendar";
-      app.globalData.start_time = this.data.start_date.getTime();
-      app.globalData.end_time = this.data.end_date.getTime();
+      this.app.globalData.pop_content = "calendar";
+      this.app.globalData.start_time = this.data.start_date.getTime();
+      this.app.globalData.end_time = this.data.end_date.getTime();
       this.triggerEvent("popevent", {
         type: "open pop",
         source: "select_time",
