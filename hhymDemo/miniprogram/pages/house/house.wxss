@@ -21,9 +21,9 @@ view {
   justify-content: center;
   position: relative;
 }
-.icon1 {
+/* .icon1 {
   font-size: 80rpx;
-}
+} */
 .disabled {
   position: absolute;
   width: 100%;

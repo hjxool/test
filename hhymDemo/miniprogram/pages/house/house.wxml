@@ -11,7 +11,7 @@
       <view class="room{{item.id}} center" wx:for="{{room4_5}}" wx:key="id" catch:tap="select_room" data-room="{{item}}">
         <view class="col_layout align">
           <view class="text">{{item.name}}</view>
-          <view class="iconfont icon-maopajia1 icon1"></view>
+          <view class="iconfont icon-maopajia1"></view>
         </view>
         <image src="../../static/icon1.jpg" class="disabled" wx:if="{{item.status}}" />
       </view>
