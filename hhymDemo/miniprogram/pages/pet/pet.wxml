@@ -1,5 +1,15 @@
 <view class="index col_layout">
-  <view class="flex_grow"></view>
+  <!-- 表单 -->
+  <view class="form flex_grow">
+    <!--  -->
+    <view class="row_layout">
+
+    </view>
+  </view>
   <!-- 保存编辑或提交 -->
-  <view class="foot flex_shrink"></view>
+  <view class="foot flex_shrink">
+    <button class="button orange" wx:if="{{edit}}">修改</button>
+    <button class="button gray" wx:if="{{edit}}">删除</button>
+    <button class="button orange" wx:if="{{!edit}}">添加</button>
+  </view>
 </view>

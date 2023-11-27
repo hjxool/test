@@ -54,7 +54,8 @@ Page({
     // 读取当前客户信息看是否有记录 有则读取他的宠物信息自动填入计算价格 没有则显示默认价格
     // 提交订单时根据当前用户的openid修改原先的联系人等信息 有记录时读取这些信息
     this.setData({
-      "form.pet": [{ name: "嘟嘟", short: "嘟" }],
+      // "form.pet": [{ name: "嘟嘟", short: "嘟" }],
+      "form.pet": [],
       "form.start": `${start.getFullYear()}.${
         start.getMonth() + 1
       }.${start.getDate()}`,
@@ -73,7 +74,7 @@ Page({
       "form.is_read": !this.data.form.is_read,
     });
   },
-  // 跳转协议页
+  // 跳转协议、和宠物详情页
   turn_to_page(e) {
     let page = e.currentTarget.dataset.page;
     let body = {
