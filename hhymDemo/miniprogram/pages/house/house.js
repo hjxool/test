@@ -101,7 +101,10 @@ Page({
         "confirm.img": data[0].file_path,
       });
     }
-    wx.hideLoading();
+    // 图片地址放到页面 还需要大概1秒才能加载出来
+    setTimeout(() => {
+      wx.hideLoading();
+    }, 300);
   },
   // 显示|隐藏弹窗
   popup(event) {

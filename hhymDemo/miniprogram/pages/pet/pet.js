@@ -7,9 +7,13 @@ Page({
       gender: 0, //性别 0母 1公
       breed: "", //品种
       character: "", //性格
-      ear_mite: 0,//耳螨
-      disease: 0, //是否带病
-      detail: "", //喂药要求
+      sterile: false, //是否绝育
+      ear_mite: 0, //是否有耳螨
+      disease: 0, //是否携带鼻支等传染病
+      detail: "", //特殊要求(喂药、生骨肉等)
+      inner_deworm_time: "", //上一次体内驱虫时间 时间戳
+      out_deworm_time: "", //上一次体外驱虫时间 时间戳
+      vaccine_time: "", //上一次疫苗事件 时间戳
     },
   },
   onLoad(options) {
@@ -20,6 +24,13 @@ Page({
       this.setData({
         edit: true,
       });
+    });
+  },
+  // 失去焦点保存值
+  save_value(e) {
+    let key = e.currentTarget.dataset.key;
+    this.setData({
+      [`form.${key}`]: e.detail.value,
     });
   },
 });

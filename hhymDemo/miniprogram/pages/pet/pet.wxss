@@ -5,6 +5,25 @@
 /* 表单 */
 .form {
   overflow-x: hidden;
+  padding: 40rpx 20rpx;
+}
+.form > .row_layout + .row_layout {
+  margin-top: 20rpx;
+}
+.form .input {
+  background: rgba(230, 230, 230, 0.5);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-left: 30rpx;
+}
+/* 表单按钮同一样式 */
+.form > .row_layout .button {
+  font-size: 24rpx;
+  border-radius: 400rpx;
+  width: 200rpx;
+  height: 60rpx;
+  margin: 20rpx 0;
+  margin-left: 30rpx;
 }
 /* 底部按钮 */
 .foot {
@@ -21,9 +40,6 @@
   font-size: 36rpx;
   padding: 20rpx 0;
 }
-.foot > .button + .button {
-  margin-left: 40rpx;
-}
 .foot > .orange {
   background: rgba(255, 165, 0, 0.8);
   color: #fff;
@@ -35,4 +51,13 @@
 /* 隐藏滚动条 */
 ::-webkit-scrollbar {
   display: none;
+}
+/* 公共样式 */
+.button + .button {
+  margin-left: 40rpx;
+}
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

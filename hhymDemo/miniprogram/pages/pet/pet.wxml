@@ -1,9 +1,22 @@
 <view class="index col_layout">
   <!-- 表单 -->
   <view class="form flex_grow">
-    <!--  -->
     <view class="row_layout">
+      <text class="flex_shrink">名字</text>
+      <input class="input flex_grow" value="{{form.name}}" type="text" />
+    </view>
 
+    <view class="row_layout">
+      <text class="flex_shrink">岁数</text>
+      <input class="input flex_grow" value="{{form.age}}" bindblur="save_value" data-key="age" type="number"/>
+    </view>
+
+    <view class="row_layout">
+      <text class="flex_shrink">性别</text>
+      <view class="row_layout">
+        <view class="button center">母</view>
+        <view class="button center">公</view>
+      </view>
     </view>
   </view>
   <!-- 保存编辑或提交 -->
