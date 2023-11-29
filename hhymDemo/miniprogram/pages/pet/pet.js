@@ -10,11 +10,11 @@ Page({
       sterile: false, //是否绝育
       ear_mite: 0, //是否有耳螨
       disease: 0, //是否携带鼻支等传染病
+      deworm_time: "", //上一次体内驱虫时间 自己输入字符串
+      vaccine_time: "", //上一次疫苗时间
       detail: "", //特殊要求(喂药、生骨肉等)
-      inner_deworm_time: "", //上一次体内驱虫时间 时间戳
-      out_deworm_time: "", //上一次体外驱虫时间 时间戳
-      vaccine_time: "", //上一次疫苗事件 时间戳
     },
+    today: "", // 选择时间只能在今天之前
   },
   onLoad(options) {
     this.channel = this.getOpenerEventChannel();
@@ -31,6 +31,14 @@ Page({
     let key = e.currentTarget.dataset.key;
     this.setData({
       [`form.${key}`]: e.detail.value,
+    });
+  },
+  // 保存布尔选项值
+  button(e) {
+    let key = e.currentTarget.dataset.key;
+    let value = e.currentTarget.dataset.value;
+    this.setData({
+      [`form.${key}`]: Number(value),
     });
   },
 });

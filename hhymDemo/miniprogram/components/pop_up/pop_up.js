@@ -40,6 +40,10 @@ Component({
         type: this.app.globalData.pop_content,
       });
       if (this.data.type === "calendar") {
+        wx.showLoading({
+          title: "加载中",
+          mask: true,
+        });
         // 获取实时包月天数和半月天数
         let { data } = await this.app.mycall("set_price");
         // 一打开弹窗就读取入住时间
@@ -53,6 +57,7 @@ Component({
         });
         // 初始化日历列表前 先查计价规则 生成日历的时候就将规则时间段内的价格标注出来
         let res2 = await this.app.mycall("rule_list");
+        wx.hideLoading();
         this.rule_list = res2.data;
         // 一加载组件就生成当月及下月日期列表
         this.init_day_list();

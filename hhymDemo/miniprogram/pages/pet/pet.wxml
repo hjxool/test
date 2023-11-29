@@ -1,22 +1,71 @@
 <view class="index col_layout">
   <!-- 表单 -->
   <view class="form flex_grow">
-    <view class="row_layout">
+    <view class="row_layout" style="margin-top: 0;">
       <text class="flex_shrink">名字</text>
-      <input class="input flex_grow" value="{{form.name}}" type="text" />
+      <input class="input flex_grow" value="{{form.name}}" placeholder="必填" type="text" />
     </view>
 
     <view class="row_layout">
       <text class="flex_shrink">岁数</text>
-      <input class="input flex_grow" value="{{form.age}}" bindblur="save_value" data-key="age" type="number"/>
+      <input class="input flex_grow" value="{{form.age}}" bindblur="save_value" data-key="age" type="number" />
     </view>
 
     <view class="row_layout">
       <text class="flex_shrink">性别</text>
       <view class="row_layout">
-        <view class="button center">母</view>
-        <view class="button center">公</view>
+        <view class="button center {{!form.gender?'red':'gray'}}" catch:tap="button" data-key="gender" data-value="0">母</view>
+        <view class="button center {{form.gender?'red':'gray'}}" catch:tap="button" data-key="gender" data-value="1">公</view>
       </view>
+    </view>
+
+    <view class="row_layout">
+      <text class="flex_shrink">品种</text>
+      <input class="input flex_grow" value="{{form.breed}}" type="text" />
+    </view>
+
+    <view class="row_layout">
+      <text class="flex_shrink">性格</text>
+      <input class="input flex_grow" value="{{form.character}}" type="text" />
+    </view>
+
+    <view class="row_layout">
+      <text class="flex_shrink">是否绝育</text>
+      <view class="row_layout">
+        <view class="button center {{!form.sterile?'red':'gray'}}" catch:tap="button" data-key="sterile" data-value="0">否</view>
+        <view class="button center {{form.sterile?'red':'gray'}}" catch:tap="button" data-key="sterile" data-value="1">是</view>
+      </view>
+    </view>
+
+    <view class="row_layout">
+      <text class="flex_shrink">是否有耳螨</text>
+      <view class="row_layout">
+        <view class="button center {{!form.ear_mite?'red':'gray'}}" catch:tap="button" data-key="ear_mite" data-value="0">否</view>
+        <view class="button center {{form.ear_mite?'red':'gray'}}" catch:tap="button" data-key="ear_mite" data-value="1">是</view>
+      </view>
+    </view>
+
+    <view class="col_layout">
+      <text class="flex_shrink">是否携带猫藓、猫瘟、鼻支等传染病</text>
+      <view class="row_layout">
+        <view class="button center {{!form.disease?'red':'gray'}}" catch:tap="button" data-key="disease" data-value="0">否</view>
+        <view class="button center {{form.disease?'red':'gray'}}" catch:tap="button" data-key="disease" data-value="1">是</view>
+      </view>
+    </view>
+
+    <view class="row_layout">
+      <text class="flex_shrink">上一次驱虫时间</text>
+      <input class="input flex_grow" value="{{form.deworm_time}}" type="text" />
+    </view>
+
+    <view class="row_layout">
+      <text class="flex_shrink">上一次疫苗时间</text>
+      <input class="input flex_grow" value="{{form.vaccine_time}}" placeholder="八个月前需有抗体检测记录" type="text" />
+    </view>
+
+    <view class="col_layout">
+      <text class="flex_shrink">特殊要求(喂药、生骨肉等)</text>
+      <textarea class="input flex_grow" bindblur="save_value" data-key="detail" style="min-height: 100rpx;" auto-height />
     </view>
   </view>
   <!-- 保存编辑或提交 -->

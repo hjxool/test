@@ -7,23 +7,37 @@
   overflow-x: hidden;
   padding: 40rpx 20rpx;
 }
-.form > .row_layout + .row_layout {
+.form > .row_layout,
+.form > .col_layout {
   margin-top: 20rpx;
 }
 .form .input {
   background: rgba(230, 230, 230, 0.5);
   border-radius: 20rpx;
-  padding: 30rpx;
+  padding: 20rpx;
   margin-left: 30rpx;
 }
 /* 表单按钮同一样式 */
-.form > .row_layout .button {
+.form .button {
   font-size: 24rpx;
   border-radius: 400rpx;
   width: 200rpx;
   height: 60rpx;
   margin: 20rpx 0;
   margin-left: 30rpx;
+}
+.form .red {
+  background: rgba(255, 0, 0, 0.04);
+  box-shadow: 0 1px rgba(255, 0, 0, 0.4);
+  color: red;
+}
+.form .gray {
+  box-shadow: 0 1px rgba(128, 128, 128, 0.4);
+  color: rgba(0, 0, 0, 0.6);
+}
+/* 表单项纵向统一样式 */
+.form > .col_layout > text {
+  margin-bottom: 20rpx;
 }
 /* 底部按钮 */
 .foot {
@@ -60,4 +74,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+/* 占位符公共样式 */
+.placeholder{
+  color: rgba(0, 0, 0, 0.6);
 }
