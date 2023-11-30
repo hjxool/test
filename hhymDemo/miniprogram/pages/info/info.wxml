@@ -15,7 +15,7 @@
             <!-- 删除 -->
             <view class="iconfont icon-jinzhite-circle-kuai del" catch:tap="del_pet" data-index="{{index}}"></view>
           </view>
-          <view class="name">{{item.name}}</view>
+          <view class="name text_ellipsis">{{item.name}}</view>
         </view>
         <!-- 添加 -->
         <view class="col_layout flex_shrink" wx:if="{{form.pet.length<(room_type?4:2)}}" catch:tap="turn_to_page" data-page="pet">
@@ -89,9 +89,10 @@
 
     <view class="row_layout">
       <view class="text1 text2">￥</view>
-      <view class="text2 text3">150</view>
+      <view class="text2 text3">{{total_price}}</view>
     </view>
 
-    <button class="button">提交订单</button>
+
+    <button class="button" catch:tap="submit">提交预约</button>
   </view>
 </view>

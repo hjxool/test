@@ -17,7 +17,7 @@ view {
 .form {
   overflow-x: hidden;
 }
-.form > .row {
+.form > .row:not(:last-child) {
   padding: 30rpx;
   border-bottom: 8rpx solid rgba(128, 128, 128, 0.2);
   overflow: hidden;
@@ -59,6 +59,7 @@ view {
 }
 .form > .row1 > .row_layout > .col_layout > .name {
   font-size: 28rpx;
+  max-width: 160rpx;
 }
 .form > .row1 > .row_layout > .col_layout > .add {
   font-size: 80rpx;

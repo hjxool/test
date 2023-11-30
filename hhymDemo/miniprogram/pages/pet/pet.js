@@ -19,10 +19,17 @@ Page({
   onLoad(options) {
     this.channel = this.getOpenerEventChannel();
     // 有收到数据说明是编辑 没有则是新增
-    this.channel.on("pet_data", (data) => {
-      console.log("收到", data);
+    this.channel.on("pet_data", (res) => {
+      console.log("编辑宠物信息", res);
+      // 记录正在编辑的元素位置 待修改或删除时修改对应位置元素
+      this.index = res.index;
+      // 根据表单页的项取值 过滤不需要的字段 如short
+      for (let key in this.data.form) {
+        this.data.form[key] = res.data[key];
+      }
       this.setData({
         edit: true,
+        form: this.data.form,
       });
     });
   },
@@ -40,5 +47,18 @@ Page({
     this.setData({
       [`form.${key}`]: Number(value),
     });
+  },
+  // 新增、修改宠物信息
+  submit(e) {
+    let type = e.currentTarget.dataset.type;
+    let body = {
+      data: this.data.form,
+      type,
+    };
+    if (type === "edit" || type === "del") {
+      body.index = this.index;
+    }
+    this.channel.emit("pet_data", body);
+    wx.navigateBack();
   },
 });

@@ -13,8 +13,9 @@ Page({
       is_read: false, //是否阅读了用户协议
     },
     room_type: 0, //房间类型 豪华间最多四个 普通间最多2个
+    total_price: 0, //合计总价
   },
-  onLoad(options) {
+  async onLoad(options) {
     this.app = getApp();
     // 读取时间
     let start = new Date(this.app.globalData.start_time);
@@ -54,7 +55,6 @@ Page({
     // 读取当前客户信息看是否有记录 有则读取他的宠物信息自动填入计算价格 没有则显示默认价格
     // 提交订单时根据当前用户的openid修改原先的联系人等信息 有记录时读取这些信息
     this.setData({
-      // "form.pet": [{ name: "嘟嘟", short: "嘟" }],
       "form.pet": [],
       "form.start": `${start.getFullYear()}.${
         start.getMonth() + 1
@@ -67,6 +67,26 @@ Page({
       room_type,
       "form.room": room_name,
     });
+    // 根据房间类型 记录总价
+    this.single_price = room_type
+      ? this.app.globalData.single_total_price2
+      : this.app.globalData.single_total_price1;
+    // 查询设置的房价
+    let { data: res } = await this.app.mycall("set_price");
+    if (res) {
+      // 存一下基础价格和优先规则
+      this.base_price = room_type ? res.price2 : res.price1;
+      this.month_day = res.month_day;
+      this.month_discount = res.month_discount;
+      this.half_month_day = res.half_month_day;
+      this.half_month_discount = res.half_month_discount;
+    } else {
+      this.tips("网络异常");
+      this.err = true;
+      // 不往后继续执行计价方法
+      return;
+    }
+    this.calculate_cost();
   },
   // 勾选阅读协议
   is_read() {
@@ -84,8 +104,30 @@ Page({
       case "pet":
         // 监听宠物页确认编辑传回的数据
         body.events = {
-          pet_data(data) {
-            console.log("表单:", data);
+          pet_data: (res) => {
+            console.log("表单:", res);
+            // short用于图标显示 只取第一个字
+            if (res.data.name) {
+              res.data.short = res.data.name.split("")[0];
+            } else {
+              res.data.short = "";
+            }
+            switch (res.type) {
+              case "add":
+                this.data.form.pet.push(res.data);
+                break;
+              case "edit":
+                this.data.form.pet.splice(res.index, 1, res.data);
+                break;
+              case "del":
+                this.data.form.pet.splice(res.index, 1);
+                break;
+            }
+            this.setData({
+              "form.pet": this.data.form.pet,
+            });
+            // 每次宠物列表变动都计算一次价格
+            this.calculate_cost();
           },
         };
         // 如果是编辑而不是新增则传入数据
@@ -93,7 +135,11 @@ Page({
         if (index >= 0) {
           // 有索引值说明点击的是编辑
           body.success = (res) => {
-            res.eventChannel.emit("pet_data", this.data.form.pet[index]);
+            // 编辑时传 当前 位置索引过去 且不能将索引写死在宠物对象中 因为可能会删除中间项 导致索引错误
+            res.eventChannel.emit("pet_data", {
+              data: this.data.form.pet[index],
+              index: index,
+            });
           };
         }
         break;
@@ -114,5 +160,85 @@ Page({
     this.setData({
       "form.pet": this.data.form.pet,
     });
+  },
+  // 计算总价
+  calculate_cost() {
+    let d = this.data.form.total_day;
+    let num = this.data.form.pet.length; //第一只是正常价 多一只加30
+    if (!num) {
+      // 没有填写宠物时不计算 为0
+      this.setData({
+        total_price: 0,
+      });
+      return;
+    }
+    if (d > this.month_day) {
+      this.setData({
+        total_price:
+          (this.base_price + 30 * (num - 1)) * d * this.month_discount,
+      });
+    } else if (d <= this.month_day && d > this.half_month_day) {
+      this.setData({
+        total_price:
+          (this.base_price + 30 * (num - 1)) * d * this.half_month_discount,
+      });
+    } else {
+      // 全局变量已经存了单只的总价 还要计算多只*总天数价格
+      this.setData({
+        total_price: this.single_price + 30 * (num - 1) * d,
+      });
+    }
+  },
+  //#region
+  // 设置提交是否可用
+  // disable(t = false) {
+  //   if (!t) {
+  //     // 如果宠物列表为空、必填项没写不能提交
+  //     if (!this.data.form.pet.length) {
+  //       this.tip("请填写宠物信息再提交");
+  //       t = true;
+  //     }
+  //     if (!this.data.form.name.length) {
+  //       this.tip("请填写联系人");
+  //       t = true;
+  //     }
+  //     if (!this.data.form.phone.length) {
+  //       this.tip("请填写联系电话");
+  //       t = true;
+  //     }
+  //   }
+  //   this.setData({
+  //     err: t,
+  //   });
+  // },
+  //#endregion
+  // 提示信息
+  tip(msg) {
+    wx.showToast({
+      title: msg,
+      icon: "none",
+    });
+    setTimeout(() => {
+      wx.hideToast();
+    }, 1500);
+  },
+  // 提交预约
+  submit() {
+    if (this.err) {
+      this.tip("网络异常不能提交");
+      return;
+    }
+    if (!this.data.form.pet.length) {
+      this.tip("请填写宠物信息再提交");
+      return;
+    }
+    if (!this.data.form.name.length) {
+      this.tip("请填写联系人");
+      return;
+    }
+    if (!this.data.form.phone.length) {
+      this.tip("请填写联系电话");
+      return;
+    }
   },
 });

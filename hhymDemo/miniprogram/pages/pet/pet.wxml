@@ -3,7 +3,7 @@
   <view class="form flex_grow">
     <view class="row_layout" style="margin-top: 0;">
       <text class="flex_shrink">名字</text>
-      <input class="input flex_grow" value="{{form.name}}" placeholder="必填" type="text" />
+      <input class="input flex_grow" value="{{form.name}}" bindblur="save_value" data-key="name" type="text" />
     </view>
 
     <view class="row_layout">
@@ -21,12 +21,12 @@
 
     <view class="row_layout">
       <text class="flex_shrink">品种</text>
-      <input class="input flex_grow" value="{{form.breed}}" type="text" />
+      <input class="input flex_grow" value="{{form.breed}}" bindblur="save_value" data-key="breed" type="text" />
     </view>
 
     <view class="row_layout">
       <text class="flex_shrink">性格</text>
-      <input class="input flex_grow" value="{{form.character}}" type="text" />
+      <input class="input flex_grow" value="{{form.character}}" bindblur="save_value" data-key="character" type="text" />
     </view>
 
     <view class="row_layout">
@@ -55,23 +55,23 @@
 
     <view class="row_layout">
       <text class="flex_shrink">上一次驱虫时间</text>
-      <input class="input flex_grow" value="{{form.deworm_time}}" type="text" />
+      <input class="input flex_grow" value="{{form.deworm_time}}" bindblur="save_value" data-key="deworm_time" type="text" />
     </view>
 
     <view class="row_layout">
       <text class="flex_shrink">上一次疫苗时间</text>
-      <input class="input flex_grow" value="{{form.vaccine_time}}" placeholder="八个月前需有抗体检测记录" type="text" />
+      <input class="input flex_grow" value="{{form.vaccine_time}}" bindblur="save_value" data-key="vaccine_time" placeholder="八个月前需有抗体检测记录" type="text" />
     </view>
 
     <view class="col_layout">
       <text class="flex_shrink">特殊要求(喂药、生骨肉等)</text>
-      <textarea class="input flex_grow" bindblur="save_value" data-key="detail" style="min-height: 100rpx;" auto-height />
+      <textarea class="input flex_grow" value="{{form.detail}}" bindblur="save_value" data-key="detail" style="min-height: 100rpx;" auto-height />
     </view>
   </view>
   <!-- 保存编辑或提交 -->
   <view class="foot flex_shrink">
-    <button class="button orange" wx:if="{{edit}}">修改</button>
-    <button class="button gray" wx:if="{{edit}}">删除</button>
-    <button class="button orange" wx:if="{{!edit}}">添加</button>
+    <button class="button orange" wx:if="{{edit}}" catch:tap="submit" data-type="edit">修改</button>
+    <button class="button gray" wx:if="{{edit}}" catch:tap="submit" data-type="del">删除</button>
+    <button class="button orange" wx:if="{{!edit}}" catch:tap="submit" data-type="add">添加</button>
   </view>
 </view>
