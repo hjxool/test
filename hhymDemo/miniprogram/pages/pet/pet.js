@@ -2,7 +2,7 @@ Page({
   data: {
     edit: false, //false表示新增 true表示编辑
     form: {
-      name: "", //名字
+      name: "", //名字 宠物唯一ID
       age: "", //岁数 校验数字
       gender: 0, //性别 0母 1公
       breed: "", //品种
@@ -51,6 +51,12 @@ Page({
   // 新增、修改宠物信息
   submit(e) {
     let type = e.currentTarget.dataset.type;
+    // 名称必须填 作为宠物唯一ID 且不填会外层显示错误
+    if (!this.data.form.name.length && type !== "del") {
+      // 删除时不用管名称
+      this.tip("名称必须填写");
+      return;
+    }
     let body = {
       data: this.data.form,
       type,
@@ -60,5 +66,15 @@ Page({
     }
     this.channel.emit("pet_data", body);
     wx.navigateBack();
+  },
+  // 提示信息
+  tip(msg) {
+    wx.showToast({
+      title: msg,
+      icon: "none",
+    });
+    setTimeout(() => {
+      wx.hideToast();
+    }, 1500);
   },
 });

@@ -67,10 +67,6 @@ Page({
       room_type,
       "form.room": room_name,
     });
-    // 根据房间类型 记录总价
-    this.single_price = room_type
-      ? this.app.globalData.single_total_price2
-      : this.app.globalData.single_total_price1;
     // 查询设置的房价
     let { data: res } = await this.app.mycall("set_price");
     if (res) {
@@ -86,6 +82,17 @@ Page({
       // 不往后继续执行计价方法
       return;
     }
+    // 根据房间类型 记录总价
+    // 如果用户没有点击日历选择入住时间 single_total_price就没有值
+    // 所以这里需要用读取的基础房价
+    if (!this.app.globalData.single_total_price1) {
+      this.app.globalData.single_total_price1 = res.price1;
+      this.app.globalData.single_total_price2 = res.price2;
+    }
+    this.single_price = room_type
+      ? this.app.globalData.single_total_price2
+      : this.app.globalData.single_total_price1;
+
     this.calculate_cost();
   },
   // 勾选阅读协议
@@ -149,6 +156,13 @@ Page({
   // 失去焦点保存值
   save_value(e) {
     let key = e.currentTarget.dataset.item;
+    if (key === 'phone') {
+      // 校验手机号
+      let reg = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/
+      if (!reg.test(e.detail.value)) {
+        this.tip('请填写正确的号码')
+      }
+    }
     this.setData({
       [`form.${key}`]: e.detail.value,
     });
@@ -240,5 +254,7 @@ Page({
       this.tip("请填写联系电话");
       return;
     }
+    // 此处提交完整数据给接口 再由接口拆分成用户数据(全部数据)和订单数据(部分) 并做用户ID和订单ID之间的关联
+    
   },
 });

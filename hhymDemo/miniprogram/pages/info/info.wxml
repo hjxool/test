@@ -53,7 +53,7 @@
       <input class="input1" bindblur="save_value" data-item="weChat" value="{{form.weChat}}" placeholder="非必填" />
     </view>
     <!-- 从何了解 -->
-    <view class="row row3 col_layout">
+    <view class="row row3 col_layout" style="border: none;">
       <view class="title">从何知道好好养猫家</view>
       <textarea class="input2" bindblur="save_value" data-item="know_form" value="{{form.know_form}}"></textarea>
     </view>

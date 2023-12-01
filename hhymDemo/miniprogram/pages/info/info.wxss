@@ -17,7 +17,7 @@ view {
 .form {
   overflow-x: hidden;
 }
-.form > .row:not(:last-child) {
+.form > .row {
   padding: 30rpx;
   border-bottom: 8rpx solid rgba(128, 128, 128, 0.2);
   overflow: hidden;
