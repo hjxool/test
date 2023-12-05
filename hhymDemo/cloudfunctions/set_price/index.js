@@ -8,6 +8,7 @@ const price = db.collection("set_price");
 exports.main = async (event, context) => {
   // 区分是修改还是查询、新增
   if (event.type === "put") {
+    // 数据库里有数据则更新
     return await price
       .where({ _id: event._id })
       .update({
@@ -29,6 +30,7 @@ exports.main = async (event, context) => {
         }
       );
   } else if (event.type === "post") {
+    // 数据库没数据则新增
     return await price
       .add({
         data: {
@@ -49,6 +51,7 @@ exports.main = async (event, context) => {
         }
       );
   } else {
+    // 否则是查询获取数据
     let { data } = await price.get();
     return { msg: "查询成功", code: 200, data: data[0] };
   }

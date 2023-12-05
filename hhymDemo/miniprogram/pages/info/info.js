@@ -156,11 +156,11 @@ Page({
   // 失去焦点保存值
   save_value(e) {
     let key = e.currentTarget.dataset.item;
-    if (key === 'phone') {
+    if (key === "phone") {
       // 校验手机号
-      let reg = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/
+      let reg = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
       if (!reg.test(e.detail.value)) {
-        this.tip('请填写正确的号码')
+        this.tip("请填写正确的号码");
       }
     }
     this.setData({
@@ -237,7 +237,7 @@ Page({
     }, 1500);
   },
   // 提交预约
-  submit() {
+  async submit() {
     if (this.err) {
       this.tip("网络异常不能提交");
       return;
@@ -254,7 +254,43 @@ Page({
       this.tip("请填写联系电话");
       return;
     }
+    if (!this.data.is_read) {
+      this.tip("请阅读并勾选服务协议");
+      return;
+    }
     // 此处提交完整数据给接口 再由接口拆分成用户数据(全部数据)和订单数据(部分) 并做用户ID和订单ID之间的关联
-    
+    wx.showLoading({
+      title: "订单提交中",
+      mask: true,
+    });
+    // 订单提交中及加载消失后都不能再点击提交
+    this.err = true;
+    // 不需要传用户id，由后端接口获取并写入
+    let {
+      name,
+      phone,
+      weChat,
+      pet,
+      start,
+      end,
+      room,
+      know_form,
+    } = this.data.form;
+    await this.app.mycall("reserve", {
+      name,
+      phone,
+      weChat,
+      pet,
+      start,
+      end,
+      room,
+      know_form,
+      cost: this.data.total_price,
+    });
+    // 提交完返回首页并关闭遮罩
+    setTimeout(() => {
+      wx.navigateBack();
+    }, 500);
+    wx.hideLoading();
   },
 });
