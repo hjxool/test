@@ -54,8 +54,24 @@ Page({
     }
     // 读取当前客户信息看是否有记录 有则读取他的宠物信息自动填入计算价格 没有则显示默认价格
     // 提交订单时根据当前用户的openid修改原先的联系人等信息 有记录时读取这些信息
+    wx.showLoading({
+      title: "加载中",
+      mask: true,
+    });
+    this.customer_type = "post";
+    let { data: customer } = await this.app.mycall("customer", { type: "get" });
+    // 数据库里宠物列表没有短名
+    let pet = [];
+    if (customer) {
+      pet = customer.pet;
+      // 如果数据库中存在当前用户 则为更新 否则新增
+      this.customer_type = "put";
+    }
     this.setData({
-      "form.pet": [],
+      "form.pet": pet.map((e) => {
+        e.short = e.name.split("")[0];
+        return e;
+      }),
       "form.start": `${start.getFullYear()}.${
         start.getMonth() + 1
       }.${start.getDate()}`,
@@ -66,9 +82,14 @@ Page({
       ),
       room_type,
       "form.room": room_name,
+      "form.name": customer?.name || "",
+      "form.phone": customer?.phone || "",
+      "form.weChat": customer?.weChat || "",
+      "form.know_form": customer?.know_form || "",
     });
     // 查询设置的房价
     let { data: res } = await this.app.mycall("set_price");
+    wx.hideLoading();
     if (res) {
       // 存一下基础价格和优先规则
       this.base_price = room_type ? res.price2 : res.price1;
@@ -121,9 +142,25 @@ Page({
             }
             switch (res.type) {
               case "add":
+                for (let val of this.data.form.pet) {
+                  if (val.name === res.data.name) {
+                    this.tip("宠物名重复了哦");
+                    return;
+                  }
+                }
                 this.data.form.pet.push(res.data);
                 break;
               case "edit":
+                for (let i = 0; i < this.data.form.pet.length; i++) {
+                  // 除了自身查看是否有同名
+                  if (
+                    i !== res.index &&
+                    this.data.form.pet[i] === res.data.name
+                  ) {
+                    this.tip("宠物名重复了哦");
+                    return;
+                  }
+                }
                 this.data.form.pet.splice(res.index, 1, res.data);
                 break;
               case "del":
@@ -266,26 +303,30 @@ Page({
     // 订单提交中及加载消失后都不能再点击提交
     this.err = true;
     // 不需要传用户id，由后端接口获取并写入
-    let {
-      name,
-      phone,
-      weChat,
-      pet,
-      start,
-      end,
-      room,
-      know_form,
-    } = this.data.form;
+    let { name, phone, weChat, pet, start, end, know_form } = this.data.form;
     await this.app.mycall("reserve", {
-      name,
-      phone,
-      weChat,
-      pet,
-      start,
-      end,
-      room,
-      know_form,
-      cost: this.data.total_price,
+      type: this.customer_type,
+      params: {
+        name,
+        phone,
+        weChat,
+        // 发送请求时不需要短名参数
+        pet: pet.map((e) => {
+          let t = {}
+          for (let key in e) {
+            // 把short字段剔除
+            if (key !== "short") {
+              t[key] = e[key]
+            }
+          }
+          return t
+        }),
+        start,
+        end,
+        room: this.app.globalData.room,
+        know_form,
+        cost: this.data.total_price,
+      },
     });
     // 提交完返回首页并关闭遮罩
     setTimeout(() => {
