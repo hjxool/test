@@ -34,22 +34,7 @@ async function add_files(params) {
     }
   }
   if (flag) {
-    let res = await file
-      .where({ cloud_path: params.cloud_path, file_name: params.file_name })
-      .update({
-        data: {
-          file_path: params.file_path,
-        },
-      })
-      .then(
-        (res) => true,
-        (err) => false
-      );
-    if (res) {
-      return { msg: "success", code: 200 };
-    } else {
-      return { msg: "更新失败", code: 400 };
-    }
+    return await update_files(params)
   } else {
     let res = await file
       .add({
