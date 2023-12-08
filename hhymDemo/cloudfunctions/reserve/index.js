@@ -45,7 +45,7 @@ exports.main = async (event, context) => {
   return await myCall("customer", {
     type: event.type,
     params: {
-      user_id,
+      _id: user_id,
       order_id: res1.data._id,
       name: event.name,
       phone: event.phone,
