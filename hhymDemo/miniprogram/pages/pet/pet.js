@@ -36,6 +36,18 @@ Page({
   // 失去焦点保存值
   save_value(e) {
     let key = e.currentTarget.dataset.key;
+    // 宠物名是唯一ID，不能重复不能为特殊字符
+    if (key === "name") {
+      let reg = /^[\u4E00-\u9FA5A-Za-z0-9]+$/;
+      if (!reg.test(e.detail.value)) {
+        this.tip('名称只能用中文、数字、字母')
+        // 还原回之前的值
+        this.setData({
+          "form.name": this.data.form.name,
+        });
+        return;
+      }
+    }
     this.setData({
       [`form.${key}`]: e.detail.value,
     });

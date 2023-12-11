@@ -291,7 +291,7 @@ Page({
       this.tip("请填写联系电话");
       return;
     }
-    if (!this.data.is_read) {
+    if (!this.data.form.is_read) {
       this.tip("请阅读并勾选服务协议");
       return;
     }

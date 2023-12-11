@@ -19,6 +19,10 @@ async function myCall(name, data, err = "error") {
 exports.main = async (event, context) => {
   // 获取用户id
   const { OPENID: user_id } = cloud.getWXContext();
+  // 校验字符
+  if (!event.start || !event.end || !event.room) {
+    return { msg: `参数错误:${event}`, code: 400 };
+  }
   // 同步执行 因为创建订单所需的数据是全的 同时又有用户id
   // 等订单创建好后再拿用户id去创建或更新用户信息 这样就不需要创建好用户后再查找修改
   let res1 = await myCall(
@@ -41,6 +45,9 @@ exports.main = async (event, context) => {
   // 创建订单失败直接返回错误信息
   if (res1.code !== 200) {
     return res1;
+  }
+  if (!event.name || !event.phone || !event.pet.length) {
+    return { msg: `参数错误:${event}`, code: 400 };
   }
   return await myCall("customer", {
     type: event.type,
