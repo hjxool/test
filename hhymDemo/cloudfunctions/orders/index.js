@@ -3,7 +3,7 @@ const cloud = require("wx-server-sdk");
 
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV }); // 使用当前云环境
 const db = cloud.database();
-const order = db.collection("customers");
+const order = db.collection("orders");
 // 指令
 const _ = db.command;
 
@@ -82,6 +82,7 @@ async function update_orders(params) {
         // _id 用户id 不能修改
         continue;
       default:
+        // 这里要做区分 如果更新了订单状态 则要更新用户信息中的支出属性
         body[key] = params[key];
         break;
     }
