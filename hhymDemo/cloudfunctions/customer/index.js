@@ -8,17 +8,15 @@ const user = db.collection("customers");
 const _ = db.command;
 
 // 通用调接口方法
-async function myCall(name, data, err = "error") {
+async function myCall(name, data) {
   let body = { name };
   if (data) {
     body.data = data;
   }
-  let res = await cloud.callFunction(body).catch((err) => "err");
-  if (res === "err" || res?.result.code !== 200) {
-    return { msg: err, code: 400 };
-  } else {
-    return { msg: "success", code: 200, data: res.result };
-  }
+  let res = await cloud.callFunction(body).catch((err) => {
+    return { msg: "err", code: 400 };
+  });
+  return res.result;
 }
 
 // 查询用户
@@ -35,10 +33,6 @@ async function get_user(params) {
   // 根据微信号检索
   if (params.weChat) {
     condition.weChat = params.weChat;
-  }
-  // 根据订单号反查用户
-  if (params.order_id) {
-    condition.orders = params.order_id;
   }
   // 根据宠物名反查用户
   if (params.pet_name) {
@@ -70,13 +64,12 @@ async function add_user(params) {
     .add({
       data: {
         _id: params._id,
-        orders: _.push(params.order_id),
         name: params.name,
         phone: params.phone,
         weChat: params.weChat,
         pets: params.pets,
         know_from: params.know_from,
-        pay: 0, //新增用户初始花费为0
+        pay: params.pay,
       },
     })
     .then(
@@ -90,26 +83,15 @@ async function add_user(params) {
   }
 }
 // 更新用户
+// 更新用户不涉及订单 因此传什么字段就存什么
 async function update_user(params) {
   if (!params._id) {
     return { msg: "_id缺失", code: 400 };
   }
-  // 用户订单变更时 统计新用户订单总花费
-  let order_change = false;
   // 更新时字段不固定
   let body = {};
   for (let key in params) {
     switch (key) {
-      case "order_id":
-        // 有可能需要删除订单 因此要做区分
-        // order_id可以是数组或字符串 表示增删一个或多个订单
-        if (params.order_type === "del") {
-          body.orders = _.pullAll(params.order_id);
-        } else {
-          body.orders = _.push(params.order_id);
-        }
-        order_change = true;
-        break;
       case "pets":
         // 整个pets列表进行替换
         body.pets = _.set(params.pets);
@@ -125,21 +107,6 @@ async function update_user(params) {
   if (!Object.entries(body).length) {
     return { msg: "更新参数不能为空", code: 400 };
   }
-  if (order_change) {
-    let res = await myCall(
-      "customer_pay",
-      {
-        // 统计当前操作的用户订单
-        customer_id: params._id,
-      },
-      "统计用户支出失败"
-    )
-    if (res.code!==200) {
-      // 统计失败不更新用户信息
-      return res
-    }
-    body.pay = res.data
-  }
   let res = await user
     .where({
       _id: params._id,
@@ -152,13 +119,42 @@ async function update_user(params) {
       (err) => false
     );
   if (res) {
-    return { msg: "success", code: 200 };
+    // 更新成功后
   } else {
     return { msg: "更新用户失败", code: 400 };
   }
 }
 // 删除用户
-async function del_user(params) {}
+async function del_user(params) {
+  if (!params._id) {
+    return { msg: "_id缺失", code: 400 };
+  }
+  let res = await user
+    .where({
+      _id: params._id,
+    })
+    .remove()
+    .then(
+      (res) => true,
+      (err) => false
+    );
+  if (res) {
+    // 删除成功也要将用户相关的订单一并删除
+    let res2 = await myCall("orders", {
+      type: "del",
+      params: {
+        customer_id: params._id,
+      },
+    });
+    if (res2.code === 200) {
+      return { msg: "success", code: 200 };
+    } else {
+      return { msg: "删除订单失败", code: 400 };
+    }
+  } else {
+    return { msg: "删除用户失败", code: 400 };
+  }
+}
 // 云函数入口函数
 exports.main = async (event, context) => {
   let { type, params } = event;

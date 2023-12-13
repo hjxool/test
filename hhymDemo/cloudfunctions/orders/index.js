@@ -7,6 +7,18 @@ const order = db.collection("orders");
 // 指令
 const _ = db.command;
 
+// 通用调接口方法
+async function myCall(name, data) {
+  let body = { name };
+  if (data) {
+    body.data = data;
+  }
+  let res = await cloud.callFunction(body).catch((err) => {
+    return { msg: "err", code: 400 };
+  });
+  return res.result;
+}
+
 // 获取订单信息
 async function get_orders(params) {
   let condition = {};
@@ -66,9 +78,13 @@ async function add_orders(params) {
 }
 // 更新订单
 async function update_orders(params) {
-  if (!params._id) {
-    return { msg: "_id缺失", code: 400 };
+  // 更新订单可能涉及更新用户支出因此必须要传用户id
+  // 虽然也可以在更新前 查询保存下用户id但是这样也要多操作数据库 没必要 
+  // 前端就能获取到订单记录中的用户id 传过来就是
+  if (!params._id || !params.customer_id) {
+    return { msg: "id缺失", code: 400 };
   }
+  let status_change = false;
   // 更新时字段不固定
   let body = {};
   for (let key in params) {
@@ -81,8 +97,12 @@ async function update_orders(params) {
       case "customer_id":
         // _id 用户id 不能修改
         continue;
-      default:
+      case "status":
         // 这里要做区分 如果更新了订单状态 则要更新用户信息中的支出属性
+        body[key] = params[key];
+        status_change = true;
+        break;
+      default:
         body[key] = params[key];
         break;
     }
@@ -103,6 +123,18 @@ async function update_orders(params) {
       (err) => false
     );
   if (res) {
+    // 如果更新了订单状态则要重新统计所操作用户支出
+    if (status_change) {
+      let res = await myCall("customer_pay", {
+        // 统计当前操作的用户订单
+        customer_id: params.customer_id,
+      });
+      if (res.code !== 200) {
+        // 统计失败不更新用户信息
+        return res;
+      }
+      body.pay = res.data;
+    }
     return { msg: "success", code: 200 };
   } else {
     return { msg: "更新失败", code: 400 };
@@ -110,23 +142,31 @@ async function update_orders(params) {
 }
 // 删除订单
 async function del_orders(params) {
-  if (!params._id) {
-    return { msg: "_id缺失", code: 400 };
+  // 删除订单时 订单id 或 用户id必传至少一个
+  let condition = {};
+  for (let key in params) {
+    switch (key) {
+      case "_id":
+      case "customer_id":
+        condition[key] = params[key];
+        break;
+    }
+  }
+  if (!Object.entries(condition).length) {
+    return { msg: "id缺失", code: 400 };
   }
   let res = await order
-    .where({
-      _id: params._id,
-    })
+    .where(condition)
     .remove()
     .then(
       (res) => true,
       (err) => false
     );
-    if (res) {
-      return { msg: "success", code: 200 };
-    } else {
-      return { msg: "删除失败", code: 400 };
-    }
+  if (res) {
+    return { msg: "success", code: 200 };
+  } else {
+    return { msg: "删除失败", code: 400 };
+  }
 }
 // 云函数入口函数
 exports.main = async (event, context) => {
