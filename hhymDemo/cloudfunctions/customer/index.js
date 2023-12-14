@@ -16,7 +16,7 @@ async function myCall(name, data) {
   let res = await cloud.callFunction(body).catch((err) => {
     return { msg: "err", code: 400 };
   });
-  return res.result;
+  return res.result || res;
 }
 
 // 查询用户
@@ -58,6 +58,7 @@ async function get_user(params) {
   }
 }
 // 新增用户
+// 新增和更新只能选单个
 async function add_user(params) {
   // 新增重复的_id会自动报错不需要查了再添加
   let res = await user
@@ -125,13 +126,16 @@ async function update_user(params) {
   }
 }
 // 删除用户
+// 删除时可以多个
 async function del_user(params) {
-  if (!params._id) {
+  if (!params._id || !params._id.length) {
+    // 删除时必须传id列表
     return { msg: "_id缺失", code: 400 };
   }
   let res = await user
     .where({
-      _id: params._id,
+      // 支持批量删除
+      _id: _.in(params._id),
     })
     .remove()
     .then(
@@ -140,17 +144,12 @@ async function del_user(params) {
     );
   if (res) {
     // 删除成功也要将用户相关的订单一并删除
-    let res2 = await myCall("orders", {
+    return await myCall("orders", {
       type: "del",
       params: {
         customer_id: params._id,
       },
     });
-    if (res2.code === 200) {
-      return { msg: "success", code: 200 };
-    } else {
-      return { msg: "删除订单失败", code: 400 };
-    }
   } else {
     return { msg: "删除用户失败", code: 400 };
   }

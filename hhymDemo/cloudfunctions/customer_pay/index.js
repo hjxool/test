@@ -14,7 +14,7 @@ async function myCall(name, data) {
   let res = await cloud.callFunction(body).catch((err) => {
     return { msg: "err", code: 400 };
   });
-  return res.result;
+  return res.result || res;
 }
 
 // 云函数入口函数

@@ -16,7 +16,24 @@ async function myCall(name, data) {
   let res = await cloud.callFunction(body).catch((err) => {
     return { msg: "err", code: 400 };
   });
-  return res.result;
+  return res.result || res;
+}
+// 计算用户下总支出 并更新用户信息
+async function update_user_pay(customer_id) {
+  let res = await myCall("customer_pay", {
+    customer_id: customer_id,
+  });
+  if (res.code !== 200) {
+    // 统计失败不更新用户信息
+    return res;
+  }
+  return await myCall("customer", {
+    type: "put",
+    params: {
+      _id: customer_id,
+      pay: res.data,
+    },
+  });
 }
 
 // 获取订单信息
@@ -71,6 +88,24 @@ async function add_orders(params) {
       (err) => false
     );
   if (res) {
+    // 新增订单状态为确认才重新统计
+    if (params.status === 1) {
+      let res = await myCall("customer_pay", {
+        // 统计当前操作的用户订单
+        customer_id: params.customer_id,
+      });
+      if (res.code !== 200) {
+        // 统计失败不更新用户信息
+        return res;
+      }
+      return await myCall("customer", {
+        type: "put",
+        params: {
+          _id: params.customer_id,
+          pay: res.data,
+        },
+      });
+    }
     return { msg: "success", code: 200 };
   } else {
     return { msg: "添加失败", code: 400 };
@@ -79,7 +114,7 @@ async function add_orders(params) {
 // 更新订单
 async function update_orders(params) {
   // 更新订单可能涉及更新用户支出因此必须要传用户id
-  // 虽然也可以在更新前 查询保存下用户id但是这样也要多操作数据库 没必要 
+  // 虽然也可以在更新前 查询保存下用户id但是这样也要多操作数据库 没必要
   // 前端就能获取到订单记录中的用户id 传过来就是
   if (!params._id || !params.customer_id) {
     return { msg: "id缺失", code: 400 };
@@ -133,7 +168,13 @@ async function update_orders(params) {
         // 统计失败不更新用户信息
         return res;
       }
-      body.pay = res.data;
+      return await myCall("customer", {
+        type: "put",
+        params: {
+          _id: params.customer_id,
+          pay: res.data,
+        },
+      });
     }
     return { msg: "success", code: 200 };
   } else {
@@ -142,11 +183,17 @@ async function update_orders(params) {
 }
 // 删除订单
 async function del_orders(params) {
-  // 删除订单时 订单id 或 用户id必传至少一个
+  // 删除订单时 订单id 或 用户id 至少传一个
+  // 订单id必须是列表
   let condition = {};
   for (let key in params) {
     switch (key) {
       case "_id":
+        if (!params[key].length) {
+          return { msg: "订单id必须传列表", code: 400 };
+        }
+        condition[key] = _.in(params[key]);
+        break;
       case "customer_id":
         condition[key] = params[key];
         break;
@@ -163,6 +210,11 @@ async function del_orders(params) {
       (err) => false
     );
   if (res) {
+    // 删除用户所有订单时不用统计 删除一个或多个订单时要重新统计
+    if (params._id) {
+      // 有订单id说明不是全删
+      return await update_user_pay(params.customer_id)
+    }
     return { msg: "success", code: 200 };
   } else {
     return { msg: "删除失败", code: 400 };
