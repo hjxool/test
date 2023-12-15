@@ -30,13 +30,9 @@ exports.main = async (event, context) => {
   for (let key in event) {
     switch (key) {
       case "customer_id":
-        condition[key] = event[key];
-        break;
       case "start":
-        condition.start = event.start;
-        break;
       case "end":
-        condition.end = event.end;
+        condition[key] = event[key];
         break;
     }
   }

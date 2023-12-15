@@ -23,19 +23,19 @@ async function myCall(name, data) {
 async function get_user(params) {
   let condition = {};
   // 根据用户名查询
-  if (params.name) {
+  if (params?.name) {
     condition.name = params.name;
   }
   // 根据电话检索
-  if (params.phone) {
+  if (params?.phone) {
     condition.phone = params.phone;
   }
   // 根据微信号检索
-  if (params.weChat) {
+  if (params?.weChat) {
     condition.weChat = params.weChat;
   }
   // 根据宠物名反查用户
-  if (params.pet_name) {
+  if (params?.pet_name) {
     condition["pet.name"] = params.pet_name;
   }
   // 如果参数为空 则查询当前操作用户信息

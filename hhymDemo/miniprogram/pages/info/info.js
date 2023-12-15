@@ -62,7 +62,7 @@ Page({
     let { data: customer } = await this.app.mycall("customer", { type: "get" });
     // 数据库里宠物列表没有短名
     let pet = [];
-    if (customer) {
+    if (customer[0]) {
       pet = customer.pet;
       // 如果数据库中存在当前用户 则为更新 否则新增
       this.customer_type = "put";
@@ -300,11 +300,9 @@ Page({
       title: "订单提交中",
       mask: true,
     });
-    // 订单提交中及加载消失后都不能再点击提交
-    this.err = true;
     // 不需要传用户id，由后端接口获取并写入
     let { name, phone, weChat, pet, start, end, know_form } = this.data.form;
-    await this.app.mycall("reserve", {
+    let res =  await this.app.mycall("reserve", {
       type: this.customer_type,
       params: {
         name,
@@ -328,10 +326,14 @@ Page({
         cost: this.data.total_price,
       },
     });
+    wx.hideLoading();
+    // 如果未成功提交则保持在当前页
+    if (res.code!==200) {
+      return
+    }
     // 提交完返回首页并关闭遮罩
     setTimeout(() => {
       wx.navigateBack();
     }, 500);
-    wx.hideLoading();
   },
 });

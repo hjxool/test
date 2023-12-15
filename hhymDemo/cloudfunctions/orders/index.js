@@ -90,21 +90,7 @@ async function add_orders(params) {
   if (res) {
     // 新增订单状态为确认才重新统计
     if (params.status === 1) {
-      let res = await myCall("customer_pay", {
-        // 统计当前操作的用户订单
-        customer_id: params.customer_id,
-      });
-      if (res.code !== 200) {
-        // 统计失败不更新用户信息
-        return res;
-      }
-      return await myCall("customer", {
-        type: "put",
-        params: {
-          _id: params.customer_id,
-          pay: res.data,
-        },
-      });
+      return await update_user_pay(params.customer_id)
     }
     return { msg: "success", code: 200 };
   } else {
@@ -160,21 +146,7 @@ async function update_orders(params) {
   if (res) {
     // 如果更新了订单状态则要重新统计所操作用户支出
     if (status_change) {
-      let res = await myCall("customer_pay", {
-        // 统计当前操作的用户订单
-        customer_id: params.customer_id,
-      });
-      if (res.code !== 200) {
-        // 统计失败不更新用户信息
-        return res;
-      }
-      return await myCall("customer", {
-        type: "put",
-        params: {
-          _id: params.customer_id,
-          pay: res.data,
-        },
-      });
+      return await update_user_pay(params.customer_id);
     }
     return { msg: "success", code: 200 };
   } else {
@@ -183,7 +155,7 @@ async function update_orders(params) {
 }
 // 删除订单
 async function del_orders(params) {
-  // 删除订单时 订单id 或 用户id 至少传一个
+  // 删除订单时必须传 用户id 可选传 订单id
   // 订单id必须是列表
   let condition = {};
   for (let key in params) {
@@ -213,7 +185,7 @@ async function del_orders(params) {
     // 删除用户所有订单时不用统计 删除一个或多个订单时要重新统计
     if (params._id) {
       // 有订单id说明不是全删
-      return await update_user_pay(params.customer_id)
+      return await update_user_pay(params.customer_id);
     }
     return { msg: "success", code: 200 };
   } else {
