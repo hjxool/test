@@ -8,7 +8,7 @@ Page({
       start: "", //日期
       end: "", //日期
       room: "", //房间
-      know_form: "", //从何知道好好养猫家
+      know_from: "", //从何知道好好养猫家
       total_day: "", //共几天
       is_read: false, //是否阅读了用户协议
     },
@@ -85,7 +85,7 @@ Page({
       "form.name": customer?.name || "",
       "form.phone": customer?.phone || "",
       "form.weChat": customer?.weChat || "",
-      "form.know_form": customer?.know_form || "",
+      "form.know_from": customer?.know_from || "",
     });
     // 查询设置的房价
     let { data: res } = await this.app.mycall("set_price");
@@ -287,9 +287,10 @@ Page({
       this.tip("请填写联系人");
       return;
     }
-    if (!this.data.form.phone.length) {
-      this.tip("请填写联系电话");
-      return;
+    let reg = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
+    if (!reg.test(this.data.form.phone)) {
+      this.tip("请填写正确的号码");
+      return
     }
     if (!this.data.form.is_read) {
       this.tip("请阅读并勾选服务协议");
@@ -301,8 +302,8 @@ Page({
       mask: true,
     });
     // 不需要传用户id，由后端接口获取并写入
-    let { name, phone, weChat, pet, start, end, know_form } = this.data.form;
-    let res =  await this.app.mycall("reserve", {
+    let { name, phone, weChat, pet, know_from } = this.data.form;
+    let res = await this.app.mycall("reserve", {
       type: this.customer_type,
       params: {
         name,
@@ -310,26 +311,28 @@ Page({
         weChat,
         // 发送请求时不需要短名参数
         pet: pet.map((e) => {
-          let t = {}
+          let t = {};
           for (let key in e) {
             // 把short字段剔除
             if (key !== "short") {
-              t[key] = e[key]
+              t[key] = e[key];
             }
           }
-          return t
+          return t;
         }),
-        start,
-        end,
+        // 表单里显示的开始和结束时间是.连接的 不能用
+        // 全局变量里存的是时间戳
+        start: this.app.globalData.start_time,
+        end: this.app.globalData.end_time,
         room: this.app.globalData.room,
-        know_form,
+        know_from,
         cost: this.data.total_price,
       },
     });
     wx.hideLoading();
     // 如果未成功提交则保持在当前页
-    if (res.code!==200) {
-      return
+    if (res.code !== 200) {
+      return;
     }
     // 提交完返回首页并关闭遮罩
     setTimeout(() => {

@@ -59,19 +59,30 @@ async function get_user(params) {
 }
 // 新增用户
 // 新增和更新只能选单个
-async function add_user(params) {
+async function add_user(params, transaction) {
+  let body = {};
+  for (let key in params) {
+    switch (key) {
+      case "_id":
+      case "name":
+      case "phone":
+      case "weChat":
+      case "pets":
+      case "know_from":
+      case "pay":
+        body[key] = params[key];
+        break;
+    }
+  }
+  if (Object.entries(body).length !== 7) {
+    return { msg: "新增用户参数错误", code: 400 };
+  }
+  // 如果传参了事务对象则用事务操作集合
+  let collection = transaction || user;
   // 新增重复的_id会自动报错不需要查了再添加
-  let res = await user
+  let res = await collection
     .add({
-      data: {
-        _id: params._id,
-        name: params.name,
-        phone: params.phone,
-        weChat: params.weChat,
-        pets: params.pets,
-        know_from: params.know_from,
-        pay: params.pay,
-      },
+      data: body,
     })
     .then(
       (res) => true,
@@ -85,7 +96,7 @@ async function add_user(params) {
 }
 // 更新用户
 // 更新用户不涉及订单 因此传什么字段就存什么
-async function update_user(params) {
+async function update_user(params, transaction) {
   if (!params._id) {
     return { msg: "_id缺失", code: 400 };
   }
@@ -108,10 +119,10 @@ async function update_user(params) {
   if (!Object.entries(body).length) {
     return { msg: "更新参数不能为空", code: 400 };
   }
-  let res = await user
-    .where({
-      _id: params._id,
-    })
+  let collection = transaction || user;
+  // 事务只能用doc操作删改查单个记录 考虑到可能用事务操作所以用doc
+  let res = await collection
+    .doc(params._id)
     .update({
       data: body,
     })
@@ -156,17 +167,18 @@ async function del_user(params) {
 }
 // 云函数入口函数
 exports.main = async (event, context) => {
-  let { type, params } = event;
+  let { type, params, transaction } = event;
   switch (type) {
     case "get":
       return await get_user(params);
+    // 新增和更新改为支持事务的形式
     case "post":
-      return await add_user(params);
+      return await add_user(params, transaction);
     case "put":
-      return await update_user(params);
+      return await update_user(params, transaction);
     case "del":
       return await del_user(params);
     default:
-      return { msg: `参数错误:${event}`, code: 400 };
+      return { msg: `参数错误:${JSON.stringify(event)}`, code: 400 };
   }
 };

@@ -1,4 +1,5 @@
 // 云函数入口文件
+const { json } = require("body-parser");
 const cloud = require("wx-server-sdk");
 
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV }); // 使用当前云环境
@@ -67,11 +68,12 @@ async function get_orders(params) {
   }
 }
 // 添加订单
-async function add_orders(params) {
+async function add_orders(params, transaction) {
   if (Object.entries(params).length !== 7) {
     return { msg: "参数缺失", code: 400 };
   }
-  let res = await order
+  let collection = transaction || order;
+  let res = await collection
     .add({
       data: {
         cost: params.cost,
@@ -90,7 +92,7 @@ async function add_orders(params) {
   if (res) {
     // 新增订单状态为确认才重新统计
     if (params.status === 1) {
-      return await update_user_pay(params.customer_id)
+      return await update_user_pay(params.customer_id);
     }
     return { msg: "success", code: 200 };
   } else {
@@ -98,7 +100,7 @@ async function add_orders(params) {
   }
 }
 // 更新订单
-async function update_orders(params) {
+async function update_orders(params, transaction) {
   // 更新订单可能涉及更新用户支出因此必须要传用户id
   // 虽然也可以在更新前 查询保存下用户id但是这样也要多操作数据库 没必要
   // 前端就能获取到订单记录中的用户id 传过来就是
@@ -132,10 +134,9 @@ async function update_orders(params) {
   if (!Object.entries(body).length) {
     return { msg: "更新参数不能为空", code: 400 };
   }
-  let res = await order
-    .where({
-      _id: params._id,
-    })
+  let collection = transaction || order;
+  let res = await collection
+    .doc(params._id)
     .update({
       data: body,
     })
@@ -194,17 +195,17 @@ async function del_orders(params) {
 }
 // 云函数入口函数
 exports.main = async (event, context) => {
-  let { type, params } = event;
+  let { type, params, transaction } = event;
   switch (type) {
     case "get":
       return await get_orders(params);
     case "post":
-      return await add_orders(params);
+      return await add_orders(params, transaction);
     case "put":
-      return await update_orders(params);
+      return await update_orders(params, transaction);
     case "del":
       return await del_orders(params);
     default:
-      return { msg: `参数错误:${event}`, code: 400 };
+      return { msg: `参数错误:${JSON.stringify(event)}`, code: 400 };
   }
 };
