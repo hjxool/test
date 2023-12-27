@@ -59,7 +59,7 @@ async function get_user(params) {
 }
 // 新增用户
 // 新增和更新只能选单个
-async function add_user(params, transaction) {
+async function add_user(params) {
   let body = {};
   for (let key in params) {
     switch (key) {
@@ -77,10 +77,8 @@ async function add_user(params, transaction) {
   if (Object.entries(body).length !== 7) {
     return { msg: "新增用户参数错误", code: 400 };
   }
-  // 如果传参了事务对象则用事务操作集合
-  let collection = transaction || user;
   // 新增重复的_id会自动报错不需要查了再添加
-  let res = await collection
+  let res = await user
     .add({
       data: body,
     })
@@ -96,7 +94,7 @@ async function add_user(params, transaction) {
 }
 // 更新用户
 // 更新用户不涉及订单 因此传什么字段就存什么
-async function update_user(params, transaction) {
+async function update_user(params) {
   if (!params._id) {
     return { msg: "_id缺失", code: 400 };
   }
@@ -119,9 +117,8 @@ async function update_user(params, transaction) {
   if (!Object.entries(body).length) {
     return { msg: "更新参数不能为空", code: 400 };
   }
-  let collection = transaction || user;
   // 事务只能用doc操作删改查单个记录 考虑到可能用事务操作所以用doc
-  let res = await collection
+  let res = await user
     .doc(params._id)
     .update({
       data: body,
@@ -167,15 +164,15 @@ async function del_user(params) {
 }
 // 云函数入口函数
 exports.main = async (event, context) => {
-  let { type, params, transaction } = event;
+  let { type, params } = event;
   switch (type) {
     case "get":
       return await get_user(params);
     // 新增和更新改为支持事务的形式
     case "post":
-      return await add_user(params, transaction);
+      return await add_user(params);
     case "put":
-      return await update_user(params, transaction);
+      return await update_user(params);
     case "del":
       return await del_user(params);
     default:

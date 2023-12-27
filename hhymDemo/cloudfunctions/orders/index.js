@@ -68,12 +68,11 @@ async function get_orders(params) {
   }
 }
 // 添加订单
-async function add_orders(params, transaction) {
+async function add_orders(params) {
   if (Object.entries(params).length !== 7) {
     return { msg: "参数缺失", code: 400 };
   }
-  let collection = transaction || order;
-  let res = await collection
+  let res = await order
     .add({
       data: {
         cost: params.cost,
@@ -100,7 +99,7 @@ async function add_orders(params, transaction) {
   }
 }
 // 更新订单
-async function update_orders(params, transaction) {
+async function update_orders(params) {
   // 更新订单可能涉及更新用户支出因此必须要传用户id
   // 虽然也可以在更新前 查询保存下用户id但是这样也要多操作数据库 没必要
   // 前端就能获取到订单记录中的用户id 传过来就是
@@ -134,8 +133,7 @@ async function update_orders(params, transaction) {
   if (!Object.entries(body).length) {
     return { msg: "更新参数不能为空", code: 400 };
   }
-  let collection = transaction || order;
-  let res = await collection
+  let res = await order
     .doc(params._id)
     .update({
       data: body,
@@ -195,14 +193,14 @@ async function del_orders(params) {
 }
 // 云函数入口函数
 exports.main = async (event, context) => {
-  let { type, params, transaction } = event;
+  let { type, params } = event;
   switch (type) {
     case "get":
       return await get_orders(params);
     case "post":
-      return await add_orders(params, transaction);
+      return await add_orders(params);
     case "put":
-      return await update_orders(params, transaction);
+      return await update_orders(params);
     case "del":
       return await del_orders(params);
     default:

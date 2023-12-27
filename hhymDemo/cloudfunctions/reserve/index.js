@@ -2,6 +2,7 @@
 const cloud = require("wx-server-sdk");
 
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV }); // 使用当前云环境
+const db = cloud.database();
 // 通用调接口方法
 async function myCall(name, data) {
   let body = { name };
@@ -13,6 +14,38 @@ async function myCall(name, data) {
   });
   return res.result || res;
 }
+// 添加订单
+async function add_orders(params, transaction) {
+  if (Object.entries(params).length !== 7) {
+    return { msg: "参数缺失", code: 400 };
+  }
+  let res = await transaction
+    .add({
+      data: {
+        cost: params.cost,
+        customer_id: params.customer_id,
+        start: new Date(params.start).getTime(),
+        end: new Date(params.end).getTime(),
+        pet_name: params.pet_name,
+        room: params.room,
+        status: params.status,
+      },
+    })
+    .then(
+      (res) => true,
+      (err) => false
+    );
+  if (res) {
+    // 新增订单状态为确认才重新统计
+    if (params.status === 1) {
+      return await update_user_pay(params.customer_id);
+    }
+    return { msg: "success", code: 200 };
+  } else {
+    return { msg: "添加失败", code: 400 };
+  }
+}
+
 // 云函数入口函数
 exports.main = async (event, context) => {
   // 获取用户id
@@ -29,9 +62,8 @@ exports.main = async (event, context) => {
   const transaction = await db.startTransaction();
   // 同步执行 因为创建订单所需的数据是全的 同时又有用户id
   // 等订单创建好后再拿用户id去创建或更新用户信息 这样就不需要创建好用户后再查找修改
-  let res1 = await myCall("orders", {
-    type: "post",
-    params: {
+  let res1 = await add_orders(
+    {
       cost: params.cost,
       customer_id: user_id,
       //注 收到的时间是年月日字符串 存在数据库里的是时间戳
@@ -41,8 +73,8 @@ exports.main = async (event, context) => {
       room: params.room,
       status: 0, //-1拒绝 0待处理 1确认
     },
-    transaction: transaction.collection("orders"),
-  });
+    transaction.collection("orders")
+  );
   // 创建订单失败直接返回错误信息
   if (res1.code !== 200) {
     return res1;
