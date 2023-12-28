@@ -2,78 +2,77 @@ Component({
   options: {
     addGlobalClass: true,
   },
-  /**
-   * 组件的属性列表
-   */
-  properties: {},
-
-  /**
-   * 组件的初始数据
-   */
+  properties: {
+    orders: Array, //从父组件传入的订单原始数据
+  },
   data: {
-    orders: [], //订单列表
+    order_list: [], //订单列表
   },
   lifetimes: {
-    attached() {
-      let list = [];
-      let t = {
-        start_time: new Date("2023/7/11"),
-        end_time: new Date("2023/7/20"),
-        rooms: ["标间A", "标间B"],
-        price: 152,
-        status: 0, //0待确认 1已成交 -1已取消
-        _id: "1",
-      };
-      t.start_text = this.format_time_text(t.start_time);
-      t.end_text = this.format_time_text(t.end_time);
-      t.days = Math.ceil(
-        (t.end_time.getTime() - t.start_time.getTime()) / (24 * 60 * 60 * 1000)
-      );
-      t.room = this.format_room_text(t.rooms);
-      list.push(t);
-      let t2 = {
-        start_time: new Date("2023/9/1"),
-        end_time: new Date("2023/9/2"),
-        rooms: ["豪华A"],
-        price: 133,
-        status: 1,
-        _id: "2",
-      };
-      t2.start_text = this.format_time_text(t2.start_time);
-      t2.end_text = this.format_time_text(t2.end_time);
-      t2.days = Math.ceil(
-        (t2.end_time.getTime() - t2.start_time.getTime()) /
-          (24 * 60 * 60 * 1000)
-      );
-      t2.room = this.format_room_text(t2.rooms);
-      list.push(t2);
+    async attached() {
+      this.app = getApp();
+      // 初次加载时查询用户订单
+      let { data: res } = await this.app.mycall("orders", { type: "get" });
+      if (!res) {
+        return;
+      }
       this.setData({
-        orders: list,
+        order_list: this.format_list(res),
       });
     },
   },
-  /**
-   * 组件的方法列表
-   */
   methods: {
     // 将日期对象转换成文字
     format_time_text(date) {
+      if (typeof date === "number") {
+        date = new Date(date);
+      }
       let y = date.getFullYear();
       let m = date.getMonth() + 1;
       let d = date.getDate();
       return `${y}-${m < 10 ? "0" + m : m}-${d < 10 ? "0" + d : d}`;
     },
     // 房间名拼接在一起
-    format_room_text(list) {
-      let t = "";
-      for (let index = 0; index < list.length; index++) {
-        if (index < list.length - 1) {
-          t += `${list[index]}、`;
-        } else {
-          t += list[index];
-        }
+    format_room_text(id) {
+      switch (id) {
+        case "3":
+          return "豪华间1";
+        case "11":
+          return "豪华间2";
+        default:
+          if (id == "1" || id == "2") {
+            return `标准间${id}`;
+          } else if (Number(id) >= 4 && Number(id) <= 10) {
+            return `标准间${Number(id) - 1}`;
+          } else if (id == "2" || id == "13") {
+            return `标准间${Number(id) - 2}`;
+          }
       }
-      return t;
+    },
+    // 将原始数据处理成显示数组
+    format_list(source) {
+      let list = [];
+      for (let val of source) {
+        let t = {
+          start_text: this.format_time_text(val.start),
+          end_text: this.format_time_text(val.end),
+          days: Math.ceil((val.end - val.start) / (24 * 60 * 60 * 1000)),
+          room: this.format_room_text(val.room),
+          price: val.cost,
+          status: val.status,
+          _id: val._id,
+        };
+        list.push(t);
+      }
+      return list;
+    },
+  },
+  observers: {
+    // 当传入的订单数据变化时重新初始化显示的订单列表
+    orders: function (newValue) {
+      this.setData({
+        order_list: this.format_list(newValue),
+      });
     },
   },
 });

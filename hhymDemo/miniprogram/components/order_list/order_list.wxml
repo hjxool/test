@@ -1,9 +1,9 @@
 <view class="order_box col_layout">
-  <view class="order" wx:for="{{orders}}" wx:key="_id">
+  <view class="order" wx:for="{{order_list}}" wx:key="_id">
     <!-- 订单信息 -->
     <view class="flex_grow">
       <view class="color">{{item.start_text}}至{{item.end_text}}</view>
-      <view class="color">{{item.rooms.length}}间/{{item.days}}天</view>
+      <view class="color">{{item.days}}天</view>
       <view class="color">{{item.room}}</view>
     </view>
     <!-- 价格及状态 -->

@@ -117,7 +117,6 @@ async function update_user(params) {
   if (!Object.entries(body).length) {
     return { msg: "更新参数不能为空", code: 400 };
   }
-  // 事务只能用doc操作删改查单个记录 考虑到可能用事务操作所以用doc
   let res = await user
     .doc(params._id)
     .update({
@@ -128,7 +127,7 @@ async function update_user(params) {
       (err) => false
     );
   if (res) {
-    // 更新成功后
+    return { msg: "更新用户成功", code: 200 };
   } else {
     return { msg: "更新用户失败", code: 400 };
   }

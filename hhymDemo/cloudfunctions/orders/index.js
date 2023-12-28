@@ -41,11 +41,11 @@ async function update_user_pay(customer_id) {
 async function get_orders(params) {
   let condition = {};
   // 根据用户id查询订单
-  if (params.customer_id) {
+  if (params?.customer_id) {
     condition.customer_id = params.customer_id;
   }
   // 查询时间段内订单
-  if (params.start && params.end) {
+  if (params?.start && params?.end) {
     // 接收到的参数应当是日期字符串 所以要处理成时间戳与数据库中进行判定
     let start = new Date(params.start).getTime();
     let end = new Date(params.end).getTime();
@@ -53,8 +53,14 @@ async function get_orders(params) {
     condition.end = _.lte(end);
   }
   // 根据订单状态查询订单
-  if (params.status) {
+  if (params?.status) {
     condition.status = params.status;
+  }
+  // 如果参数为空 则查询当前操作用户信息
+  if (!params) {
+    // 获取用户id
+    const { OPENID: user_id } = cloud.getWXContext();
+    condition.customer_id = user_id;
   }
   let res = await order
     .where(condition)

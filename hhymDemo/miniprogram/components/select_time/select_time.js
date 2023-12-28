@@ -2,13 +2,6 @@ Component({
   options: {
     addGlobalClass: true,
   },
-  /**
-   * 组件的属性列表
-   */
-  properties: {},
-  /**
-   * 组件的初始数据
-   */
   data: {
     total: 1, //总共天数
     start_time_text: "08月29日", //开始时间格式化文字

@@ -10,7 +10,7 @@ async function myCall(name, data) {
     body.data = data;
   }
   let res = await cloud.callFunction(body).catch((err) => {
-    return { msg: "err", code: 400 };
+    return { msg: err, code: 400 };
   });
   return res.result || res;
 }

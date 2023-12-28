@@ -23,14 +23,14 @@ App({
   },
   // 通用请求方法
   async mycall(name, data) {
-    console.log("我看看传入的是什么勾八", data);
+    console.log("传参", data);
     let body = { name, data: {} };
     // 如果有传参
     if (data) {
       body.data = data;
     }
     let res = await wx.cloud.callFunction(body).catch((err) => "err");
-    console.log("返回的是什么垃圾", res.result);
+    console.log("返回值", res.result);
     // 如果返回结果失败 通知失败结果 成功则让前端决定如何做
     if (res === "err" || res?.result.code !== 200) {
       wx.showToast({

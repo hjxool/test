@@ -59,11 +59,11 @@ Page({
       mask: true,
     });
     this.customer_type = "post";
-    let { data: customer } = await this.app.mycall("customer", { type: "get" });
+    let { data: [customer] } = await this.app.mycall("customer", { type: "get" });
     // 数据库里宠物列表没有短名
     let pet = [];
-    if (customer[0]) {
-      pet = customer.pet;
+    if (customer) {
+      pet = customer.pets;
       // 如果数据库中存在当前用户 则为更新 否则新增
       this.customer_type = "put";
     }
@@ -211,6 +211,7 @@ Page({
     this.setData({
       "form.pet": this.data.form.pet,
     });
+    this.calculate_cost();
   },
   // 计算总价
   calculate_cost() {

@@ -6,6 +6,12 @@ Component({
     pop_show: false, //显示弹窗
     pop_hide: true, //隐藏弹窗动画
     cur_page: 0, // 当前页
+    orders: [], //查询订单返回的原始数据
+  },
+  lifetimes:{
+    attached(){
+      this.app = getApp()
+    }
   },
   methods: {
     // 显示|隐藏弹窗
@@ -32,7 +38,7 @@ Component({
           });
           // 计算均价
           let dom2 = this.selectComponent("#house_type");
-          dom2.calculate_average_price()
+          dom2.calculate_average_price();
         }
       } else if (event.detail.type === "open pop") {
         this.setData({
@@ -42,10 +48,20 @@ Component({
       }
     },
     // 底部导航栏跳转
-    nav_bar(e) {
-      this.setData({
+    async nav_bar(e) {
+      let data = {
         cur_page: e.detail,
-      });
+      };
+      // 在父组件收到页面切换显示消息
+      // 预定页不用重复刷新 但是订单页需要每次切换到就查询更新一下
+      // 1是订单页
+      if (e.detail) {
+        let { data: res } = await this.app.mycall("orders", { type: "get" });
+        if (res) {
+          data.orders = res
+        }
+      }
+      this.setData(data);
     },
   },
 });
