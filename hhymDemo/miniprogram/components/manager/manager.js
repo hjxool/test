@@ -2,7 +2,6 @@ Component({
   options: {
     addGlobalClass: true,
   },
-  properties: {},
   data: {
     modules: [
       { title: "客户列表", icon: "icon-kehu", page: "customer" },
@@ -36,29 +35,25 @@ Component({
       });
     },
   },
-  /**
-   * 组件的方法列表
-   */
   methods: {
     // 跳转对应页面
     turn_to_page(e) {
       let page = e.currentTarget.dataset.page;
-      let fn2 = (data) => {
-        // 刷新数据的时机 一是从其他页面返回时 二是扫码进入小程序时
-        this.get_data();
+      let from_child = (data) => {
+        // 解析从子页面传递的数据
       };
       // 跳转不同页面触发不同事件
       // 跳转页只负责把获取的所有数据对应传入页面
-      let fn;
+      let send_to_child;
       switch (page) {
         case "confirm":
-          fn = (res) => {
+          send_to_child = (res) => {
             res.eventChannel.emit("comfirm_list", this.list);
           };
           break;
         case "calendar":
         case "customer":
-          fn = (res) => {
+          send_to_child = (res) => {
             let list = [];
             for (let index = 0; index < 3; index++) {
               let t = {
@@ -76,7 +71,7 @@ Component({
           };
           break;
         case "order":
-          fn = (res) => {
+          send_to_child = (res) => {
             let list = [];
             for (let index = 0; index < 3; index++) {
               let t = {
@@ -92,20 +87,20 @@ Component({
           };
           break;
         case "income_count":
-          fn = (res) => {
+          send_to_child = (res) => {
             res.eventChannel.emit("order_list", "");
           };
           break;
         default:
-          fn = (res) => {};
+          send_to_child = (res) => {};
           break;
       }
       wx.navigateTo({
         url: `/pages/${page}/${page}`,
         events: {
-          message: fn2,
+          message: from_child,
         },
-        success: fn,
+        success: send_to_child,
       });
     },
     // 刷新页面数据

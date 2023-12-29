@@ -16,7 +16,9 @@ Page({
       });
     });
   },
+  // 关闭当前页时
   onUnload() {
+    // 将修改后的订单传回主页面
     this.channel.emit("message", {
       msg: "confirm",
       res: this.data.list.length,
