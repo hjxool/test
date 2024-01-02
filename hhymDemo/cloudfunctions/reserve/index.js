@@ -36,10 +36,6 @@ async function add_orders(params, transaction) {
       (err) => false
     );
   if (res) {
-    // 新增订单状态为确认才重新统计
-    if (params.status === 1) {
-      return await update_user_pay(params.customer_id);
-    }
     return { msg: "success", code: 200 };
   } else {
     return { msg: "添加失败", code: 400 };
@@ -71,7 +67,7 @@ exports.main = async (event, context) => {
       end: params.end,
       pet_name: params.pet.map((e) => e.name),
       room: params.room,
-      status: 0, //-1拒绝 0待处理 1确认
+      status: 0, //-1拒绝 0待处理 1确认 2过期
     },
     transaction.collection("orders")
   );
@@ -90,10 +86,9 @@ exports.main = async (event, context) => {
     return res2;
   }
   // 创建或更新用户信息时 不需要用事务对象 因为操作失败也不会写入进去数据
-  let res3 = await myCall("customer", {
-    type: type,
+  let body = {
+    type,
     params: {
-      _id: user_id,
       name: params.name,
       phone: params.phone,
       weChat: params.weChat,
@@ -101,7 +96,13 @@ exports.main = async (event, context) => {
       know_from: params.know_from,
       pay: res2.data,
     },
-  });
+  };
+  if (type === "post") {
+    body.params._id = user_id;
+  } else if (type === "put") {
+    body.condition = { _id: user_id };
+  }
+  let res3 = await myCall("customer", body);
   // 操作用户失败回滚 删除新增订单
   if (res3.code !== 200) {
     await transaction.rollback(res3);

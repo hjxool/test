@@ -41,7 +41,7 @@ exports.main = async (event, context) => {
   }
   let res = await myCall("orders", {
     type: "get",
-    params: condition,
+    condition: condition,
   });
   if (res.code !== 200) {
     return res;

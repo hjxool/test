@@ -20,32 +20,32 @@ async function myCall(name, data) {
 }
 
 // 查询用户
-async function get_user(params) {
-  let condition = {};
+async function get_user(condition) {
+  let c = {};
   // 根据用户名查询
-  if (params?.name) {
-    condition.name = params.name;
+  if (condition?.name) {
+    c.name = condition.name;
   }
   // 根据电话检索
-  if (params?.phone) {
-    condition.phone = params.phone;
+  if (condition?.phone) {
+    c.phone = condition.phone;
   }
   // 根据微信号检索
-  if (params?.weChat) {
-    condition.weChat = params.weChat;
+  if (condition?.weChat) {
+    c.weChat = condition.weChat;
   }
   // 根据宠物名反查用户
-  if (params?.pet_name) {
-    condition["pet.name"] = params.pet_name;
+  if (condition?.pet_name) {
+    c["pet.name"] = condition.pet_name;
   }
   // 如果参数为空 则查询当前操作用户信息
-  if (!params) {
+  if (!condition) {
     // 获取用户id
     const { OPENID: user_id } = cloud.getWXContext();
-    condition._id = user_id;
+    c._id = user_id;
   }
   let res = await user
-    .where(condition)
+    .where(c)
     .get()
     .then(
       (res) => res.data,
@@ -94,8 +94,8 @@ async function add_user(params) {
 }
 // 更新用户
 // 更新用户不涉及订单 因此传什么字段就存什么
-async function update_user(params) {
-  if (!params._id) {
+async function update_user(params,condition) {
+  if (!condition._id) {
     return { msg: "_id缺失", code: 400 };
   }
   // 更新时字段不固定
@@ -118,7 +118,7 @@ async function update_user(params) {
     return { msg: "更新参数不能为空", code: 400 };
   }
   let res = await user
-    .doc(params._id)
+    .doc(condition._id)
     .update({
       data: body,
     })
@@ -134,15 +134,15 @@ async function update_user(params) {
 }
 // 删除用户
 // 删除时可以多个
-async function del_user(params) {
-  if (!params._id || !params._id.length) {
+async function del_user(condition) {
+  if (!condition?._id?.length) {
     // 删除时必须传id列表
     return { msg: "_id缺失", code: 400 };
   }
   let res = await user
     .where({
       // 支持批量删除
-      _id: _.in(params._id),
+      _id: _.in(condition._id),
     })
     .remove()
     .then(
@@ -153,8 +153,8 @@ async function del_user(params) {
     // 删除成功也要将用户相关的订单一并删除
     return await myCall("orders", {
       type: "del",
-      params: {
-        customer_id: params._id,
+      condition: {
+        customer_id: condition._id,
       },
     });
   } else {
@@ -163,17 +163,17 @@ async function del_user(params) {
 }
 // 云函数入口函数
 exports.main = async (event, context) => {
-  let { type, params } = event;
+  let { type, params,condition } = event;
   switch (type) {
     case "get":
-      return await get_user(params);
+      return await get_user(condition);
     // 新增和更新改为支持事务的形式
     case "post":
       return await add_user(params);
     case "put":
-      return await update_user(params);
+      return await update_user(params,condition);
     case "del":
-      return await del_user(params);
+      return await del_user(condition);
     default:
       return { msg: `参数错误:${JSON.stringify(event)}`, code: 400 };
   }

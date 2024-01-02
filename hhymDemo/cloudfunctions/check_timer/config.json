@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "openapi": []
+  },
+  "triggers": [{
+    "name": "check_orders_and_rule_list",
+    "type": "timer",
+    "config": "0 0 5/12 * * * *"
+  }]
+}

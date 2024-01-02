@@ -9,29 +9,28 @@ Component({
       { title: "计价规则", icon: "icon-guize", page: "price_rule" },
       { title: "单价设置", icon: "icon-tixianguize", page: "room_price" },
       { title: "收入统计", icon: "icon-shuzhuangtu", page: "income_count" },
-      { title: "上传图片", icon: "icon-mn_shangchuantupian_fill", page: "upload_photo" },
+      {
+        title: "上传图片",
+        icon: "icon-mn_shangchuantupian_fill",
+        page: "upload_photo",
+      },
     ],
     confirm_num: 0, //待确认订单数
   },
   lifetimes: {
     // 组件实例进入节点树时执行
-    attached() {
+    async attached() {
       this.app = getApp();
-      // 临时 生成确认订单
-      let st = new Date("2023/7/1");
-      let et = new Date("2023/7/7");
-      this.list = [];
-      for (let index = 0; index < 10; index++) {
-        let t = {
-          name: "张三",
-          start_time: st.getTime(),
-          end_time: et.getTime(),
-          room: ["A01", "A02"],
-        };
-        this.list.push(t);
-      }
+      // 查询订单
+      let { data: res } = await this.app.mycall("orders", {
+        type: "get",
+        params: {
+          status: 0, //查询待确认订单
+        },
+      });
+      this.order_list = res || [];
       this.setData({
-        confirm_num: this.list.length,
+        confirm_num: this.order_list.length, //订单数量
       });
     },
   },
@@ -43,12 +42,11 @@ Component({
         // 解析从子页面传递的数据
       };
       // 跳转不同页面触发不同事件
-      // 跳转页只负责把获取的所有数据对应传入页面
       let send_to_child;
       switch (page) {
         case "confirm":
           send_to_child = (res) => {
-            res.eventChannel.emit("comfirm_list", this.list);
+            res.eventChannel.emit("comfirm_list", this.order_list);
           };
           break;
         case "calendar":

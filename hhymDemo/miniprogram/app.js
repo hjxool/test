@@ -30,7 +30,7 @@ App({
       body.data = data;
     }
     let res = await wx.cloud.callFunction(body).catch((err) => "err");
-    console.log("返回值", res.result);
+    console.log("返回值", res);
     // 如果返回结果失败 通知失败结果 成功则让前端决定如何做
     if (res === "err" || res?.result.code !== 200) {
       wx.showToast({

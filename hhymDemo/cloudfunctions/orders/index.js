@@ -30,40 +30,44 @@ async function update_user_pay(customer_id) {
   }
   return await myCall("customer", {
     type: "put",
-    params: {
+    condition: {
       _id: customer_id,
+    },
+    params: {
       pay: res.data,
     },
   });
 }
 
-// 获取订单信息
-async function get_orders(params) {
-  let condition = {};
+// 获取订单信息 -1取消订单 0待确认 1确认订单 2过期
+async function get_orders(condition) {
+  let c = {};
   // 根据用户id查询订单
-  if (params?.customer_id) {
-    condition.customer_id = params.customer_id;
+  if (condition?.customer_id) {
+    c.customer_id = condition.customer_id;
   }
-  // 查询时间段内订单
-  if (params?.start && params?.end) {
-    // 接收到的参数应当是日期字符串 所以要处理成时间戳与数据库中进行判定
-    let start = new Date(params.start).getTime();
-    let end = new Date(params.end).getTime();
-    condition.start = _.gte(start);
-    condition.end = _.lte(end);
+  // 根据时间查询
+  // 接收到的参数应当是日期字符串 所以要处理成时间戳与数据库中进行判定
+  if (condition?.start) {
+    let start = new Date(condition.start).getTime();
+    c.start = _.gte(start);
+  }
+  if (condition?.end) {
+    let end = new Date(condition.end).getTime();
+    c.end = _.lte(end);
   }
   // 根据订单状态查询订单
-  if (params?.status) {
-    condition.status = params.status;
+  if (condition?.status) {
+    c.status = condition.status;
   }
   // 如果参数为空 则查询当前操作用户信息
-  if (!params) {
+  if (!condition) {
     // 获取用户id
     const { OPENID: user_id } = cloud.getWXContext();
-    condition.customer_id = user_id;
+    c.customer_id = user_id;
   }
   let res = await order
-    .where(condition)
+    .where(c)
     .get()
     .then((res) => res.data)
     .catch((err) => false);
@@ -105,13 +109,13 @@ async function add_orders(params) {
   }
 }
 // 更新订单
-async function update_orders(params) {
+async function update_orders(params, condition) {
   // 更新订单可能涉及更新用户支出因此必须要传用户id
   // 虽然也可以在更新前 查询保存下用户id但是这样也要多操作数据库 没必要
   // 前端就能获取到订单记录中的用户id 传过来就是
-  if (!params._id || !params.customer_id) {
-    return { msg: "id缺失", code: 400 };
-  }
+  // if (!params._id || !params.customer_id) {
+  //   return { msg: "id缺失", code: 400 };
+  // }
   let status_change = false;
   // 更新时字段不固定
   let body = {};
@@ -140,7 +144,7 @@ async function update_orders(params) {
     return { msg: "更新参数不能为空", code: 400 };
   }
   let res = await order
-    .doc(params._id)
+    .where(condition)
     .update({
       data: body,
     })
@@ -150,8 +154,8 @@ async function update_orders(params) {
     );
   if (res) {
     // 如果更新了订单状态则要重新统计所操作用户支出
-    if (status_change) {
-      return await update_user_pay(params.customer_id);
+    if (status_change && condition.customer_id) {
+      return await update_user_pay(condition.customer_id);
     }
     return { msg: "success", code: 200 };
   } else {
@@ -159,28 +163,28 @@ async function update_orders(params) {
   }
 }
 // 删除订单
-async function del_orders(params) {
+async function del_orders(condition) {
   // 删除订单时必须传 用户id 可选传 订单id
   // 订单id必须是列表
-  let condition = {};
-  for (let key in params) {
+  let c = {};
+  for (let key in condition) {
     switch (key) {
       case "_id":
-        if (!params[key].length) {
+        if (!condition[key].length) {
           return { msg: "订单id必须传列表", code: 400 };
         }
-        condition[key] = _.in(params[key]);
+        c[key] = _.in(condition[key]);
         break;
       case "customer_id":
-        condition[key] = params[key];
+        c[key] = condition[key];
         break;
     }
   }
-  if (!Object.entries(condition).length) {
+  if (!Object.entries(c).length) {
     return { msg: "id缺失", code: 400 };
   }
   let res = await order
-    .where(condition)
+    .where(c)
     .remove()
     .then(
       (res) => true,
@@ -188,9 +192,9 @@ async function del_orders(params) {
     );
   if (res) {
     // 删除用户所有订单时不用统计 删除一个或多个订单时要重新统计
-    if (params._id) {
+    if (c._id) {
       // 有订单id说明不是全删
-      return await update_user_pay(params.customer_id);
+      return await update_user_pay(c.customer_id);
     }
     return { msg: "success", code: 200 };
   } else {
@@ -199,16 +203,16 @@ async function del_orders(params) {
 }
 // 云函数入口函数
 exports.main = async (event, context) => {
-  let { type, params } = event;
+  let { type, params, condition } = event;
   switch (type) {
     case "get":
-      return await get_orders(params);
+      return await get_orders(condition);
     case "post":
       return await add_orders(params);
     case "put":
-      return await update_orders(params);
+      return await update_orders(params, condition);
     case "del":
-      return await del_orders(params);
+      return await del_orders(condition);
     default:
       return { msg: `参数错误:${JSON.stringify(event)}`, code: 400 };
   }
