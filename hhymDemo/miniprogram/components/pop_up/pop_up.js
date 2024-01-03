@@ -56,7 +56,7 @@ Component({
           "tip.price2": data.price2,
         });
         // 初始化日历列表前 先查计价规则 生成日历的时候就将规则时间段内的价格标注出来
-        let res2 = await this.app.mycall("rule_list");
+        let res2 = await this.app.mycall("rule_list", { type: "get" });
         wx.hideLoading();
         this.rule_list = res2.data;
         // 一加载组件就生成当月及下月日期列表
@@ -297,7 +297,10 @@ Component({
         }, 2000);
         return;
       }
-      let res = await this.app.mycall("rule_list", data);
+      let res = await this.app.mycall("rule_list", {
+        type: "post",
+        params: data,
+      });
       if (res) {
         this.close_pop("add_rule");
       }

@@ -143,8 +143,25 @@ async function update_orders(params, condition) {
   if (!Object.entries(body).length) {
     return { msg: "更新参数不能为空", code: 400 };
   }
+  // 因为涉及时间 不能直接照搬传参
+  let c = {};
+  for (let key in condition) {
+    switch (key) {
+      case "start":
+        let start = new Date(condition.start).getTime();
+        c.start = _.gte(start);
+        break;
+      case "end":
+        let end = new Date(condition.end).getTime();
+        c.end = _.lte(end);
+        break;
+      default:
+        c[key] = condition[key];
+        break;
+    }
+  }
   let res = await order
-    .where(condition)
+    .where(c)
     .update({
       data: body,
     })
@@ -192,7 +209,7 @@ async function del_orders(condition) {
     );
   if (res) {
     // 删除用户所有订单时不用统计 删除一个或多个订单时要重新统计
-    if (c._id) {
+    if (c._id && c.customer_id) {
       // 有订单id说明不是全删
       return await update_user_pay(c.customer_id);
     }
