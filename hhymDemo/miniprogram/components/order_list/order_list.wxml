@@ -9,9 +9,10 @@
     <!-- 价格及状态 -->
     <view class="flex_shrink col_layout">
       <view>￥{{item.price}}</view>
-      <view class="{{item.status==-1?'gray':item.status?'green':'alert'}}">
-        {{item.status==-1?'已取消':item.status?'已成交':'待确认'}}
-      </view>
+      <view class="gray" wx:if="{{item.status==-1}}">已取消</view>
+      <view class="gray" wx:if="{{item.status==2}}">已过期</view>
+      <view class="green" wx:if="{{item.status==1}}">已确认</view>
+      <view class="alert" wx:if="{{item.status==0}}">待确认</view>
     </view>
   </view>
 </view>

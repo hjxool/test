@@ -57,7 +57,8 @@ async function get_orders(condition) {
     c.end = _.lte(end);
   }
   // 根据订单状态查询订单
-  if (condition?.status) {
+  // 订单状态是数字 0也会判断为空
+  if (typeof condition?.status !== "undefined") {
     c.status = condition.status;
   }
   // 如果参数为空 则查询当前操作用户信息
@@ -132,7 +133,10 @@ async function update_orders(params, condition) {
       case "status":
         // 这里要做区分 如果更新了订单状态 则要更新用户信息中的支出属性
         body[key] = params[key];
-        status_change = true;
+        if (params[key] == 1) {
+          // 只有更改为确认 才统计
+          status_change = true;
+        }
         break;
       default:
         body[key] = params[key];

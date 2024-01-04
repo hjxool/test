@@ -1,14 +1,14 @@
 <view class="index">
-  <view class="box row_layout" wx:for="{{list}}">
+  <view class="box row_layout" wx:for="{{list}}" wx:key="_id">
     <view class="flex_grow">
       <view class="text">客户名：{{item.name}}</view>
-      <view class="text">预定时间：{{item.start}}~{{item.end}}</view>
+      <view class="text">预定时间：{{item.start_text}}~{{item.end_text}}</view>
       <view class="text">房间：{{item.room_text}}</view>
     </view>
 
     <view class="flex_shrink row_layout">
-      <view class="iconfont icon-queren icon icon1 flex_shrink" catch:tap="confirm" data-index="{{index}}"></view>
-      <view class="iconfont icon-quxiao icon icon2 flex_shrink" catch:tap="cancel" data-index="{{index}}"></view>
+      <view class="iconfont icon-queren icon icon1 flex_shrink" catch:tap="edit_order" data-index="{{index}}" data-type="confirm"></view>
+      <view class="iconfont icon-quxiao icon icon2 flex_shrink" catch:tap="edit_order" data-index="{{index}}" data-type="cancel"></view>
     </view>
   </view>
 </view>

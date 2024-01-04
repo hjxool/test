@@ -9,7 +9,7 @@
   </view>
   <!-- 订单列表 -->
   <view class="body flex_grow">
-    <view class="box" wx:for="{{list}}">
+    <view class="box" wx:for="{{list}}" wx:key="_id">
       <view class="row_layout">
         <view class="title">时间：</view>
         <view class="text">{{item.start_text}}~{{item.end_text}}</view>
@@ -17,12 +17,7 @@
 
       <view class="row_layout">
         <view class="title">金额：</view>
-        <view class="text">{{item.price}}</view>
-      </view>
-
-      <view class="row_layout">
-        <view class="title">客户名：</view>
-        <view class="text">{{item.name}}</view>
+        <view class="text">{{item.cost}}</view>
       </view>
 
       <view class="row_layout">

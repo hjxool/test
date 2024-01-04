@@ -24,7 +24,7 @@ Component({
       // 查询订单
       let { data: res } = await this.app.mycall("orders", {
         type: "get",
-        params: {
+        condition: {
           status: 0, //查询待确认订单
         },
       });
@@ -38,11 +38,19 @@ Component({
     // 跳转对应页面
     turn_to_page(e) {
       let page = e.currentTarget.dataset.page;
-      let from_child = (data) => {
+      let from_child = (res) => {
         // 解析从子页面传递的数据
+        switch (res.type) {
+          case "confirm":
+            this.order_list = res.data;
+            this.setData({
+              confirm_num: this.order_list.length,
+            });
+            break;
+        }
       };
       // 跳转不同页面触发不同事件
-      let send_to_child;
+      let send_to_child = () => {};
       switch (page) {
         case "confirm":
           send_to_child = (res) => {
@@ -66,22 +74,6 @@ Component({
               list.push(t);
             }
             res.eventChannel.emit("customer_list", list);
-          };
-          break;
-        case "order":
-          send_to_child = (res) => {
-            let list = [];
-            for (let index = 0; index < 3; index++) {
-              let t = {
-                start: new Date("2023/7/1"),
-                end: new Date("2023/8/1"),
-                name: "张三",
-                price: 750,
-                room: ["A01", "A02"],
-              };
-              list.push(t);
-            }
-            res.eventChannel.emit("order_list", list);
           };
           break;
         case "income_count":

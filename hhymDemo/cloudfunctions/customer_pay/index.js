@@ -4,6 +4,7 @@ const cloud = require("wx-server-sdk");
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV }); // 使用当前云环境
 const db = cloud.database();
 const _ = db.command;
+const order = db.collection("orders");
 
 // 通用调接口方法
 async function myCall(name, data) {
@@ -39,10 +40,20 @@ exports.main = async (event, context) => {
   if (Object.entries(condition).length === 1) {
     return { msg: "参数错误", code: 400 };
   }
-  let res = await myCall("orders", {
-    type: "get",
-    condition: condition,
-  });
+  // 遇到一个问题:调用订单接口修改时需要调用收入统计接口
+  // 而收入统计接口又要调用订单接口查询 导致callFunction方法直接报错
+  // 所以这里不能复用调用订单接口 只能重写方法
+  // let res = await myCall("orders", {
+  //   type: "get",
+  //   condition: condition,
+  // });
+  let res = await order
+    .where(condition)
+    .get()
+    .then(
+      (res) => ({ msg: "统计查询订单成功", code: 200, data: res.data }),
+      (err) => ({ msg: "统计查询订单失败", code: 400 })
+    );
   if (res.code !== 200) {
     return res;
   }
