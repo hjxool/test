@@ -6,10 +6,6 @@ Page({
   onLoad(options) {
     this.app = getApp()
     // 每次打开查询全部订单
-    // this.app.mycall('orders',{
-    //   type:'get',
-
-    // })
   },
   select_time(e) {
     this.setData({
