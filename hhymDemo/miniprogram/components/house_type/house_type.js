@@ -68,7 +68,7 @@ Component({
         // 小于半月天数的根据计价规则计算
         if (!this.rule_list) {
           // 如果没查过计价规则列表
-          let { data } = await this.app.mycall("rule_list");
+          let { data } = await this.app.mycall("rule_list", { type: "get" });
           this.rule_list = data;
         }
         // 计算方式 遍历规则列表 挨个对比 所选日期 是否在 规则时间段内 如果匹配则应用规则内价格
