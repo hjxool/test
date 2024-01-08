@@ -34,7 +34,7 @@ App({
     // 如果返回结果失败 通知失败结果 成功则让前端决定如何做
     if (res === "err" || res?.result.code !== 200) {
       wx.showToast({
-        title: res?.result?.msg || "error",
+        title: res?.result?.msg || "callFunction异常",
         icon: "none",
       });
       setTimeout(() => {
