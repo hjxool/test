@@ -3,9 +3,10 @@ Page({
     list: [], //订单列表
     select_date: "", //时间筛选
   },
-  onLoad(options) {
+  async onLoad(options) {
     this.app = getApp()
     // 每次打开查询全部订单
+    await this.get_data()
   },
   select_time(e) {
     this.setData({
@@ -34,4 +35,10 @@ Page({
     let t = new Date(time);
     return `${t.getFullYear()}.${t.getMonth() + 1}.${t.getDate()}`;
   },
+  // 获取订单列表
+  async get_data(){
+    this.app.mycall('get_orders_by_paging',{
+      
+    })
+  }
 });

@@ -25,13 +25,21 @@ exports.main = async (event, context) => {
         break;
     }
   }
-  return await order
-    .where(c)
+  let d = await order.where(c);
+  let { total } = await d.count();
+  return await d
     .skip((page_num - 1) * page_size)
     .limit(page_size)
     .get()
     .then(
-      (res) => ({ msg: "分页查询订单成功", code: 200, data: res.data }),
+      (res) => ({
+        msg: "分页查询订单成功",
+        code: 200,
+        data: {
+          total,
+          data: res.data,
+        },
+      }),
       (err) => ({ msg: "分页查询订单失败", code: 400 })
     );
 };
