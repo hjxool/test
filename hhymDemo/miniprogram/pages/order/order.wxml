@@ -1,10 +1,20 @@
 <view class="index col_layout">
   <!-- 切换时间 -->
-  <view class="head row_layout flex_shrink">
-    <picker mode="date" value="{{select_date}}" start="2023-8-1" bindchange="select_time">
-      <view class="title">
-        时间筛选: {{select_date?select_date:'无'}}
-      </view>
+  <view class="head flex_shrink">
+    <!-- 时间筛选 -->
+    <picker mode="date" value="{{select_date}}" start="2023-8-1" bindchange="select_value" bindcancel="clear_value" data-tag="select_date">
+      <view hidden="{{select_date}}" class="text">时间</view>
+      <view hidden="{{!select_date}}" class="text yellow">{{select_date}}</view>
+    </picker>
+    <!-- 用户筛选 -->
+    <picker mode="selector" value="{{select_user}}" range="{{user_list}}" bindchange="select_value" bindcancel="clear_value" data-tag="select_user" range-key="name">
+      <view hidden="{{user_list[select_user]}}" class="text">用户</view>
+      <view hidden="{{!user_list[select_user]}}" class="text yellow">{{user_list[select_user].name}}</view>
+    </picker>
+    <!-- 订单状态筛选 -->
+    <picker mode="selector" value="{{select_status}}" range="{{order_status}}" bindchange="select_value" bindcancel="clear_value" data-tag="select_status" range-key="label">
+      <view hidden="{{order_status[select_status]}}" class="text">订单状态</view>
+      <view hidden="{{!order_status[select_status]}}" class="text yellow">{{order_status[select_status].label}}</view>
     </picker>
   </view>
   <!-- 订单列表 -->

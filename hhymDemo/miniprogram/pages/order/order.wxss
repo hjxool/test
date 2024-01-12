@@ -1,14 +1,20 @@
 .index {
   height: 100%;
-  padding: 20rpx;
+  padding: 20rpx 0;
 }
 /* 头部检索 */
-.head{
-  padding: 40rpx;
-  align-self: center;
+.head {
+  padding: 40rpx 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  justify-items: center;
 }
-.head .title {
+.head .text {
   font-size: 32rpx;
+}
+.head .yellow {
+  color: #ffa500;
 }
 /* 内容 */
 .body {
