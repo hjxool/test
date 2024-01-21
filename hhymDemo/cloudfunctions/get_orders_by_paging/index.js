@@ -8,7 +8,7 @@ const _ = db.command;
 
 // 云函数入口函数
 exports.main = async (event, context) => {
-  // 帅选条件和分页不是一个方法 还是分开接收
+  // 筛选条件和分页不是一个方法 还是分开接收
   let { condition, page_num, page_size } = event;
   let c = {};
   for (let key in condition) {
