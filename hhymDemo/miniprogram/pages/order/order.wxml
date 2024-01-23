@@ -18,11 +18,18 @@
     </picker>
   </view>
   <!-- 订单列表 -->
-  <view class="body flex_grow">
+  <scroll-view class="body flex_grow" scroll-y lower-threshold="50" bindscrolltolower="load_next">
     <view class="box" wx:for="{{list}}" wx:key="_id">
       <view class="row_layout">
         <view class="title">时间：</view>
         <view class="text">{{item.start_text}}~{{item.end_text}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">宠物：</view>
+        <view class="text" wx:for="{{item.pet_name}}" wx:for-item="pet" wx:for-index="pet_i">
+          {{pet}}{{pet_i<item.pet_name.length-1?'、':''}}
+        </view>
       </view>
 
       <view class="row_layout">
@@ -35,5 +42,5 @@
         <view class="text">{{item.room_text}}</view>
       </view>
     </view>
-  </view>
+  </scroll-view>
 </view>

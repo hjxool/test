@@ -24,10 +24,12 @@ Page({
   // 选择时间等
   select_value(e) {
     let { tag } = e.currentTarget.dataset;
-    console.log(e.detail.value);
     this.setData({
       [tag]: e.detail.value,
     });
+    // 每次选完从第一页查
+    this.data.page_num = 1
+    this.get_data()
   },
   // 选择器点取消清除值
   clear_value(e) {
@@ -89,6 +91,7 @@ Page({
           end_text: this.format_time_text(e.end),
           cost: e.cost,
           room_text: this.format_room_text(e.room),
+          pet_name: e.pet_name,
         })),
       });
     }
@@ -104,5 +107,14 @@ Page({
         user_list: res,
       });
     }
+  },
+  // 加载下一页
+  load_next(e) {
+    // 大于等于总页数时不执行
+    if (this.data.page_num >= this.total_page) {
+      return;
+    }
+    this.data.page_num++;
+    this.get_data();
   },
 });

@@ -20,29 +20,32 @@
 .body {
   box-sizing: border-box;
   padding: 20rpx;
-  margin: 0 40rpx 40rpx;
+  /* margin: 0 40rpx 40rpx; */
   background: #fff;
   border-radius: 20rpx;
   overflow: auto;
+  align-self: center;
+  margin-bottom: 40rpx;
+  width: 90%;
 }
-.body > .box {
+.body .box {
   padding: 20rpx;
 }
-.body > .box:not(:last-child) {
+.body .box:not(:last-child) {
   border-bottom: 1px solid #808080;
 }
-.body > .box > .row_layout:not(:last-child) {
+.body .box > .row_layout:not(:last-child) {
   margin-bottom: 20rpx;
 }
-.body > .box .title {
+.body .box .title {
   font-size: 32rpx;
   flex-shrink: 0;
 }
-.body > .box .text {
+.body .box .text {
   font-size: 28rpx;
   color: #808080;
   overflow: hidden;
 }
-.body > .box .flex_grow {
+.body .box .flex_grow {
   word-wrap: break-word;
 }
