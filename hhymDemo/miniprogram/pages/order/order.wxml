@@ -19,27 +19,46 @@
   </view>
   <!-- 订单列表 -->
   <scroll-view class="body flex_grow" scroll-y lower-threshold="50" bindscrolltolower="load_next">
-    <view class="box" wx:for="{{list}}" wx:key="_id">
-      <view class="row_layout">
-        <view class="title">时间：</view>
-        <view class="text">{{item.start_text}}~{{item.end_text}}</view>
-      </view>
+    <view class="col_layout" wx:for="{{list}}" wx:key="_id">
+      <!-- 订单内容 -->
+      <view class="box" catch:tap="select_order" data-id="{{item._id}}" style="border: {{index==list.length-1?'none':''}};">
+        <view class="row_layout">
+          <view class="title">时间：</view>
+          <block wx:if="{{edit.is_edit&&edit.select==item._id}}">
+            <picker mode="date" value="{{edit.start_time}}" start="2023-8-1" bindchange="edit_order_value" data-tag="edit.start">
+              <view class="text text2">{{edit.start_text}}</view>
+            </picker>
+            <view class="text yellow">~</view>
+            <picker mode="date" value="{{edit.end_time}}" start="2023-8-1" bindchange="edit_order_value" data-tag="edit.end">
+              <view class="text text2">{{edit.end_text}}</view>
+            </picker>
+          </block>
 
-      <view class="row_layout">
-        <view class="title">宠物：</view>
-        <view class="text" wx:for="{{item.pet_name}}" wx:for-item="pet" wx:for-index="pet_i">
-          {{pet}}{{pet_i<item.pet_name.length-1?'、':''}}
+          <view class="text" wx:else>{{item.start_text}}~{{item.end_text}}</view>
+        </view>
+
+        <view class="row_layout">
+          <view class="title">宠物：</view>
+          <input class="weui-input" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.pet_name}}" bindconfirm="edit_order_value" data-tag="edit.pet_name"/>
+
+          <view class="text" wx:else>{{item.pet_name}}</view>      
+        </view>
+
+        <view class="row_layout">
+          <view class="title">金额：</view>
+          <view class="text">{{item.cost}}</view>
+        </view>
+
+        <view class="row_layout">
+          <view class="title">房间：</view>
+          <view class="text">{{item.room_text}}</view>
         </view>
       </view>
-
-      <view class="row_layout">
-        <view class="title">金额：</view>
-        <view class="text">{{item.cost}}</view>
-      </view>
-
-      <view class="row_layout">
-        <view class="title">房间：</view>
-        <view class="text">{{item.room_text}}</view>
+      <!-- 操作按钮 -->
+      <view class="foot row_layout" style="height: {{edit.select==item._id?'100rpx':'0'}};">
+        <button class="btn" wx:if="{{edit.is_edit}}" catch:tap="edit_order" data-tag="save" data-index="{{index}}" type="primary" size="mini">保存</button>
+        <button class="btn" wx:if="{{!edit.is_edit}}" catch:tap="edit_order" data-tag="edit" data-index="{{index}}" type="default" size="mini">编辑</button>
+        <button class="btn" type="warn" size="mini">删除</button>
       </view>
     </view>
   </scroll-view>

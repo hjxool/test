@@ -30,8 +30,6 @@
 }
 .body .box {
   padding: 20rpx;
-}
-.body .box:not(:last-child) {
   border-bottom: 1px solid #808080;
 }
 .body .box > .row_layout:not(:last-child) {
@@ -46,6 +44,21 @@
   color: #808080;
   overflow: hidden;
 }
+.body .box .text2{
+  color: #ffa500;
+}
 .body .box .flex_grow {
   word-wrap: break-word;
+}
+/* 订单按钮 */
+.body .foot {
+  justify-content: center;
+  overflow: hidden;
+  transition: all .3s;
+}
+.body .foot > .btn {
+  margin: 0;
+}
+.body .foot > .btn + .btn {
+  margin-left: 40rpx;
 }

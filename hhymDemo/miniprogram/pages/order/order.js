@@ -13,6 +13,16 @@ Page({
     ],
     page_num: 1, //查询页数
     page_size: 10, //查询条数
+    edit: {
+      select: "", //正在操作的订单id
+      is_edit: false, // 是否正在编辑
+      start_time: "", // 正在编辑的时间
+      end_time: "",
+      start_text: "", // 格式化的开始时间
+      end_text: "",
+      pet_name: "", //宠物名
+      room: "", // 房间id
+    },
   },
   async onLoad(options) {
     this.app = getApp();
@@ -28,8 +38,8 @@ Page({
       [tag]: e.detail.value,
     });
     // 每次选完从第一页查
-    this.data.page_num = 1
-    this.get_data()
+    this.data.page_num = 1;
+    this.get_data();
   },
   // 选择器点取消清除值
   clear_value(e) {
@@ -37,6 +47,24 @@ Page({
     this.setData({
       [tag]: "",
     });
+  },
+  // 编辑订单值
+  edit_order_value(e) {
+    let { tag } = e.currentTarget.dataset;
+    if (tag == "edit.start" || tag == "edit.end") {
+      // 只有时间选择 需要特殊处理
+      this.setData({
+        [`${tag}_time`]: e.detail.value,
+      });
+      this.setData({
+        [`${tag}_text`]: this.format_time_text(e.detail.value),
+      });
+    } else {
+      // 其他的默认什么值 就保存什么值
+      this.setData({
+        [tag]: e.detail.value,
+      });
+    }
   },
   // 生成房间文字
   format_room_text(room_id) {
@@ -84,15 +112,18 @@ Page({
     if (res) {
       // 记录总条数 避免翻页过了头
       this.total_page = Math.ceil(res.total / this.data.page_size);
+      // 翻页是将新的数据处理后 拼接在之前的数组后
+      let l = res.data.map((e) => ({
+        _id: e._id,
+        start_text: this.format_time_text(e.start),
+        end_text: this.format_time_text(e.end),
+        cost: e.cost,
+        room_text: this.format_room_text(e.room),
+        room_id: e.room,
+        pet_name: e.pet_name.join("、"),
+      }));
       this.setData({
-        list: res.data.map((e) => ({
-          _id: e._id,
-          start_text: this.format_time_text(e.start),
-          end_text: this.format_time_text(e.end),
-          cost: e.cost,
-          room_text: this.format_room_text(e.room),
-          pet_name: e.pet_name,
-        })),
+        list: this.data.list.concat(l),
       });
     }
   },
@@ -116,5 +147,41 @@ Page({
     }
     this.data.page_num++;
     this.get_data();
+  },
+  // 选中订单
+  select_order(e) {
+    if (this.data.edit.is_edit) {
+      return
+    }
+    let { id } = e.currentTarget.dataset;
+    // 选中同一个 折叠显示 选中不同的赋值
+    if (id === this.data.edit.select) {
+      this.setData({
+        "edit.select": "",
+      });
+    } else {
+      this.setData({
+        "edit.select": id,
+      });
+    }
+  },
+  // 编辑、保存订单
+  edit_order(e) {
+    let { tag, index } = e.currentTarget.dataset;
+    if (tag == "save") {
+    } else if (tag == "edit") {
+      // 编辑时将对应订单值处理后赋值给编辑表单
+      let d = this.data.list[index];
+      this.setData({
+        "edit.is_edit": true,
+        "edit.start_time": d.start_text.replace(/\./g, "-"),
+        "edit.start_text": d.start_text,
+        "edit.end_time": d.end_text.replace(/\./g, "-"),
+        "edit.end_text": d.end_text,
+        "edit.pet_name": d.pet_name,
+        "edit.cost": d.cost,
+        "edit.room": d.room_id,
+      });
+    }
   },
 });
