@@ -11,10 +11,10 @@ exports.main = async (event, context) => {
   let res2 = await manager.get().then((res) => {
     for (let val of res.data) {
       if (OPENID === val.openid) {
-        return 0;
+        return { type: 0, id: OPENID };
       }
     }
-    return 1;
+    return { type: 1, id: OPENID };
   });
   return res2;
 };

@@ -201,7 +201,7 @@ async function del_orders(condition) {
         break;
     }
   }
-  if (!Object.entries(c).length) {
+  if (Object.entries(c).length !== 2) {
     return { msg: "id缺失", code: 400 };
   }
   let res = await order

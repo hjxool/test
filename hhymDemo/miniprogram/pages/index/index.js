@@ -2,26 +2,26 @@ Page({
   data: {
     isManager: 2, // 0管理员 1普通用户 2加载时不显示
   },
-  onLoad: async function (options) {
+  async onLoad(options) {
     wx.showLoading({
-      title: '',
-    })
-    let {
-      result
-    } = await wx.login().then(async res => {
-      wx.hideLoading()
-      if (res.code) {
-        console.log('登陆成功')
-        return await wx.cloud.callFunction({
-          name: 'isManager'
-        })
-      } else {
-        console.log('登陆失败')
-      }
-    })
-    this.setData({
-      isManager: result
-      // isManager: 1
-    })
+      title: "",
+    });
+    let { code } = await wx.login().then((res) => res);
+    wx.hideLoading();
+    if (code) {
+      console.log("登陆成功");
+      let {
+        result: { type, id },
+      } = await wx.cloud.callFunction({
+        name: "isManager",
+      });
+      console.log(id)
+      this.setData({
+        isManager: type,
+        // isManager: 1
+      });
+    } else {
+      console.log("登陆失败");
+    }
   },
-})
+});

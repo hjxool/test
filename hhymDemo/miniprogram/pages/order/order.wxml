@@ -7,12 +7,12 @@
       <view hidden="{{!select_date}}" class="text yellow">{{select_date}}</view>
     </picker>
     <!-- 用户筛选 -->
-    <picker mode="selector" value="{{select_user}}" range="{{user_list}}" bindchange="select_value" bindcancel="clear_value" data-tag="select_user" range-key="name">
+    <picker value="{{select_user}}" range="{{user_list}}" bindchange="select_value" bindcancel="clear_value" data-tag="select_user" range-key="name">
       <view hidden="{{user_list[select_user]}}" class="text">用户</view>
       <view hidden="{{!user_list[select_user]}}" class="text yellow">{{user_list[select_user].name}}</view>
     </picker>
     <!-- 订单状态筛选 -->
-    <picker mode="selector" value="{{select_status}}" range="{{order_status}}" bindchange="select_value" bindcancel="clear_value" data-tag="select_status" range-key="label">
+    <picker value="{{select_status}}" range="{{order_status}}" bindchange="select_value" bindcancel="clear_value" data-tag="select_status" range-key="label">
       <view hidden="{{order_status[select_status]}}" class="text">订单状态</view>
       <view hidden="{{!order_status[select_status]}}" class="text yellow">{{order_status[select_status].label}}</view>
     </picker>
@@ -39,26 +39,46 @@
 
         <view class="row_layout">
           <view class="title">宠物：</view>
-          <input class="weui-input" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.pet_name}}" bindconfirm="edit_order_value" data-tag="edit.pet_name"/>
+          <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.pet_name}}" bindconfirm="edit_order_value" data-tag="edit.pet_name" />
 
-          <view class="text" wx:else>{{item.pet_name}}</view>      
+          <view class="text" wx:else>{{item.pet_name}}</view>
         </view>
 
         <view class="row_layout">
           <view class="title">金额：</view>
-          <view class="text">{{item.cost}}</view>
+          <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.cost}}" bindconfirm="edit_order_value" data-tag="edit.cost" />
+
+          <view class="text" wx:else>{{item.cost}}</view>
         </view>
 
         <view class="row_layout">
           <view class="title">房间：</view>
-          <view class="text">{{item.room_text}}</view>
+          <block wx:if="{{edit.is_edit&&edit.select==item._id}}">
+            <picker value="{{edit.room_index}}" range="{{rooms}}" bindchange="edit_order_value" data-tag="edit.room_index" range-key="label">
+              <view class="text text2">{{rooms[edit.room_index].label}}</view>
+            </picker>
+          </block>
+
+          <view class="text" wx:else>{{item.room_text}}</view>
         </view>
-      </view>
-      <!-- 操作按钮 -->
-      <view class="foot row_layout" style="height: {{edit.select==item._id?'100rpx':'0'}};">
-        <button class="btn" wx:if="{{edit.is_edit}}" catch:tap="edit_order" data-tag="save" data-index="{{index}}" type="primary" size="mini">保存</button>
-        <button class="btn" wx:if="{{!edit.is_edit}}" catch:tap="edit_order" data-tag="edit" data-index="{{index}}" type="default" size="mini">编辑</button>
-        <button class="btn" type="warn" size="mini">删除</button>
+
+        <view class="row_layout">
+          <view class="title">订单状态：</view>
+          <block wx:if="{{edit.is_edit&&edit.select==item._id}}">
+            <picker value="{{edit.status_index}}" range="{{order_status}}" bindchange="edit_order_value" data-tag="edit.status_index" range-key="label">
+              <view class="text text2">{{order_status[edit.status_index].label}}</view>
+            </picker>
+          </block>
+
+          <view class="text" wx:else>{{item.status_text}}</view>
+        </view>
+        <!-- 操作按钮 -->
+        <view class="foot row_layout" style="height: {{edit.select==item._id?'64rpx':'0'}};">
+          <button class="btn" wx:if="{{edit.is_edit}}" catch:tap="edit_order" data-tag="save" data-index="{{index}}" type="primary" size="mini">保存</button>
+          <button class="btn" wx:if="{{!edit.is_edit}}" catch:tap="edit_order" data-tag="edit" data-index="{{index}}" type="default" size="mini">编辑</button>
+          <button class="btn" catch:tap="edit_order" data-tag="del" data-index="{{index}}" type="warn" size="mini">删除</button>
+          <button class="btn" wx:if="{{edit.is_edit}}" catch:tap="cancel_edit" size="mini">取消</button>
+        </view>
       </view>
     </view>
   </scroll-view>
