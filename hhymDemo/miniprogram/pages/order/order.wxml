@@ -23,6 +23,11 @@
       <!-- 订单内容 -->
       <view class="box" catch:tap="select_order" data-id="{{item._id}}" style="border: {{index==list.length-1?'none':''}};">
         <view class="row_layout">
+          <view class="title">顾客：</view>
+          <view class="text">{{item.customer_name}}</view>
+        </view>
+
+        <view class="row_layout">
           <view class="title">时间：</view>
           <block wx:if="{{edit.is_edit&&edit.select==item._id}}">
             <picker mode="date" value="{{edit.start_time}}" start="2023-8-1" bindchange="edit_order_value" data-tag="edit.start">

@@ -1,26 +1,28 @@
-<view class="control col_layout">
-  <!-- 日历和待确认订单 -->
-  <view class="head">
-    <view class="box1 row_layout" bind:tap="turn_to_page" data-page="calendar">
-      <view class="iconfont icon-yuding-active icon icon1"></view>
-      <view class="col_layout">
-        <view class="tip_num">2</view>
-        <view class="title">日历</view>
+<scroll-view class="root" refresher-enabled="{{true}}" refresher-triggered="{{refresh_show}}" bindrefresherrefresh="get_data">
+  <view class="control col_layout">
+    <!-- 日历和待确认订单 -->
+    <view class="head">
+      <view class="box1 row_layout" bind:tap="turn_to_page" data-page="calendar">
+        <view class="iconfont icon-yuding-active icon icon1"></view>
+        <view class="col_layout">
+          <view class="tip_num">{{calendar_num}}</view>
+          <view class="title">日历</view>
+        </view>
+      </view>
+      <view class="box1 row_layout" bind:tap="turn_to_page" data-page="confirm">
+        <view class="iconfont icon-duigou1 icon icon2"></view>
+        <view class="col_layout">
+          <view class="tip_num">{{confirm_num}}</view>
+          <view class="title">待确认订单</view>
+        </view>
       </view>
     </view>
-    <view class="box1 row_layout" bind:tap="turn_to_page" data-page="confirm">
-      <view class="iconfont icon-duigou1 icon icon2"></view>
-      <view class="col_layout">
-        <view class="tip_num">{{confirm_num}}</view>
-        <view class="title">待确认订单</view>
+    <!-- 功能模块 -->
+    <view class="foot flex_shrink">
+      <view class="box3 col_layout" wx:for="{{modules}}" wx:key="title" bind:tap="turn_to_page" data-page="{{item.page}}">
+        <view class="iconfont {{item.icon}} icon"></view>
+        <view class="text">{{item.title}}</view>
       </view>
     </view>
   </view>
-  <!-- 功能模块 -->
-  <view class="foot flex_shrink">
-    <view class="box3 col_layout" wx:for="{{modules}}" wx:key="title" bind:tap="turn_to_page" data-page="{{item.page}}">
-      <view class="iconfont {{item.icon}} icon"></view>
-      <view class="text">{{item.title}}</view>
-    </view>
-  </view>
-</view>
+</scroll-view>

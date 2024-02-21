@@ -11,6 +11,7 @@ Page({
         val.start_text = this.format_time_text(val.start);
         val.end_text = this.format_time_text(val.end);
         val.room_text = this.format_room_text(val.room);
+        val.pets = val.pet_name.join('、')
       }
       this.setData({
         list: data,

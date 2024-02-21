@@ -1,6 +1,6 @@
 .order_box {
-  height: 100%;
-  overflow-x: hidden;
+  /* height: 100%;
+  overflow-x: hidden; */
 }
 .order_box > .order {
   background: #fff;

@@ -16,14 +16,15 @@ async function myCall(name, data) {
 }
 // 添加订单
 async function add_orders(params, transaction) {
-  if (Object.entries(params).length !== 7) {
-    return { msg: "参数缺失", code: 400 };
+  if (Object.entries(params).length !== 8) {
+    return { msg: "参数不对", code: 400 };
   }
   let res = await transaction
     .add({
       data: {
         cost: params.cost,
         customer_id: params.customer_id,
+        customer_name: params.customer_name,
         start: new Date(params.start).getTime(),
         end: new Date(params.end).getTime(),
         pet_name: params.pet_name,
@@ -62,6 +63,7 @@ exports.main = async (event, context) => {
     {
       cost: params.cost,
       customer_id: user_id,
+      customer_name: params.name, // 存一下用户名 因为管理员查看时需要
       //注 收到的时间是年月日字符串 存在数据库里的是时间戳
       start: params.start,
       end: params.end,

@@ -16,22 +16,14 @@ Component({
       },
     ],
     confirm_num: 0, //待确认订单数
+    calendar_num: 0, // 已确认未过时间的订单数
+    refresh_show: false, // 下拉刷新复位
   },
   lifetimes: {
     // 组件实例进入节点树时执行
     async attached() {
       this.app = getApp();
-      // 查询订单
-      let { data: res } = await this.app.mycall("orders", {
-        type: "get",
-        condition: {
-          status: 0, //查询待确认订单
-        },
-      });
-      this.order_list = res || [];
-      this.setData({
-        confirm_num: this.order_list.length, //订单数量
-      });
+      this.get_data();
     },
   },
   methods: {
@@ -50,7 +42,7 @@ Component({
         }
       };
       // 跳转不同页面触发不同事件
-      let send_to_child = () => {};
+      let send_to_child;
       switch (page) {
         case "confirm":
           send_to_child = (res) => {
@@ -58,6 +50,7 @@ Component({
           };
           break;
         case "calendar":
+          break
         case "customer":
           send_to_child = (res) => {
             let list = [];
@@ -94,8 +87,37 @@ Component({
       });
     },
     // 刷新页面数据
-    get_data() {
-      console.log("refresh");
+    async get_data() {
+      // 查询订单
+      let r1 = this.app
+        .mycall("orders", {
+          type: "get",
+          condition: {
+            status: 0, //查询待确认订单
+          },
+        })
+        .then(({ data: res }) => {
+          this.order_list = res || [];
+        });
+      // 查询打开程序当天之后的所有已确认订单
+      let t = new Date();
+      let r2 = this.app
+        .mycall("orders", {
+          type: "get",
+          condition: {
+            status: 1, //查询已确认订单
+            start: `${t.getFullYear()}-${t.getMonth() + 1}-${t.getDate()}`,
+          },
+        })
+        .then(({ data: res }) => {
+          this.active_orders = res || [];
+        });
+      await Promise.all([r1, r2]).catch();
+      this.setData({
+        confirm_num: this.order_list.length, //订单数量
+        calendar_num: this.active_orders.length, // 未来的已确认订单
+        refresh_show: false,
+      });
     },
   },
 });

@@ -1,3 +1,7 @@
+/* 根容器 */
+.root{
+  height: 100%;
+}
 .control {
   height: 100%;
   padding: 40rpx 20rpx;

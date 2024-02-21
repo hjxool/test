@@ -10,7 +10,7 @@ Page({
     date_list: [], // 日期列表
     date_boundary: 0, // 当天之前的所有天数全部灰掉
   },
-  onLoad(){
+  onLoad() {
     // 一加载就生成当月及下月日期列表
     this.init_day_list();
     this.channel = this.getOpenerEventChannel();
@@ -18,11 +18,11 @@ Page({
       // 对顾客列表数据进行预处理 往date_list上添加样式变量及详细数据
     });
   },
-  onUnload(){
-    this.channel.emit('message',{msg:'calendar'})
+  onUnload() {
+    this.channel.emit("message", { type: "calendar" });
   },
-   // 生成当月和下月的日期列表
-   init_day_list() {
+  // 生成当月和下月的日期列表
+  init_day_list() {
     let list = [];
     let nowd = new Date();
     list.push(this.count_day(nowd));

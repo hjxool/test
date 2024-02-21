@@ -1,18 +1,20 @@
-<view class="order_box col_layout">
-  <view class="order" wx:for="{{order_list}}" wx:key="_id">
-    <!-- 订单信息 -->
-    <view class="flex_grow">
-      <view class="color">{{item.start_text}}至{{item.end_text}}</view>
-      <view class="color">{{item.days}}天</view>
-      <view class="color">{{item.room}}</view>
-    </view>
-    <!-- 价格及状态 -->
-    <view class="flex_shrink col_layout">
-      <view>￥{{item.price}}</view>
-      <view class="gray" wx:if="{{item.status==-1}}">已取消</view>
-      <view class="gray" wx:if="{{item.status==2}}">已过期</view>
-      <view class="green" wx:if="{{item.status==1}}">已确认</view>
-      <view class="alert" wx:if="{{item.status==0}}">待确认</view>
+<scroll-view refresher-enabled="{{true}}" refresher-triggered="{{refresh_show}}" bindrefresherrefresh="get_data" scroll-y style="height: 100%;">
+  <view class="order_box col_layout">
+    <view class="order" wx:for="{{order_list}}" wx:key="_id">
+      <!-- 订单信息 -->
+      <view class="flex_grow">
+        <view class="color">{{item.start_text}}至{{item.end_text}}</view>
+        <view class="color">{{item.days}}天</view>
+        <view class="color">{{item.room}}</view>
+      </view>
+      <!-- 价格及状态 -->
+      <view class="flex_shrink col_layout">
+        <view>￥{{item.price}}</view>
+        <view class="gray" wx:if="{{item.status==-1}}">已取消</view>
+        <view class="gray" wx:if="{{item.status==2}}">已过期</view>
+        <view class="green" wx:if="{{item.status==1}}">已确认</view>
+        <view class="alert" wx:if="{{item.status==0}}">待确认</view>
+      </view>
     </view>
   </view>
-</view>
+</scroll-view>

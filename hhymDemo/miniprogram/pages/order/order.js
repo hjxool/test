@@ -166,6 +166,7 @@ Page({
       let l = res.data.map((e) => ({
         _id: e._id,
         customer_id: e.customer_id, // 删除、或更新订单需要传用户id用来更新用户总支出
+        customer_name: e.customer_name,
         start_text: this.format_time_text(e.start),
         end_text: this.format_time_text(e.end),
         cost: e.cost,

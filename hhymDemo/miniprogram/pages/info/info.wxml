@@ -27,7 +27,7 @@
     <!-- 日期 -->
     <view class="row row2">
       <view class="title">日期</view>
-      <view class="row_layout">
+      <view class="row_layout" catch:tap="show_calendar">
         <view class="text1">{{form.start}}~{{form.end}}</view>
         <view class="text1" style="margin-left: 20rpx;">共{{form.total_day}}天</view>
       </view>
@@ -95,4 +95,6 @@
 
     <button class="button" catch:tap="submit">提交预约</button>
   </view>
+  <!-- 通用弹窗组件 -->
+  <popup class="popup {{pop_hide?'pop_hide':''}} animation" wx:if="{{pop_show}}" catch:popevent="popup"></popup>
 </view>

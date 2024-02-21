@@ -1,9 +1,11 @@
 <view class="index">
   <view class="box row_layout" wx:for="{{list}}" wx:key="_id">
     <view class="flex_grow">
-      <view class="text">客户名：{{item.name}}</view>
+      <view class="text">客户名：{{item.customer_name}}</view>
+      <view class="text">宠物：{{item.pets}}</view>
       <view class="text">预定时间：{{item.start_text}}~{{item.end_text}}</view>
       <view class="text">房间：{{item.room_text}}</view>
+      <view class="text">金额：{{item.cost}}</view>
     </view>
 
     <view class="flex_shrink row_layout">

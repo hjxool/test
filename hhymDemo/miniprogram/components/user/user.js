@@ -55,12 +55,13 @@ Component({
       // 在父组件收到页面切换显示消息
       // 预定页不用重复刷新 但是订单页需要每次切换到就查询更新一下
       // 1是订单页
-      if (e.detail) {
-        let { data: res } = await this.app.mycall("orders", { type: "get" });
-        if (res) {
-          data.orders = res
-        }
-      }
+      // if (e.detail) {
+      //   let { data: res } = await this.app.mycall("orders", { type: "get" });
+      //   if (res) {
+      //     data.orders = res
+      //   }
+      // }
+      // 订单页现在改为了下拉刷新 不用每次跳转都查了
       this.setData(data);
     },
   },

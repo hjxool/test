@@ -14,6 +14,8 @@ Page({
     },
     room_type: 0, //房间类型 豪华间最多四个 普通间最多2个
     total_price: 0, //合计总价
+    pop_show: false, //显示弹窗
+    pop_hide: true, //隐藏弹窗动画
   },
   async onLoad(options) {
     this.app = getApp();
@@ -59,7 +61,9 @@ Page({
       mask: true,
     });
     this.customer_type = "post";
-    let { data: [customer] } = await this.app.mycall("customer", { type: "get" });
+    let {
+      data: [customer],
+    } = await this.app.mycall("customer", { type: "get" });
     // 数据库里宠物列表没有短名
     let pet = [];
     if (customer) {
@@ -291,7 +295,7 @@ Page({
     let reg = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
     if (!reg.test(this.data.form.phone)) {
       this.tip("请填写正确的号码");
-      return
+      return;
     }
     if (!this.data.form.is_read) {
       this.tip("请阅读并勾选服务协议");
@@ -339,5 +343,45 @@ Page({
     setTimeout(() => {
       wx.navigateBack();
     }, 500);
+  },
+  // 打开日历
+  show_calendar() {
+    this.app.globalData.pop_content = "calendar";
+    this.setData({
+      pop_show: true,
+      pop_hide: false,
+    });
+  },
+  // 显示|隐藏弹窗
+  popup(event) {
+    if (event.detail.type === "close pop") {
+      this.setData({
+        pop_hide: true,
+      });
+      // 放完动画再销毁
+      setTimeout(() => {
+        this.setData({
+          pop_show: false,
+        });
+      }, 300);
+      // 如果是日历弹窗关闭改变页面显示的起止时间 和总天数
+      // 提交的时候是从全局变量中取时间戳 所以不用担心再次调日历时间会不一致
+      if (event.detail.source === "calendar") {
+        let st = new Date(this.app.globalData.start_time);
+        let et = new Date(this.app.globalData.end_time);
+        let td = Math.ceil(
+          (et.getTime() - st.getTime()) / (24 * 60 * 60 * 1000)
+        );
+        this.setData({
+          "form.start": `${st.getFullYear()}.${
+            st.getMonth() + 1
+          }.${st.getDate()}`,
+          "form.end": `${et.getFullYear()}.${
+            et.getMonth() + 1
+          }.${et.getDate()}`,
+          "form.total_day": td,
+        });
+      }
+    }
   },
 });

@@ -2,23 +2,18 @@ Component({
   options: {
     addGlobalClass: true,
   },
-  properties: {
-    orders: Array, //从父组件传入的订单原始数据
-  },
+  // properties: {
+  //   orders: Array, //从父组件传入的订单原始数据
+  // },
   data: {
     order_list: [], //订单列表
+    refresh_show: false, // 下拉刷新显示
   },
   lifetimes: {
     async attached() {
       this.app = getApp();
       // 初次加载时查询用户订单
-      let { data: res } = await this.app.mycall("orders", { type: "get" });
-      if (!res) {
-        return;
-      }
-      this.setData({
-        order_list: this.format_list(res),
-      });
+      this.get_data();
     },
   },
   methods: {
@@ -66,13 +61,24 @@ Component({
       }
       return list;
     },
-  },
-  observers: {
-    // 当传入的订单数据变化时重新初始化显示的订单列表
-    orders: function (newValue) {
+    // 查询订单
+    async get_data() {
+      let { data: res } = await this.app.mycall("orders", { type: "get" });
+      if (!res) {
+        return;
+      }
       this.setData({
-        order_list: this.format_list(newValue),
+        order_list: this.format_list(res),
+        refresh_show: false,
       });
     },
   },
+  // observers: {
+  //   // 当传入的订单数据变化时重新初始化显示的订单列表
+  //   orders: function (newValue) {
+  //     this.setData({
+  //       order_list: this.format_list(newValue),
+  //     });
+  //   },
+  // },
 });
