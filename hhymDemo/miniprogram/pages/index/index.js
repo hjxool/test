@@ -16,8 +16,8 @@ Page({
         name: "isManager",
       });
       this.setData({
-        // isManager: type,
-        isManager: 1
+        isManager: type,
+        // isManager: 1
       });
     } else {
       console.log("登陆失败");

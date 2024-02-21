@@ -29,7 +29,10 @@ App({
     if (data) {
       body.data = data;
     }
-    let res = await wx.cloud.callFunction(body).catch((err) => "err");
+    let res = await wx.cloud.callFunction(body).catch((err) => {
+      console.log("callFunction", err);
+      return "err";
+    });
     console.log("返回值", res);
     // 如果返回结果失败 通知失败结果 成功则让前端决定如何做
     if (res === "err" || res?.result.code !== 200) {

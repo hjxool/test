@@ -1,7 +1,7 @@
 // 云函数入口文件
 const cloud = require("wx-server-sdk");
 
-cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV }); // 使用当前云环境
+cloud.init({ env: "cloud1-0gzy726e39ba4d96", traceUser: true }); // 使用当前云环境
 const db = cloud.database();
 const user = db.collection("customers");
 // 指令
@@ -94,7 +94,7 @@ async function add_user(params) {
 }
 // 更新用户
 // 更新用户不涉及订单 因此传什么字段就存什么
-async function update_user(params,condition) {
+async function update_user(params, condition) {
   if (!condition._id) {
     return { msg: "_id缺失", code: 400 };
   }
@@ -163,7 +163,7 @@ async function del_user(condition) {
 }
 // 云函数入口函数
 exports.main = async (event, context) => {
-  let { type, params,condition } = event;
+  let { type, params, condition } = event;
   switch (type) {
     case "get":
       return await get_user(condition);
@@ -171,7 +171,7 @@ exports.main = async (event, context) => {
     case "post":
       return await add_user(params);
     case "put":
-      return await update_user(params,condition);
+      return await update_user(params, condition);
     case "del":
       return await del_user(condition);
     default:

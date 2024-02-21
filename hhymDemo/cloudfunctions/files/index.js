@@ -1,7 +1,7 @@
 // 云函数入口文件
 const cloud = require("wx-server-sdk");
 
-cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV }); // 使用当前云环境
+cloud.init({ env: "cloud1-0gzy726e39ba4d96", traceUser: true }); // 使用当前云环境
 const db = cloud.database();
 const file = db.collection("file_path");
 
@@ -34,7 +34,7 @@ async function add_files(params) {
     }
   }
   if (flag) {
-    return await update_files(params)
+    return await update_files(params);
   } else {
     let res = await file
       .add({
