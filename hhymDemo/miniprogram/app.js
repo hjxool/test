@@ -61,13 +61,14 @@ App({
           cloudPath: `${cloud_path}/${val.file_name}`,
           filePath: val.tempFilePath,
         })
-        .then((res) => {
-          let t = val.file_name.split(".");
+        .then(async (res) => {
+          // let t = val.file_name.split(".");
           // 上传成功就存
-          this.mycall("files", {
+          await this.mycall("files", {
             type,
             params: {
-              file_name: t[0], //文件名 唯一标识 用于新增和更新云存储
+              // file_name: t[0], //文件名 唯一标识 用于新增和更新云存储
+              file_name: val.file_name, //文件名 唯一标识 用于新增和更新云存储
               file_path: res.fileID, //文件引用路径
               cloud_path, //放在哪个文件夹
             },

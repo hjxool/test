@@ -29,11 +29,11 @@ Component({
         start_text: this.format_text(this.data.start_date),
         end_text: this.format_text(this.data.end_date),
       });
+      this.triggerEvent("is_ready", {
+        type:'select_time'
+      });
     },
   },
-  /**
-   * 组件的方法列表
-   */
   methods: {
     // 将date对象转换成日期文字返回
     format_date_text(date) {

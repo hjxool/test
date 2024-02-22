@@ -36,6 +36,9 @@ Component({
           "list[1].price": res.data.price2,
         });
       }
+      this.triggerEvent("is_ready", {
+        type:'house_type'
+      });
     },
   },
   methods: {

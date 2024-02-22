@@ -13,7 +13,10 @@ Component({
     async attached() {
       this.app = getApp();
       // 初次加载时查询用户订单
-      this.get_data();
+      await this.get_data();
+      this.triggerEvent("is_ready", {
+        type:'order_list'
+      });
     },
   },
   methods: {

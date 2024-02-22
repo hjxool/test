@@ -23,7 +23,8 @@ Component({
     // 组件实例进入节点树时执行
     async attached() {
       this.app = getApp();
-      this.get_data();
+      await this.get_data();
+      this.triggerEvent("page_ready", true);
     },
   },
   methods: {

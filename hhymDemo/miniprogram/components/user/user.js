@@ -8,10 +8,12 @@ Component({
     cur_page: 0, // 当前页
     orders: [], //查询订单返回的原始数据
   },
-  lifetimes:{
-    attached(){
-      this.app = getApp()
-    }
+  lifetimes: {
+    attached() {
+      this.app = getApp();
+      // 表示子组件加载完成数量
+      this.components_ready = 0;
+    },
   },
   methods: {
     // 显示|隐藏弹窗
@@ -63,6 +65,16 @@ Component({
       // }
       // 订单页现在改为了下拉刷新 不用每次跳转都查了
       this.setData(data);
+    },
+    // 接收子组件渲染完毕消息
+    is_ready(e) {
+      if (e.detail) {
+        this.components_ready++;
+      }
+      // 每次收到子组件发来的消息都检查一下是否达到全部组件加载完毕数量
+      if (this.components_ready === 4) {
+        this.triggerEvent("page_ready", true);
+      }
     },
   },
 });

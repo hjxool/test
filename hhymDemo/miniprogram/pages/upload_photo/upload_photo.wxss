@@ -22,7 +22,7 @@ view {
 .body {
   box-sizing: border-box;
   padding: 0 20rpx 20rpx 20rpx;
-  margin: 0 40rpx 40rpx 40rpx;
+  margin: 0 40rpx;
   background: #fff;
   border-radius: 20rpx;
   overflow: auto;
@@ -30,13 +30,14 @@ view {
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(auto-fill, 300rpx);
   grid-auto-rows: 300rpx;
+  height: 96%;
 }
 .body > .img_box {
   position: relative;
   z-index: 10;
   margin-top: 20rpx;
 }
-.body > .img_box:not(:nth-child(3n)) {
+.body > .img_box:not(:nth-of-type(2n)) {
   margin-right: 20rpx;
 }
 .body > .img_selected {

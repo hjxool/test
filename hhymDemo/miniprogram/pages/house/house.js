@@ -9,8 +9,12 @@ Page({
     pop_show: false, //显示弹窗
     pop_hide: true, //隐藏弹窗动画
   },
-  onLoad(options) {
+  async onLoad() {
     this.app = getApp();
+    wx.showLoading({
+      title: '',
+      mask:true,
+    })
     // 根据用户选择时间段 查询这段时间内成交的订单 看房间有无空闲
     for (let index = 1; index <= 3; index++) {
       let t = {
@@ -58,8 +62,13 @@ Page({
       }
       this.data.room11_13.push(t);
     }
-    this.data.room4_5[1].status = 1;
-    this.data.room9_10[1].status = 1;
+    // 根据用户所选时间段查询是否有已确认订单
+    // let {data:res} = await this.app.mycall('orders',{
+    //   type:'get',
+    //   condition:{
+    //     start:this.app.globalData.start_time
+    //   }
+    // })
     this.setData({
       room1_3: this.data.room1_3,
       room4_5: this.data.room4_5,
@@ -67,6 +76,7 @@ Page({
       room9_10: this.data.room9_10,
       room11_13: this.data.room11_13,
     });
+    wx.hideLoading()
   },
   // 打开确认选房提示信息
   async select_room(e) {

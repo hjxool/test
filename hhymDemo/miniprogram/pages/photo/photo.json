@@ -1,4 +1,6 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "popup": "/components/popup2/popup2"
+  },
   "navigationBarTitleText": "相册"
 }

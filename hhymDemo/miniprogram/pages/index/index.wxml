@@ -1,2 +1,2 @@
-<manager class="index" wx:if="{{!isManager}}"></manager>
-<user class="index style1" wx:if="{{isManager===1}}"></user>
+<manager class="index" wx:if="{{!isManager}}" catch:page_ready="page_ready"></manager>
+<user class="index style1" wx:if="{{isManager===1}}" catch:page_ready="page_ready"></user>

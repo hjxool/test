@@ -1,15 +1,15 @@
 <view hidden="{{cur_page==1}}" class="box">
   <!-- 轮播组件 -->
-  <scrollImg></scrollImg>
+  <scrollImg catch:is_ready="is_ready"></scrollImg>
   <!-- 店名地址 -->
   <placeName catch:popevent="popup"></placeName>
   <!-- 选择时间 -->
-  <selectTime id="select_time" catch:popevent="popup"></selectTime>
+  <selectTime id="select_time" catch:popevent="popup" catch:is_ready="is_ready"></selectTime>
   <!-- 房型选择 -->
-  <houseType id="house_type" class="flex_grow"></houseType>
+  <houseType id="house_type" class="flex_grow" catch:is_ready="is_ready"></houseType>
 </view>
 <view hidden="{{cur_page==0}}" class="box">
-  <orderList class="flex_grow" orders="{{orders}}"></orderList>
+  <orderList class="flex_grow" orders="{{orders}}" catch:is_ready="is_ready"></orderList>
 </view>
 <!-- 底部导航栏 -->
 <bottomNav catch:navevent="nav_bar"></bottomNav>

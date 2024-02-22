@@ -1,0 +1,5 @@
+<root-portal wx:if="{{show}}">
+  <view class="popup animation {{pop_hide?'pop_hide':''}}" bind:tap="close">
+    <slot></slot>
+  </view>
+</root-portal>
