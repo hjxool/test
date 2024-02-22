@@ -12,9 +12,9 @@ Page({
   async onLoad() {
     this.app = getApp();
     wx.showLoading({
-      title: '',
-      mask:true,
-    })
+      title: "",
+      mask: true,
+    });
     // 根据用户选择时间段 查询这段时间内成交的订单 看房间有无空闲
     for (let index = 1; index <= 3; index++) {
       let t = {
@@ -63,12 +63,45 @@ Page({
       this.data.room11_13.push(t);
     }
     // 根据用户所选时间段查询是否有已确认订单
-    // let {data:res} = await this.app.mycall('orders',{
-    //   type:'get',
-    //   condition:{
-    //     start:this.app.globalData.start_time
-    //   }
-    // })
+    let { data: res } = await this.app.mycall("orders", {
+      type: "get",
+      condition: {
+        start: this.app.globalData.start_time,
+        end: this.app.globalData.end_time,
+        status: 1,
+      },
+    });
+    // 还有一个维度是房间 要从时间段内的已确认订单中找出哪些房间已经被占用
+    // 然后改变房间状态
+    if (res) {
+      for (let val of res) {
+        switch (val.room) {
+          case "1":
+          case "2":
+          case "3":
+            this.data.room1_3[Number(val.room) - 1].status = 1;
+            break;
+          case "4":
+          case "5":
+            this.data.room4_5[Number(val.room) - 4].status = 1;
+            break;
+          case "6":
+          case "7":
+          case "8":
+            this.data.room6_8[Number(val.room) - 6].status = 1;
+            break;
+          case "9":
+          case "10":
+            this.data.room9_10[Number(val.room) - 9].status = 1;
+            break;
+          case "11":
+          case "12":
+          case "13":
+            this.data.room11_13[Number(val.room) - 11].status = 1;
+            break;
+        }
+      }
+    }
     this.setData({
       room1_3: this.data.room1_3,
       room4_5: this.data.room4_5,
@@ -76,7 +109,7 @@ Page({
       room9_10: this.data.room9_10,
       room11_13: this.data.room11_13,
     });
-    wx.hideLoading()
+    wx.hideLoading();
   },
   // 打开确认选房提示信息
   async select_room(e) {

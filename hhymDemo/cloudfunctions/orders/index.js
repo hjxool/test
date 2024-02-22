@@ -49,11 +49,11 @@ async function get_orders(condition) {
   // 接收到的参数应当是日期字符串 所以要处理成时间戳与数据库中进行判定
   if (condition?.start) {
     let start = new Date(condition.start).getTime();
-    c.start = _.gte(start);
+    c.end = _.gt(start);
   }
   if (condition?.end) {
     let end = new Date(condition.end).getTime();
-    c.end = _.lte(end);
+    c.start = _.lt(end);
   }
   // 根据订单状态查询订单
   // 订单状态是数字 0也会判断为空
@@ -152,11 +152,11 @@ async function update_orders(params, condition) {
     switch (key) {
       case "start":
         let start = new Date(condition.start).getTime();
-        c.start = _.gte(start);
+        c.end = _.gt(start);
         break;
       case "end":
         let end = new Date(condition.end).getTime();
-        c.end = _.lte(end);
+        c.start = _.lt(end);
         break;
       default:
         c[key] = condition[key];

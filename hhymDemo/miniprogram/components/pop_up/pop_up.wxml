@@ -61,7 +61,7 @@
 <!-- 确认选房 -->
 <view class="confirm_house col_layout opacity_show {{pop_hide?'opacity_hide':''}} animation" wx:if="{{type==='confirm_room'}}">
   <view class="img_box">
-    <image class="bg" src="{{confirm.img}}" />
+    <image class="bg" src="{{confirm.img}}" mode="aspectFit"></image>
   </view>
 
   <view class="submit">
