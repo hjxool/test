@@ -22,9 +22,12 @@ async function myCall(name, data) {
 // 查询用户
 async function get_user(condition) {
   let c = {};
-  // 根据用户名查询
+  // 根据用户名 模糊查询
   if (condition?.name) {
-    c.name = condition.name;
+    c.name = db.RegExp({
+      regexp: `${condition.name}`,
+      options: "i",
+    });
   }
   // 根据电话检索
   if (condition?.phone) {
@@ -70,11 +73,12 @@ async function add_user(params) {
       case "pets":
       case "know_from":
       case "pay":
+      case "orders":
         body[key] = params[key];
         break;
     }
   }
-  if (Object.entries(body).length !== 7) {
+  if (Object.entries(body).length !== 8) {
     return { msg: "新增用户参数错误", code: 400 };
   }
   // 新增重复的_id会自动报错不需要查了再添加
@@ -98,6 +102,8 @@ async function update_user(params, condition) {
   if (!condition._id) {
     return { msg: "_id缺失", code: 400 };
   }
+  // 用户名是否修改
+  let name_change = false;
   // 更新时字段不固定
   let body = {};
   for (let key in params) {
@@ -110,6 +116,10 @@ async function update_user(params, condition) {
         // _id 不能修改
         continue;
       default:
+        // 用户预约时 可能会修改用户名 而订单中记录了用户名 因此要同步修改
+        if (key === "name") {
+          name_change = true;
+        }
         body[key] = params[key];
         break;
     }
@@ -127,6 +137,18 @@ async function update_user(params, condition) {
       (err) => false
     );
   if (res) {
+    // 修改用户相关订单下用户名字段
+    if (name_change) {
+      await myCall("orders", {
+        type: "put",
+        condition: {
+          customer_id: condition._id,
+        },
+        params: {
+          customer_name: body.name,
+        },
+      });
+    }
     return { msg: "更新用户成功", code: 200 };
   } else {
     return { msg: "更新用户失败", code: 400 };

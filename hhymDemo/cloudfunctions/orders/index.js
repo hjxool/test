@@ -33,7 +33,8 @@ async function update_user_pay(customer_id) {
       _id: customer_id,
     },
     params: {
-      pay: res.data,
+      pay: res.data.cost,
+      orders: res.data.num,
     },
   });
 }
@@ -66,8 +67,10 @@ async function get_orders(condition) {
     const { OPENID: user_id } = cloud.getWXContext();
     c.customer_id = user_id;
   }
+  // 查询订单列表都按照开始时间降序
   let res = await order
     .where(c)
+    .orderBy('start','desc')
     .get()
     .then((res) => res.data)
     .catch((err) => false);
@@ -77,45 +80,11 @@ async function get_orders(condition) {
     return { msg: "查询订单失败", code: 400 };
   }
 }
-// 添加订单
-async function add_orders(params) {
-  if (Object.entries(params).length !== 7) {
-    return { msg: "参数缺失", code: 400 };
-  }
-  let res = await order
-    .add({
-      data: {
-        cost: params.cost,
-        customer_id: params.customer_id,
-        start: new Date(params.start).getTime(),
-        end: new Date(params.end).getTime(),
-        pet_name: params.pet_name,
-        room: params.room,
-        status: params.status,
-      },
-    })
-    .then(
-      (res) => true,
-      (err) => false
-    );
-  if (res) {
-    // 新增订单状态为确认才重新统计
-    if (params.status === 1) {
-      return await update_user_pay(params.customer_id);
-    }
-    return { msg: "success", code: 200 };
-  } else {
-    return { msg: "添加失败", code: 400 };
-  }
-}
 // 更新订单
 async function update_orders(params, condition) {
   // 更新订单可能涉及更新用户支出因此必须要传用户id
   // 虽然也可以在更新前 查询保存下用户id但是这样也要多操作数据库 没必要
   // 前端就能获取到订单记录中的用户id 传过来就是
-  // if (!params._id || !params.customer_id) {
-  //   return { msg: "id缺失", code: 400 };
-  // }
   let status_change = false;
   // 更新时字段不固定
   let body = {};
@@ -129,15 +98,11 @@ async function update_orders(params, condition) {
       case "customer_id":
         // _id 用户id 不能修改
         continue;
-      case "status":
-        // 这里要做区分 如果更新了订单状态 则要更新用户信息中的支出属性
-        body[key] = params[key];
-        if (params[key] == 1) {
-          // 只有更改为确认 才统计
+      default:
+        // 只要订单状态改变就统计 因为除了其他状态改为已确认 还有从已确认改为其他状态
+        if (key === "status") {
           status_change = true;
         }
-        break;
-      default:
         body[key] = params[key];
         break;
     }
@@ -227,8 +192,6 @@ exports.main = async (event, context) => {
   switch (type) {
     case "get":
       return await get_orders(condition);
-    case "post":
-      return await add_orders(params);
     case "put":
       return await update_orders(params, condition);
     case "del":

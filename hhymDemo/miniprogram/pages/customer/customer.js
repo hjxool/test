@@ -4,20 +4,36 @@ Page({
     list: [], //客户信息列表
   },
   onLoad() {
-    this.channel = this.getOpenerEventChannel();
-    this.channel.on("customer_list", (data) => {
-      this.setData({
-        list: data,
-      });
-    });
+    this.app = getApp();
   },
-  onUnload() {
-    this.channel.emit("message", {
-      msg: "customer",
+  // 获取用户列表
+  async get_data(e) {
+    wx.showLoading({
+      title: "",
+      mask: true,
     });
+    let { data: res } = await this.app.mycall("customer", {
+      type: "get",
+      condition: {
+        name: e.detail.value,
+      },
+    });
+    let list = []
+    if (res) {
+      for(let val of res){
+        let t = []
+        for(let val2 of val.pets){
+          t.push(val2.name)
+        }
+        val.pet_name = t.join('、')
+      }
+      list = res
+    }
+    this.setData({
+      list,
+    });
+    wx.hideLoading();
   },
-  // 搜索
-  search() {},
   // 输入框获得焦点
   focus() {
     this.setData({
@@ -34,7 +50,7 @@ Page({
   async copy_content(e) {
     let data = e.currentTarget.dataset.content;
     await wx.setClipboardData({ data });
-    await wx.showToast({ title: "已复制到剪贴板",icon:'none' });
+    wx.showToast({ title: "已复制到剪贴板", icon: "none" });
     setTimeout(() => {
       wx.hideToast();
     }, 1000);

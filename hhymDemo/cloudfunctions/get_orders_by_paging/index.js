@@ -27,7 +27,9 @@ exports.main = async (event, context) => {
   }
   let d = await order.where(c);
   let { total } = await d.count();
+  // 先按降序排 再分页
   return await d
+    .orderBy("start", "desc")
     .skip((page_num - 1) * page_size)
     .limit(page_size)
     .get()

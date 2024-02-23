@@ -59,5 +59,9 @@ exports.main = async (event, context) => {
   }
   // 统计请求回来的数据
   let total = res.data.reduce((pre, cur) => pre + cur.cost, 0);
-  return { msg: "success", code: 200, data: total };
+  return {
+    msg: "success",
+    code: 200,
+    data: { cost: total, num: res.data.length },
+  };
 };

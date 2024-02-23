@@ -1,7 +1,7 @@
 <view class="index col_layout">
   <view class="head row_layout flex_shrink">
     <view class="title">客户名:</view>
-    <input class="input" confirm-type="search" bindconfirm="search" bindfocus="focus" bindblur="blur" style="border-color: {{on_focus?'#1E90FF':''}};" />
+    <input class="input" confirm-type="search" bindconfirm="get_data" bindfocus="focus" bindblur="blur" style="border-color: {{on_focus?'#1E90FF':''}};" />
   </view>
 
   <view class="body flex_grow">
@@ -24,11 +24,6 @@
       <view class="row_layout">
         <view class="title">宠物名：</view>
         <view class="text">{{item.pet_name}}</view>
-      </view>
-
-      <view class="row_layout" style="align-items: unset;">
-        <view class="title title2">宠物描述：</view>
-        <view class="text flex_grow">{{item.pet_detail}}</view>
       </view>
 
       <view class="row_layout">

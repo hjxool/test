@@ -52,10 +52,7 @@ exports.main = async (event, context) => {
   if (!params.start || !params.end || !params.room) {
     return { msg: `参数错误:${JSON.stringify(event)}`, code: 400 };
   }
-  // 开启事务 主要是为了处理订单新增成功 但后续操作失败时留下无效订单
-  // 所以像查的操作不需要用事务对象
-  // try catch也不是必须的 官方示例中是因为没有用catch等捕获单个操作的异常
-  // 我的接口中除了集合操作异常 还有参数不符合条件手动返回的失败结果 因此不适用try catch
+  // 需要事务 在更新用户信息失败后回滚
   const transaction = await db.startTransaction();
   // 同步执行 因为创建订单所需的数据是全的 同时又有用户id
   // 等订单创建好后再拿用户id去创建或更新用户信息 这样就不需要创建好用户后再查找修改
@@ -77,16 +74,6 @@ exports.main = async (event, context) => {
   if (res1.code !== 200) {
     return res1;
   }
-  // 创建好订单后 统计用户所有确认订单总额再传给用户接口
-  let res2 = await myCall("customer_pay", {
-    customer_id: user_id,
-  });
-  // 统计用户订单金额失败也要回滚
-  if (res2.code !== 200) {
-    // 回滚并传回失败结果
-    await transaction.rollback(res2);
-    return res2;
-  }
   // 创建或更新用户信息时 不需要用事务对象 因为操作失败也不会写入进去数据
   let body = {
     type,
@@ -96,12 +83,17 @@ exports.main = async (event, context) => {
       weChat: params.weChat,
       pets: params.pet,
       know_from: params.know_from,
-      pay: res2.data,
     },
   };
   if (type === "post") {
+    // 新增用户要传入用户id
     body.params._id = user_id;
+    // 新建用户的金额和成交订单数都为0
+    body.params.pay = 0;
+    body.params.orders = 0;
   } else if (type === "put") {
+    // 更新用户信息要根据用户id检索
+    // 已存在用户预约的新订单不计入金额统计所以不更新这项
     body.condition = { _id: user_id };
   }
   let res3 = await myCall("customer", body);
