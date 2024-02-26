@@ -49,9 +49,6 @@
 .body .box .text2{
   color: #ffa500;
 }
-.body > .box .flex_grow {
-  word-wrap: break-word;
-}
 /* 订单按钮 */
 .body .foot {
   justify-content: center;

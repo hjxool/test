@@ -18,7 +18,7 @@
       <view class="month" wx:for="{{date_list}}" wx:key="title" wx:for-item="month">
         <view class="text bold">{{month.title}}</view>
         <view class="day">
-          <view class="text center {{day.date<date_boundary?'gray':''}}" wx:for="{{month.days}}" wx:for-item="day">
+          <view class="text center {{day.date<date_boundary?'gray':''}} {{day.orders.length?'pink':''}}" wx:for="{{month.days}}" wx:for-item="day" catch:tap="check" data-orders="{{day.orders}}">
             {{day.text}}
           </view>
         </view>
@@ -27,8 +27,53 @@
   </view>
 </view>
 <!-- 弹窗 -->
-<!-- <popup show="{{popup_img?true:false}}" catch:close_pop="close_pop">
-  <view class="popup">
-    <image class="img" src="{{popup_img}}" mode="aspectFit"></image>
+<page-container show="{{pop_show}}" round="{{true}}" position="bottom" custom-style="height:80%">
+  <view class="pop_box">
+    <view class="box" wx:for="{{day_user_order}}" wx:key="_id">
+      <view class="row_layout" catch:tap="copy_content" data-content="{{item.name}}">
+        <view class="title">客户名：</view>
+        <view class="text">{{item.name}}</view>
+      </view>
+
+      <view class="row_layout" catch:tap="copy_content" data-content="{{item.phone}}">
+        <view class="title">电话：</view>
+        <view class="text">{{item.phone}}</view>
+      </view>
+
+      <view class="row_layout" catch:tap="copy_content" data-content="{{item.weChat}}">
+        <view class="title">微信号：</view>
+        <view class="text">{{item.weChat}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">订单</view>
+      </view>
+
+      <view class="row_layout" style="padding-left: 40rpx;flex-direction: column;align-items: flex-start;">
+        <block wx:for="{{item.orders}}" wx:key="end_to" wx:for-item="aa" wx:for-index="aai">
+          <view class="row_layout">
+            <view class="title">时间：</view>
+            <view class="text">{{aa.end_to}}</view>
+          </view>
+
+          <view class="row_layout">
+            <view class="title">宠物：</view>
+            <view class="text">{{aa.pet_name}}</view>
+          </view>
+
+          <view class="row_layout">
+            <view class="title">金额：</view>
+            <view class="text">{{aa.cost}}</view>
+          </view>
+
+          <view class="row_layout">
+            <view class="title">房间：</view>
+            <view class="text">{{aa.room}}</view>
+          </view>
+          
+          <view class="row_layout iconfont icon-xiajiantou text" hidden="{{aai==item.orders.length-1}}"></view>
+        </block>
+      </view>
+    </view>
   </view>
-</popup> -->
+</page-container>
