@@ -12,7 +12,11 @@
     <view class="iconfont icon-guanbi" catchtap="close_pop" data-source="calendar"></view>
   </view>
   <!-- 提示 -->
-  <view class="tip row_layout flex_shrink">*超过{{tip.month}}天为包月优惠、{{tip.half_month}}天为半月优惠</view>
+  <view class="tip row_layout flex_shrink">
+    <view class="tip_content">
+      *超过{{tip.month}}天为包月优惠、{{tip.half_month}}天为半月优惠
+    </view>
+  </view>
   <!-- 滚动日历 -->
   <view class="flex_grow">
     <!-- 周列表 -->

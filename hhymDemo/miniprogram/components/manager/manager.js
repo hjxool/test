@@ -51,23 +51,8 @@ Component({
           };
           break;
         case "calendar":
-          break
-        case "customer":
           send_to_child = (res) => {
-            let list = [];
-            for (let index = 0; index < 3; index++) {
-              let t = {
-                name: "xxx1",
-                phone: "13356569874",
-                weChat: "yyuujj",
-                pet_name: "asdad",
-                pet_detail: "asdasdasd2222",
-                orders: [1, 2, 3, 4],
-                pay: "750",
-              };
-              list.push(t);
-            }
-            res.eventChannel.emit("customer_list", list);
+            res.eventChannel.emit("customer_list", this.active_orders);
           };
           break;
         case "income_count":
@@ -111,7 +96,13 @@ Component({
           },
         })
         .then(({ data: res }) => {
-          this.active_orders = res || [];
+          // 因为订单都是统一倒序排列所以这里还要处理下 再反着排序一下
+          if (res) {
+            res.reverse()
+            this.active_orders = res
+          } else {
+            this.active_orders = [];
+          }
         });
       await Promise.all([r1, r2]).catch();
       this.setData({

@@ -21,12 +21,6 @@
 .index > .row_layout > .icon1 {
   background: #1e90ff;
 }
-.index > .row_layout > .icon2 {
-  background: #00bfff;
-}
-.index > .row_layout > .icon3 {
-  background: #ff4500;
-}
 .index > .row_layout > .title {
   font-size: 32rpx;
 }

@@ -5,20 +5,26 @@
   </view>
 
   <view class="body flex_grow">
-    <view class="box" wx:for="{{list}}">
+    <view class="box" wx:for="{{list}}" wx:key="_id" catch:tap="select_customer" data-id="{{item._id}}">
       <view class="row_layout" catch:tap="copy_content" data-content="{{item.name}}">
         <view class="title">客户名：</view>
-        <view class="text">{{item.name}}</view>
+        <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.name}}" bindconfirm="edit_value" data-tag="edit.name" />
+
+        <view class="text" wx:else>{{item.name}}</view>
       </view>
 
       <view class="row_layout" catch:tap="copy_content" data-content="{{item.phone}}">
         <view class="title">电话：</view>
-        <view class="text">{{item.phone}}</view>
+        <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.phone}}" bindconfirm="edit_value" data-tag="edit.phone" />
+
+        <view class="text" wx:else>{{item.phone}}</view>
       </view>
 
       <view class="row_layout" catch:tap="copy_content" data-content="{{item.weChat}}">
         <view class="title">微信号：</view>
-        <view class="text">{{item.weChat}}</view>
+        <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.weChat}}" bindconfirm="edit_value" data-tag="edit.weChat" />
+
+        <view class="text" wx:else>{{item.weChat}}</view>
       </view>
 
       <view class="row_layout">
@@ -28,12 +34,35 @@
 
       <view class="row_layout">
         <view class="title">订单数：</view>
-        <view class="text">{{item.orders.length}}</view>
+        <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.orders}}" bindconfirm="edit_value" data-tag="edit.orders" />
+
+        <view class="text" wx:else>{{item.orders}}</view>
       </view>
 
       <view class="row_layout">
         <view class="title">消费金额：</view>
-        <view class="text">{{item.pay}}</view>
+        <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.pay}}" bindconfirm="edit_value" data-tag="edit.pay" />
+
+        <view class="text" wx:else>{{item.pay}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">从何了解：</view>
+      </view>
+      <textarea class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" 
+      value="{{edit.know_from}}" bindconfirm="edit_value"
+       data-tag="edit.know_from" auto-height placeholder="填入内容"
+       style="margin-bottom: 20rpx;">
+       </textarea>
+      <view class="row_layout" wx:if="{{item.know_from&&!edit.is_edit}}">
+        <text class="text" decode="{{true}}" style="white-space: pre-wrap;word-break: break-all;">&nbsp;&nbsp;{{item.know_from}}</text>
+      </view>
+      <!-- 操作按钮 -->
+      <view class="foot row_layout" style="height: {{edit.select==item._id?'64rpx':'0'}};">
+        <button class="btn" wx:if="{{edit.is_edit}}" catch:tap="edit_customer" data-tag="save" data-index="{{index}}" type="primary" size="mini">保存</button>
+        <button class="btn" wx:if="{{!edit.is_edit}}" catch:tap="edit_customer" data-tag="edit" data-index="{{index}}" type="default" size="mini">编辑</button>
+        <button class="btn" catch:tap="edit_customer" data-tag="del" data-index="{{index}}" type="warn" size="mini">删除</button>
+        <button class="btn" wx:if="{{edit.is_edit}}" catch:tap="cancel_edit" size="mini">取消</button>
       </view>
     </view>
   </view>

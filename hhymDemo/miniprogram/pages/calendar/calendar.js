@@ -1,11 +1,7 @@
 Page({
   data: {
     // 图例
-    legend: [
-      { title: "1位以上", icon: "icon1" },
-      { title: "1位", icon: "icon2" },
-      { title: "提醒", icon: "icon3" },
-    ],
+    legend: [{ title: "预约日期", icon: "icon1" }],
     weeks: ["日", "一", "二", "三", "四", "五", "六"], //星期
     date_list: [], // 日期列表
     date_boundary: 0, // 当天之前的所有天数全部灰掉
@@ -15,11 +11,24 @@ Page({
     this.init_day_list();
     this.channel = this.getOpenerEventChannel();
     this.channel.on("customer_list", (data) => {
-      // 对顾客列表数据进行预处理 往date_list上添加样式变量及详细数据
+      // 遍历订单列表 往date_list上添加样式及详细数据
+      for (let o of data) {
+        for (let d of this.data.date_list) {
+          // 先根据已生成日期列表找处在哪个月
+          if (o.start >= d.month_date.start && o.start <= d.month_date.end) {
+            // 处在当前月 则遍历当月每一天时间戳 找到对应天
+            for(let d2 of d.days){
+              // 为了避免重复添加 要验证是否已经存在相同订单
+              if (d2.date === o.start) {
+                
+                break
+              }
+            }
+            break
+          }
+        }
+      }
     });
-  },
-  onUnload() {
-    this.channel.emit("message", { type: "calendar" });
   },
   // 生成当月和下月的日期列表
   init_day_list() {
@@ -35,6 +44,7 @@ Page({
     // 下个月一号
     let d = nowd.getMonth() + 1;
     let nextd;
+    // 边界条件判断 如果是12月就是年份加1 否则月份加1
     if (d === 12) {
       nextd = new Date(`${nowd.getFullYear() + 1}/1/1`);
     } else {
@@ -51,9 +61,15 @@ Page({
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
     let day = date.getDate();
+    let total_day = new Date(year, month, 0).getDate(); //获取当月总天数
     let t = {
       title: `${year}年${month}月`,
       days: [],
+      // 先按月分大类 便于快速筛选出在范围内的日期 当月1号00点时间戳
+      month_date: {
+        start: new Date(`${year}-${month}-1`).getTime(),
+        end: new Date(`${year}-${month}-${total_day}`).getTime(),
+      },
     };
     // 推算当月一号的时间
     if (day > 1) {
@@ -68,13 +84,13 @@ Page({
         text: "",
       });
     }
-    let total_day = new Date(year, month, 0).getDate(); //获取当月总天数
     // 将当月日期填入
     for (let index = 1; index <= total_day; index++) {
       let d = new Date(`${year}/${month}/${index}`);
       let d2 = {
-        date: d.getTime(),
-        text: index,
+        date: d.getTime(), // 年月日下的时间戳
+        text: index, // 日期文字
+        orders: [], // 存当天的订单列表
       };
       t.days.push(d2);
     }

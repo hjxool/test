@@ -26,3 +26,9 @@
     </scroll-view>
   </view>
 </view>
+<!-- 弹窗 -->
+<!-- <popup show="{{popup_img?true:false}}" catch:close_pop="close_pop">
+  <view class="popup">
+    <image class="img" src="{{popup_img}}" mode="aspectFit"></image>
+  </view>
+</popup> -->

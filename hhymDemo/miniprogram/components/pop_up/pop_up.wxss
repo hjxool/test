@@ -105,10 +105,27 @@
 }
 .calendar > .tip {
   padding: 16rpx 0;
-  justify-content: center;
+  /* justify-content: center; */
   background: rgba(240, 230, 140, 0.4);
   font-size: 24rpx;
   color: #daa520;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.calendar > .tip > .tip_content {
+  animation-name: roll;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+  animation-duration: 8s;
+}
+@keyframes roll {
+  0% {
+    transform: translateX(750rpx);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 .calendar > .flex_grow {
   padding: 0 32rpx;
