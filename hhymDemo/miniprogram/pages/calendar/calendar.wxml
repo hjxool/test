@@ -46,9 +46,9 @@
       </view>
 
       <view class="row_layout">
-        <view class="title">订单</view>
+        <view class="title">订单：</view>
       </view>
-
+      <!-- 每位客户的订单列表 -->
       <view class="row_layout" style="padding-left: 40rpx;flex-direction: column;align-items: flex-start;">
         <block wx:for="{{item.orders}}" wx:key="end_to" wx:for-item="aa" wx:for-index="aai">
           <view class="row_layout">

@@ -1,5 +1,5 @@
 <view class="index col_layout">
-  <!-- 切换时间 -->
+  <!-- 筛选条件 -->
   <view class="head flex_shrink">
     <!-- 时间筛选 -->
     <picker mode="date" value="{{select_date}}" start="2023-8-1" bindchange="select_value" bindcancel="clear_value" data-tag="select_date">

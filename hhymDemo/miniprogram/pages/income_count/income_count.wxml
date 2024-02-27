@@ -1,8 +1,17 @@
 <view class="index col_layout">
   <!-- 检索 -->
   <view class="head row_layout flex_shrink">
-    <view class="title">客户名:</view>
-    <input class="input" confirm-type="search" style="border-color: {{on_focus?'#1E90FF':''}};" />
+    <!-- 时间轴 -->
+    <picker value="{{time_line}}" range="{{time_options}}" bindchange="select_value" data-tag="time_line" range-key="label">
+      <view class="text yellow">{{time_options[time_line].label}}</view>
+    </picker>
+    <!-- 以年为轴 -->
+    <view class="text" wx:if="{{time_options[time_line].value==='year'}}">开店至今</view>
+    <!-- 以某年的月为轴 -->
+    <picker mode="date" value="{{time_select}}" fields="year" bindchange="select_value" data-tag="time_select">
+      <view class="text yellow" hidden="{{!time_select}}">{{time_select}}</view>
+      <view class="text yellow" hidden="{{time_select || time_line==0}}">选择日期</view>
+    </picker>
   </view>
   <!-- 图表 -->
   <ec-canvas id="echart" class="body flex_grow" canvas-id="bar"></ec-canvas>

@@ -31,10 +31,8 @@ exports.main = async (event, context) => {
   for (let key in event) {
     switch (key) {
       case "customer_id":
-      case "start":
-      case "end":
         condition[key] = event[key];
-        break;
+        break
     }
   }
   if (Object.entries(condition).length === 1) {
