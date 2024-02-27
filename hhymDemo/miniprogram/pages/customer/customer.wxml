@@ -54,7 +54,7 @@
        data-tag="edit.know_from" auto-height placeholder="填入内容"
        style="margin-bottom: 20rpx;">
        </textarea>
-      <view class="row_layout" wx:if="{{item.know_from&&!edit.is_edit}}">
+      <view class="row_layout" wx:if="{{!edit.is_edit&&item.know_from}}">
         <text class="text" decode="{{true}}" style="white-space: pre-wrap;word-break: break-all;">&nbsp;&nbsp;{{item.know_from}}</text>
       </view>
       <!-- 操作按钮 -->

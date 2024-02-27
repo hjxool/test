@@ -7,12 +7,12 @@ Component({
     list: [
       {
         name: "普通房",
-        img: "img1",
+        img: "cloud://cloud1-0gzy726e39ba4d96.636c-cloud1-0gzy726e39ba4d96-1320186052/房间封面.jpg",
         price: "",
       },
       {
         name: "豪华房",
-        img: "img2",
+        img: "cloud://cloud1-0gzy726e39ba4d96.636c-cloud1-0gzy726e39ba4d96-1320186052/房间封面.jpg",
         price: "",
       },
     ],

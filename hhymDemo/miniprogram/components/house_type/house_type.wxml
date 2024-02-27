@@ -1,6 +1,8 @@
 <view class="house_box" bind:tap="turn_to_house">
   <view class="type_box row_layout" wx:for="{{list}}" wx:key="name">
-    <view class="img {{item.img}}"></view>
+    <view class="img">
+      <image src="{{item.img}}" mode="aspectFit" style="width: 100%;height: 100%;"></image>
+    </view>
     <view class="title">{{item.name}}</view>
     <!-- 价位 -->
     <view class="row_layout flex_shrink" style="display:{{item.price?'':'none'}};">

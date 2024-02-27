@@ -1,9 +1,3 @@
-<!-- 电话 -->
-<view class="phone_tip {{pop_hide?'phone_hide':''}} animation" wx:if="{{type==='phone'}}">
-  <view class="phone row_layout">13345678974</view>
-  <view class="phone_line"></view>
-  <view class="phone row_layout" catch:tap="close_pop" data-source="phone">取消</view>
-</view>
 <!-- 日历 -->
 <view class="calendar col_layout {{pop_hide?'calendar_hide':''}} animation" wx:if="{{type==='calendar'}}">
   <!-- 头 -->

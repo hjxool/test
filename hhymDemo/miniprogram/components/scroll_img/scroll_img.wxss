@@ -1,6 +1,6 @@
 /* 轮播图样式 */
 .img_box {
-  height: 260rpx;
+  height: 400rpx;
   position: relative;
   margin: 0 20rpx;
   border-radius: 20rpx;

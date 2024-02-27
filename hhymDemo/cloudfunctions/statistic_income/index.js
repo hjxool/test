@@ -48,12 +48,14 @@ function statistic(dates, orders) {
         }
       }
       if (d) {
-        val2.income += d * average;
+        // 有的会丢失精度 以防万一在这取小数点后一位
+        let c = Math.floor(d * average * 10) / 10;
+        val2.income += c;
       }
     }
-    // 只提取出里面的标签和收入信息
-    return dates.map(({ date, income }) => ({ date, income }));
   }
+  // 只提取出里面的标签和收入信息
+  return dates.map(({ date, income }) => ({ date, income }));
 }
 
 // 统计各年收入
@@ -76,7 +78,7 @@ async function year(c) {
   // 构建要返回的数组结构
   let list = [];
   let start_y = Number(c.start.split("-")[0]);
-  for (let i = 0; i <= now_y; i++) {
+  for (let i = 0; i <= now_y - start_y; i++) {
     let t = {
       date: `${start_y + i}`, // 分类标签
       // 判断条件

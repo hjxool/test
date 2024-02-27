@@ -10,7 +10,7 @@
         <text class="title">地图</text>
       </view>
 
-      <view class="col_layout icon" catch:tap="show_phone">
+      <view class="col_layout icon" catch:tap="phone_call">
         <view class="iconfont icon-a-013_dianhua"></view>
         <text class="title">电话</text>
       </view>

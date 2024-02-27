@@ -2,7 +2,7 @@
   background: #fff;
   border-radius: 20rpx;
   margin: 0 20rpx 20rpx 20rpx;
-  padding: 20rpx;
+  padding: 32rpx 20rpx;
   justify-content: space-between;
 }
 .date{

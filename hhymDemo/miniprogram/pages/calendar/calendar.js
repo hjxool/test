@@ -57,8 +57,8 @@ Page({
       days: [],
       // 先按月分大类 便于快速筛选出在范围内的日期 当月1号00点时间戳
       month_date: {
-        start: new Date(`${year}-${month}-1`).getTime(),
-        end: new Date(`${year}-${month}-${total_day}`).getTime(),
+        start: new Date(`${year}/${month}/1`).getTime(),
+        end: new Date(`${year}/${month}/${total_day}`).getTime(),
       },
     };
     // 推算当月一号的时间

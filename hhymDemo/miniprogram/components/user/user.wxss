@@ -1,6 +1,5 @@
 .flex_grow {
   margin-bottom: 20rpx;
-  overflow: hidden;
 }
 .popup {
   position: absolute;
@@ -37,4 +36,5 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: auto;
 }
