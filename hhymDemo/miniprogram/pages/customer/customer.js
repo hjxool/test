@@ -10,8 +10,9 @@ Page({
       weChat: "", // 微信
       orders: "", // 订单数
       pay: "", // 金额
-      know_from: "", // 从何了解
     },
+    pop_show: false, // 显示弹窗
+    pet_list: [], // 客户宠物信息列表
   },
   onLoad() {
     this.app = getApp();
@@ -33,13 +34,6 @@ Page({
     });
     let list = [];
     if (res) {
-      for (let val of res) {
-        let t = [];
-        for (let val2 of val.pets) {
-          t.push(val2.name);
-        }
-        val.pet_name = t.join("、");
-      }
       list = res;
     }
     this.setData({
@@ -63,7 +57,7 @@ Page({
   async copy_content(e) {
     // 在编辑时不能触发复制
     if (this.data.edit.is_edit) {
-      return
+      return;
     }
     let data = e.currentTarget.dataset.content;
     await wx.setClipboardData({ data });
@@ -118,7 +112,6 @@ Page({
           weChat: form.weChat,
           orders: Number(form.orders),
           pay: Number(form.pay),
-          know_from: form.know_from,
         },
       });
       if (res.code !== 200) {
@@ -135,7 +128,6 @@ Page({
         [`${item}weChat`]: form.weChat,
         [`${item}orders`]: form.orders,
         [`${item}pay`]: form.pay,
-        [`${item}know_from`]: form.know_from,
       });
       this.tips("保存成功");
     } else if (tag == "edit") {
@@ -147,7 +139,6 @@ Page({
         "edit.weChat": d.weChat,
         "edit.orders": d.orders,
         "edit.pay": d.pay,
-        "edit.know_from": d.know_from,
       });
     } else if (tag === "del") {
       let res = await this.app.mycall("customer", {
@@ -190,6 +181,18 @@ Page({
     let { tag } = e.currentTarget.dataset;
     this.setData({
       [tag]: e.detail.value,
+    });
+  },
+  // 查看当天的订单信息
+  async check(e) {
+    if (this.data.edit.is_edit) {
+      // 在编辑状态不能点击
+      return
+    }
+    let { pets } = e.currentTarget.dataset;
+    this.setData({
+      pop_show: true,
+      pet_list: pets,
     });
   },
 });

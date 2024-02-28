@@ -8,40 +8,40 @@
     <view class="box" wx:for="{{list}}" wx:key="_id" catch:tap="select_customer" data-id="{{item._id}}">
       <view class="row_layout" catch:tap="copy_content" data-content="{{item.name}}">
         <view class="title">客户名：</view>
-        <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.name}}" bindconfirm="edit_value" data-tag="edit.name" />
+        <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.name}}" bindblur="edit_value" data-tag="edit.name" />
 
         <view class="text" wx:else>{{item.name}}</view>
       </view>
 
       <view class="row_layout" catch:tap="copy_content" data-content="{{item.phone}}">
         <view class="title">电话：</view>
-        <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.phone}}" bindconfirm="edit_value" data-tag="edit.phone" />
+        <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.phone}}" bindblur="edit_value" data-tag="edit.phone" />
 
         <view class="text" wx:else>{{item.phone}}</view>
       </view>
 
       <view class="row_layout" catch:tap="copy_content" data-content="{{item.weChat}}">
         <view class="title">微信号：</view>
-        <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.weChat}}" bindconfirm="edit_value" data-tag="edit.weChat" />
+        <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.weChat}}" bindblur="edit_value" data-tag="edit.weChat" />
 
         <view class="text" wx:else>{{item.weChat}}</view>
       </view>
 
-      <view class="row_layout">
-        <view class="title">宠物名：</view>
-        <view class="text">{{item.pet_name}}</view>
+      <view class="row_layout" catch:tap="check" data-pets="{{item.pets}}">
+        <view class="title">宠物信息：</view>
+        <button size="mini" style="font-size: 28rpx;font-weight: lighter;margin: 0;">查看</button>
       </view>
 
       <view class="row_layout">
         <view class="title">订单数：</view>
-        <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.orders}}" bindconfirm="edit_value" data-tag="edit.orders" />
+        <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.orders}}" bindblur="edit_value" data-tag="edit.orders" />
 
         <view class="text" wx:else>{{item.orders}}</view>
       </view>
 
       <view class="row_layout">
         <view class="title">消费金额：</view>
-        <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.pay}}" bindconfirm="edit_value" data-tag="edit.pay" />
+        <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.pay}}" bindblur="edit_value" data-tag="edit.pay" />
 
         <view class="text" wx:else>{{item.pay}}</view>
       </view>
@@ -49,12 +49,7 @@
       <view class="row_layout">
         <view class="title">从何了解：</view>
       </view>
-      <textarea class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" 
-      value="{{edit.know_from}}" bindconfirm="edit_value"
-       data-tag="edit.know_from" auto-height placeholder="填入内容"
-       style="margin-bottom: 20rpx;">
-       </textarea>
-      <view class="row_layout" wx:if="{{!edit.is_edit&&item.know_from}}">
+      <view class="row_layout" wx:if="{{item.know_from}}">
         <text class="text" decode="{{true}}" style="white-space: pre-wrap;word-break: break-all;">&nbsp;&nbsp;{{item.know_from}}</text>
       </view>
       <!-- 操作按钮 -->
@@ -67,3 +62,71 @@
     </view>
   </view>
 </view>
+<!-- 弹窗 -->
+<page-container show="{{pop_show}}" round="{{true}}" position="bottom" custom-style="height:80%">
+  <view class="pop_box">
+    <view class="box" wx:for="{{pet_list}}" wx:key="name">
+      <view class="row_layout">
+        <view class="title">宠物名：</view>
+        <view class="text">{{item.name}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">岁数：</view>
+        <view class="text">{{item.age}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">性别：</view>
+        <view class="text">{{item.gender?'公':'母'}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">品种：</view>
+        <view class="text">{{item.breed}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">性格：</view>
+        <view class="text">{{item.character}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">是否绝育：</view>
+        <view class="text">{{item.sterile?'是':'否'}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">是否有耳螨：</view>
+        <view class="text">{{item.ear_mite?'是':'否'}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">是否有耳螨：</view>
+        <view class="text">{{item.ear_mite?'是':'否'}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">是否携带猫藓、猫瘟、鼻支等传染病：</view>
+        <view class="text">{{item.disease?'是':'否'}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">上一次驱虫时间：</view>
+        <view class="text">{{item.deworm_time}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">上一次疫苗时间：</view>
+        <view class="text">{{item.vaccine_time}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">特殊要求：</view>
+      </view>
+      <view class="row_layout" wx:if="{{item.detail}}">
+        <text class="text" decode="{{true}}" style="white-space: pre-wrap;word-break: break-all;">&nbsp;&nbsp;{{item.detail}}</text>
+      </view>
+    </view>
+  </view>
+</page-container>

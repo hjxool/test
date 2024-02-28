@@ -44,14 +44,14 @@
 
         <view class="row_layout">
           <view class="title">宠物：</view>
-          <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.pet_name}}" bindconfirm="edit_order_value" data-tag="edit.pet_name" />
+          <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.pet_name}}" bindblur="edit_order_value" data-tag="edit.pet_name" />
 
           <view class="text" wx:else>{{item.pet_name}}</view>
         </view>
 
         <view class="row_layout">
           <view class="title">金额：</view>
-          <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.cost}}" bindconfirm="edit_order_value" data-tag="edit.cost" />
+          <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.cost}}" bindblur="edit_order_value" data-tag="edit.cost" />
 
           <view class="text" wx:else>{{item.cost}}</view>
         </view>
