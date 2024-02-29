@@ -69,10 +69,10 @@ Component({
         });
       } else {
         // 小于半月天数的根据计价规则计算
-        if (!this.rule_list) {
+        if (!this.app.globalData.rule_list) {
           // 如果没查过计价规则列表
           let { data } = await this.app.mycall("rule_list", { type: "get" });
-          this.rule_list = data;
+          this.app.globalData.rule_list = data;
         }
         // 计算方式 遍历规则列表 挨个对比 所选日期 是否在 规则时间段内 如果匹配则应用规则内价格
         // 有几天算几天 跟基础价格相加再除以对应天数得到均价
@@ -80,7 +80,7 @@ Component({
         let rule_price1 = 0; //标间规则价累加
         let rule_price2 = 0; //豪华间规则价累加
         let rule_day = 0; //经过了多少个规则 除此以外的天数都是普通价
-        for (let val of this.rule_list) {
+        for (let val of this.app.globalData.rule_list) {
           if (start >= val.end) {
             continue;
           }

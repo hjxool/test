@@ -13,6 +13,7 @@ Page({
     ],
     // 房间名及对应id
     rooms: [
+      { label: "无", value: "0" },
       { label: "标准间1", value: "1" },
       { label: "标准间2", value: "2" },
       { label: "豪华间1", value: "3" },
@@ -122,6 +123,9 @@ Page({
           return `标准间${Number(room_id) - 1}`;
         } else if (room_id == "12" || room_id == "13") {
           return `标准间${Number(room_id) - 2}`;
+        } else if (room_id == "0") {
+          // 还有无房间的 其他业务
+          return "无";
         }
     }
   },

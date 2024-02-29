@@ -18,10 +18,10 @@ exports.main = async (event, context) => {
         c[key] = condition[key];
         break;
       case "start":
-        c.end = _.gt(new Date(condition.start).getTime());
+        c.end = _.gt(new Date(`${condition.start} 00:00:00`).getTime());
         break;
       case "end":
-        c.start = _.lt(new Date(condition.end).getTime());
+        c.start = _.lt(new Date(`${condition.end} 00:00:00`).getTime());
         break;
     }
   }

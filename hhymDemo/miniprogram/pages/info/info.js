@@ -19,6 +19,7 @@ Page({
   },
   async onLoad(options) {
     this.app = getApp();
+    this.channel = this.getOpenerEventChannel();
     // 读取时间
     let start = new Date(this.app.globalData.start_time);
     let end = new Date(this.app.globalData.end_time);
@@ -97,6 +98,9 @@ Page({
     if (res) {
       // 存一下基础价格和优先规则
       this.base_price = room_type ? res.price2 : res.price1;
+      // base_price1和2是 更新全局单只总价的
+      this.base_price1 = res.price1;
+      this.base_price2 = res.price2;
       this.month_day = res.month_day;
       this.month_discount = res.month_discount;
       this.half_month_day = res.half_month_day;
@@ -231,17 +235,25 @@ Page({
     if (d > this.month_day) {
       this.setData({
         total_price:
-          (this.base_price + 30 * (num - 1)) * d * this.month_discount,
+          Math.floor(
+            (this.base_price + 30 * (num - 1)) * d * this.month_discount * 10
+          ) / 10,
       });
     } else if (d <= this.month_day && d > this.half_month_day) {
       this.setData({
         total_price:
-          (this.base_price + 30 * (num - 1)) * d * this.half_month_discount,
+          Math.floor(
+            (this.base_price + 30 * (num - 1)) *
+              d *
+              this.half_month_discount *
+              10
+          ) / 10,
       });
     } else {
       // 全局变量已经存了单只的总价 还要计算多只*总天数价格
       this.setData({
-        total_price: this.single_price + 30 * (num - 1) * d,
+        total_price:
+          Math.floor((this.single_price + 30 * (num - 1) * d) * 10) / 10,
       });
     }
   },
@@ -353,7 +365,7 @@ Page({
     });
   },
   // 显示|隐藏弹窗
-  popup(event) {
+  async popup(event) {
     if (event.detail.type === "close pop") {
       this.setData({
         pop_hide: true,
@@ -372,6 +384,7 @@ Page({
         let td = Math.ceil(
           (et.getTime() - st.getTime()) / (24 * 60 * 60 * 1000)
         );
+        this.data.form.total_day = td;
         this.setData({
           "form.start": `${st.getFullYear()}.${
             st.getMonth() + 1
@@ -379,9 +392,76 @@ Page({
           "form.end": `${et.getFullYear()}.${
             et.getMonth() + 1
           }.${et.getDate()}`,
-          "form.total_day": td,
+          "form.total_day": this.data.form.total_day,
         });
+        // 关闭日历弹窗后先判断是否需要重新计算单只总价
+        await this.calculate_single_price();
+        this.calculate_cost();
       }
+    }
+  },
+  // 查询计价规则 并根据 全局变量的入住结束时间
+  async calculate_single_price() {
+    let total_day = this.data.form.total_day;
+    if (total_day <= this.half_month_day) {
+      // 小于半月天数的根据计价规则计算
+      if (!this.app.globalData.rule_list) {
+        // 如果没查过计价规则列表
+        let { data } = await this.app.mycall("rule_list", { type: "get" });
+        this.app.globalData.rule_list = data;
+      }
+      // 计算方式 遍历规则列表 挨个对比 所选日期 是否在 规则时间段内 如果匹配则应用规则内价格
+      // 有几天算几天 跟基础价格相加再除以对应天数得到均价
+      // 注意规则列表里存的是时间戳
+      let rule_price1 = 0; //标间规则价累加
+      let rule_price2 = 0; //豪华间规则价累加
+      let rule_day = 0; //经过了多少个规则 除此以外的天数都是普通价
+      for (let val of this.app.globalData.rule_list) {
+        if (start >= val.end) {
+          continue;
+        }
+        let d;
+        // 规则不会交叠 所选开始小于规则结束且大于等于规则开始的只会有一个
+        if (start >= val.start) {
+          //所选开始在内 判断所选结束在内还是外
+          if (end <= val.end) {
+            // 所选在内 计算规则价格
+            d = Math.ceil((end - start) / (24 * 60 * 60 * 1000));
+          } else {
+            // 所选结束大于规则结束 计算在当前规则内重叠的天数
+            d = Math.ceil((val.end - start) / (24 * 60 * 60 * 1000));
+          }
+        } else {
+          // 所选开始小于规则开始 说明所选开始不在当前规则内
+          // 则继续判断所选结束是否在当前规则内
+          if (end <= val.end && end > val.start) {
+            d = Math.ceil((end - val.start) / (24 * 60 * 60 * 1000));
+          } else {
+            // 所选结束不在当前规则内 则判断是小于规则开始还是大于规则结束
+            if (end <= val.start) {
+              // 小于当前规则开始 说明在规则前结束 跳出循环
+              break;
+            } else if (end >= val.end) {
+              // 大于当前规则结束 说明覆盖了全部天数
+              d = Math.ceil((val.end - val.start) / (24 * 60 * 60 * 1000));
+            } else {
+              // 在当前规则中 计算覆盖的天数
+              d = Math.ceil((end - val.start) / (24 * 60 * 60 * 1000));
+            }
+          }
+        }
+        rule_price1 += d * val.price1;
+        rule_price2 += d * val.price2;
+        rule_day += d;
+      }
+      let total_price1 =
+        (total_day - rule_day) * this.base_price1 + rule_price1;
+      let total_price2 =
+        (total_day - rule_day) * this.base_price2 + rule_price2;
+      // 记录到全局变量中 用于在提交订单时 用单只对应房间总价加上如果有多只的价格得到订单总价
+      this.app.globalData.single_total_price1 = total_price1;
+      this.app.globalData.single_total_price2 = total_price2;
+      this.single_price = this.data.room_type ? total_price2 : total_price1;
     }
   },
 });

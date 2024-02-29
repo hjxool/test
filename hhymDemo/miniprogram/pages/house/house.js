@@ -8,6 +8,7 @@ Page({
     room11_13: [],
     pop_show: false, //显示弹窗
     pop_hide: true, //隐藏弹窗动画
+    page_show: false, // 页面初始不显示 等数据返回再显示
   },
   async onLoad() {
     this.app = getApp();
@@ -102,14 +103,15 @@ Page({
         }
       }
     }
+    wx.hideLoading();
     this.setData({
       room1_3: this.data.room1_3,
       room4_5: this.data.room4_5,
       room6_8: this.data.room6_8,
       room9_10: this.data.room9_10,
       room11_13: this.data.room11_13,
+      page_show: true,
     });
-    wx.hideLoading();
   },
   // 打开确认选房提示信息
   async select_room(e) {

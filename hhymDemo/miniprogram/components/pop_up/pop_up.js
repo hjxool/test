@@ -56,9 +56,13 @@ Component({
           "tip.price2": data.price2,
         });
         // 初始化日历列表前 先查计价规则 生成日历的时候就将规则时间段内的价格标注出来
-        let res2 = await this.app.mycall("rule_list", { type: "get" });
+        if (!this.app.globalData.rule_list) {
+          let res2 = await this.app.mycall("rule_list", { type: "get" });
+          if (res2.code == 200) {
+            this.app.globalData.rule_list = res2.data;
+          }
+        }
         wx.hideLoading();
-        this.rule_list = res2.data;
         // 一加载组件就生成当月及下月日期列表
         this.init_day_list();
       }
@@ -110,7 +114,7 @@ Component({
       // 如果在 标记出是哪几个规则
       let rule_index = [];
       let i = 0;
-      for (let val of this.rule_list) {
+      for (let val of this.app.globalData.rule_list) {
         let s = new Date(val.start);
         let e = new Date(val.end);
         let sm = s.getMonth() + 1;
@@ -158,7 +162,7 @@ Component({
         // 遍历可能的规则索引 匹配具体时间戳是否在范围内
         // 因为传入的日期是一整个月 所以每一个日期都有可能落在不同的规则里 因此每天都要遍历
         for (let val of rule_index) {
-          let r = this.rule_list[val];
+          let r = this.app.globalData.rule_list[val];
           if (d2.date >= r.start && d2.date < r.end) {
             d2.price1 = r.price1;
             d2.price2 = r.price2;

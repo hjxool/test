@@ -19,6 +19,7 @@ App({
       single_total_price1: 0, //所选时间段单只标间总价
       single_total_price2: 0, //豪华间总价
       room: "", //用户所选房间id
+      rule_list: "", // 规则列表 多处要用 所以存起来
     };
   },
   // 通用请求方法

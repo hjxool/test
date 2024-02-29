@@ -14,6 +14,11 @@ Component({
         icon: "icon-mn_shangchuantupian_fill",
         page: "upload_photo",
       },
+      {
+        title: "添加收入",
+        icon: "icon-renminbi",
+        page: "custom_order",
+      },
     ],
     confirm_num: 0, //待确认订单数
     calendar_num: 0, // 已确认未过时间的订单数
@@ -88,18 +93,12 @@ Component({
       // 查询打开程序当天之后的所有已确认订单
       let t = new Date();
       let r2 = this.app
-        .mycall("orders", {
-          type: "get",
-          condition: {
-            status: 1, //查询已确认订单
-            start: `${t.getFullYear()}-${t.getMonth() + 1}-${t.getDate()}`,
-          },
+        .mycall("calendar_orders", {
+          start: `${t.getFullYear()}-${t.getMonth() + 1}-${t.getDate()}`,
         })
         .then(({ data: res }) => {
-          // 因为订单都是统一倒序排列所以这里还要处理下 再反着排序一下
           if (res) {
-            res.reverse()
-            this.active_orders = res
+            this.active_orders = res;
           } else {
             this.active_orders = [];
           }

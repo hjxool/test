@@ -13,7 +13,8 @@
     "pages/income_count/income_count",
     "pages/info/info",
     "pages/agreement/agreement",
-    "pages/pet/pet"
+    "pages/pet/pet",
+    "pages/custom_order/custom_order"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

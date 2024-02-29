@@ -1,4 +1,4 @@
-<view id="index" class="col_layout">
+<view wx:if="{{page_show}}" id="index" class="col_layout">
   <view class="row1">
     <view class="room{{item.id}} center" wx:for="{{room1_3}}" wx:key="id" catch:tap="select_room" data-room="{{item}}">
       <view class="col_layout align">

@@ -60,7 +60,7 @@ function statistic(dates, orders) {
 
 // 统计各年收入
 async function year(c) {
-  let now = new Date(c.end);
+  let now = new Date(`${c.end} 00:00:00`);
   let now_y = Number(now.getFullYear());
   let res = await myCall("orders", {
     type: "get",
@@ -83,8 +83,8 @@ async function year(c) {
       date: `${start_y + i}`, // 分类标签
       // 判断条件
       time: {
-        start: new Date(`${start_y + i}-1-1`).getTime(),
-        end: new Date(`${start_y + i + 1}-1-1`).getTime(), // 这里是直接年份增加所以不会有问题
+        start: new Date(`${start_y + i}-1-1 00:00:00`).getTime(),
+        end: new Date(`${start_y + i + 1}-1-1 00:00:00`).getTime(), // 这里是直接年份增加所以不会有问题
       },
       income: 0, // 收入
     };
@@ -95,7 +95,7 @@ async function year(c) {
 // 统计一年中每个月收入
 async function month(c) {
   // 以传入时间的年末为截止时间
-  let now = new Date(c.start);
+  let now = new Date(`${c.start} 00:00:00`);
   let now_y = Number(now.getFullYear());
   let res = await myCall("orders", {
     type: "get",
@@ -118,15 +118,15 @@ async function month(c) {
       date: `${now_y}.${start_m + i}`, // 分类标签
       // 判断条件
       time: {
-        start: new Date(`${now_y}-${start_m + i}-1`).getTime(),
+        start: new Date(`${now_y}-${start_m + i}-1 00:00:00`).getTime(),
       },
       income: 0, // 收入
     };
     // 涉及月份增加 要判断是否到达12月 已经是12月 则年份增加 月份置为1
     if (start_m + i == 12) {
-      t.time.end = new Date(`${now_y + 1}-1-1`).getTime();
+      t.time.end = new Date(`${now_y + 1}-1-1 00:00:00`).getTime();
     } else {
-      t.time.end = new Date(`${now_y}-${start_m + i + 1}-1`).getTime();
+      t.time.end = new Date(`${now_y}-${start_m + i + 1}-1 00:00:00`).getTime();
     }
     list.push(t);
   }

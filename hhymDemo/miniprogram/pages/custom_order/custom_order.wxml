@@ -1,0 +1,55 @@
+<view class="index col_layout">
+  <view class="flex_grow">
+    <view class="row_layout">
+      <view class="title">客户：</view>
+      <picker value="{{form.user}}" range="{{user_list}}" bindchange="select_value" data-tag="form.user" range-key="name">
+        <view hidden="{{user_list[form.user]}}" class="text">请选择客户</view>
+        <view hidden="{{!user_list[form.user]}}" class="text">{{user_list[form.user].name}}</view>
+      </picker>
+    </view>
+
+    <view class="row_layout">
+      <view class="title">宠物：</view>
+      <input class="text" value="{{form.pet}}" bindblur="select_value" data-tag="form.pet" placeholder="宠物名用、分隔" />
+    </view>
+
+    <view class="row_layout">
+      <view class="title">开始时间：</view>
+      <picker mode="date" value="{{form.start}}" start="2023-8-1" bindchange="select_value" data-tag="form.start">
+        <view class="text" hidden="{{form.start}}">请选择开始时间</view>
+        <view class="text" hidden="{{!form.start}}">{{form.start}}</view>
+      </picker>
+    </view>
+
+    <view class="row_layout">
+      <view class="title">结束时间：</view>
+      <picker mode="date" value="{{form.end}}" start="2023-8-1" bindchange="select_value" data-tag="form.end">
+        <view class="text" hidden="{{form.end}}">请选择结束时间</view>
+        <view class="text" hidden="{{!form.end}}">{{form.end}}</view>
+      </picker>
+    </view>
+
+
+    <view class="row_layout">
+      <view class="title">房间：</view>
+      <picker value="{{form.room}}" range="{{room_list}}" bindchange="select_value" data-tag="form.room">
+        <view class="text">{{room_list[form.room]}}</view>
+      </picker>
+    </view>
+
+    <view class="row_layout">
+      <view class="title">金额：</view>
+      <input class="text" value="{{form.cost}}" bindblur="select_value" data-tag="form.cost" placeholder="请填写金额" />
+    </view>
+
+    <view class="row_layout">
+      <view class="title">订单状态：</view>
+      <view>已确认</view>
+    </view>
+  </view>
+
+  <view style="align-self: center;">
+    <button class="button" wx:if="{{!is_confirm}}" catch:tap="submit" type="primary">提交</button>
+    <button class="button" wx:if="{{is_confirm}}" catch:tap="refresh" type="primary">再来一单</button>
+  </view>
+</view>

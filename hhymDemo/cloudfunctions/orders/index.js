@@ -49,11 +49,11 @@ async function get_orders(condition) {
   // 根据时间查询
   // 接收到的参数应当是日期字符串 所以要处理成时间戳与数据库中进行判定
   if (condition?.start) {
-    let start = new Date(condition.start).getTime();
+    let start = new Date(`${condition.start} 00:00:00`).getTime();
     c.end = _.gt(start);
   }
   if (condition?.end) {
-    let end = new Date(condition.end).getTime();
+    let end = new Date(`${condition.end} 00:00:00`).getTime();
     c.start = _.lt(end);
   }
   // 根据订单状态查询订单
@@ -92,7 +92,7 @@ async function update_orders(params, condition) {
     switch (key) {
       case "start":
       case "end":
-        body[key] = new Date(params[key]).getTime();
+        body[key] = new Date(`${params[key]} 00:00:00`).getTime();
         break;
       case "_id":
       case "customer_id":
@@ -116,11 +116,11 @@ async function update_orders(params, condition) {
   for (let key in condition) {
     switch (key) {
       case "start":
-        let start = new Date(condition.start).getTime();
+        let start = new Date(`${condition.start} 00:00:00`).getTime();
         c.end = _.gt(start);
         break;
       case "end":
-        let end = new Date(condition.end).getTime();
+        let end = new Date(`${condition.end} 00:00:00`).getTime();
         c.start = _.lt(end);
         break;
       default:
@@ -186,6 +186,38 @@ async function del_orders(condition) {
     return { msg: "删除失败", code: 400 };
   }
 }
+// 添加订单
+async function add_orders(params) {
+  if (Object.entries(params).length !== 8) {
+    return { msg: "参数不对", code: 400 };
+  }
+  let res = await order
+    .add({
+      data: {
+        cost: params.cost,
+        customer_id: params.customer_id,
+        customer_name: params.customer_name,
+        start: new Date(`${params.start} 00:00:00`).getTime(),
+        end: new Date(`${params.end} 00:00:00`).getTime(),
+        pet_name: params.pet_name,
+        room: params.room,
+        status: params.status,
+      },
+    })
+    .then(
+      (res) => true,
+      (err) => false
+    );
+  if (res) {
+    // 添加的订单如果是已确认订单 就要更新用户信息
+    if (params.status == 1) {
+      return await update_user_pay(params.customer_id);
+    }
+    return { msg: "success", code: 200 };
+  } else {
+    return { msg: "添加失败", code: 400 };
+  }
+}
 // 云函数入口函数
 exports.main = async (event, context) => {
   let { type, params, condition } = event;
@@ -196,6 +228,8 @@ exports.main = async (event, context) => {
       return await update_orders(params, condition);
     case "del":
       return await del_orders(condition);
+    case 'post':
+      return await add_orders(params)
     default:
       return { msg: `参数错误:${JSON.stringify(event)}`, code: 400 };
   }

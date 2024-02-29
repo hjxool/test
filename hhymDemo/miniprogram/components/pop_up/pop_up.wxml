@@ -8,7 +8,7 @@
   <!-- 提示 -->
   <view class="tip row_layout flex_shrink">
     <view class="tip_content">
-      *超过{{tip.month}}天为包月优惠、{{tip.half_month}}天为半月优惠
+      *超过{{tip.month}}天为包月优惠、{{tip.half_month}}天为半月优惠；18点前接走，不计入当天天数
     </view>
   </view>
   <!-- 滚动日历 -->

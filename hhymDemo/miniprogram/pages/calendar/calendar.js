@@ -9,13 +9,15 @@ Page({
     day_user_order: [], // 当日用户以及订单列表
   },
   onLoad() {
-    this.app = getApp()
+    this.app = getApp();
+    this.one_day = 24 * 60 * 60 * 1000;
     this.channel = this.getOpenerEventChannel();
     this.channel.on("customer_list", (data) => {
       // 在拿到数据后再渲染日期列表
       // 因为count_day只会在初次生成单月列表时调用
       // 利用这点可以避免每次都要循环遍历总日期列表 而且省去了验证每个订单在每月每日中唯一性
       // 遍历订单列表 往date_list上添加样式及详细数据
+      console.log("日历", data);
       this.orders = data;
       this.init_day_list();
     });
@@ -58,7 +60,7 @@ Page({
       // 先按月分大类 便于快速筛选出在范围内的日期 当月1号00点时间戳
       month_date: {
         start: new Date(`${year}/${month}/1`).getTime(),
-        end: new Date(`${year}/${month}/${total_day}`).getTime(),
+        end: new Date(`${year}/${month == 12 ? "1" : month + 1}/1`).getTime(),
       },
     };
     // 推算当月一号的时间
@@ -82,7 +84,6 @@ Page({
         text: index, // 日期文字
         orders: [], // 存当天的订单列表
       };
-
       t.days.push(d2);
     }
     // 计算剩余天数 剩余天数用空格
@@ -95,11 +96,13 @@ Page({
     }
     // 返回前根据订单列表 将当月的订单加到对应天里
     for (let o of this.orders) {
-      if (o.start >= t.month_date.start && o.start <= t.month_date.end) {
+      if (o.start >= t.month_date.start && o.start < t.month_date.end) {
         // 只遍历中间有日期的
         for (let i = cur_week; i < total_day + cur_week; i++) {
           let ii = t.days[i];
-          if (ii.date === o.start) {
+          // 不能对比时间戳 因为服务端生成的总是当天8点
+          // 所以对比的是前端生成的当天00点到第二天00点时间戳范围
+          if (o.start >= ii.date && o.start <= ii.date + this.one_day) {
             ii.orders.push(o);
             // 一个订单只会对应一天 当找到对应的日期 就应该跳过剩余的天数
             break;
@@ -213,6 +216,8 @@ Page({
           return `标准间${Number(room_id) - 1}`;
         } else if (room_id == "12" || room_id == "13") {
           return `标准间${Number(room_id) - 2}`;
+        } else if (room_id == "0") {
+          return "无";
         }
     }
   },

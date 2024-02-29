@@ -1,0 +1,20 @@
+.index {
+  height: 100%;
+  overflow-x: hidden;
+  padding: 40rpx;
+}
+/* 行样式 */
+.index  .row_layout:not(:last-child) {
+  margin-bottom: 20rpx;
+}
+.index .title {
+  font-size: 32rpx;
+  flex-shrink: 0;
+}
+.index .text {
+  color: #ffa500;
+}
+/* 按钮样式 */
+.button {
+  width: 50%;
+}
