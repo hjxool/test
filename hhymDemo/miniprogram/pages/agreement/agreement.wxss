@@ -6,11 +6,13 @@
 view {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
-.title {
+/* 大标题 */
+.head {
   font-size: 32rpx;
   align-self: center;
   margin: 40rpx 0;
 }
+/* 文字大小 */
 .text {
   font-size: 28rpx;
 }
@@ -18,4 +20,8 @@ view {
   content: "";
   display: inline-block;
   width: 48rpx;
+}
+/* 小标题 */
+.bold{
+  font-weight: bold;
 }

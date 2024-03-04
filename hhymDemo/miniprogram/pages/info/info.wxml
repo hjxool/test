@@ -64,15 +64,7 @@
         <view class="title">预定须知</view>
       </view>
       <view class="text">
-        
-      </view>
-
-      <view class="row_layout">
-        <view class="iconfont icon-xinghao icon"></view>
-        <view class="title">取消政策</view>
-      </view>
-      <view class="text">
-        测试测试测试啊实打实大送到家阿松地马上都i啊是觉得
+        18点前接走，不计入当天天数，超过18点，多加一天费用
       </view>
       <!-- 服务协议 -->
       <view class="row_layout" catch:tap="is_read">
