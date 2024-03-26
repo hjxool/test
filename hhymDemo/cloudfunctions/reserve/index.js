@@ -34,7 +34,10 @@ async function add_orders(params, transaction) {
     })
     .then(
       (res) => true,
-      (err) => false
+      (err) => {
+        console.log(err);
+        return false;
+      }
     );
   if (res) {
     return { msg: "success", code: 200 };
@@ -80,7 +83,6 @@ exports.main = async (event, context) => {
     params: {
       name: params.name,
       phone: params.phone,
-      weChat: params.weChat,
       pets: params.pet,
       know_from: params.know_from,
     },

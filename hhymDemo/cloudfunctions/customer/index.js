@@ -33,10 +33,6 @@ async function get_user(condition) {
   if (condition?.phone) {
     c.phone = condition.phone;
   }
-  // 根据微信号检索
-  if (condition?.weChat) {
-    c.weChat = condition.weChat;
-  }
   // 根据宠物名反查用户
   if (condition?.pet_name) {
     c["pet.name"] = condition.pet_name;
@@ -69,7 +65,6 @@ async function add_user(params) {
       case "_id":
       case "name":
       case "phone":
-      case "weChat":
       case "pets":
       case "know_from":
       case "pay":
@@ -78,7 +73,7 @@ async function add_user(params) {
         break;
     }
   }
-  if (Object.entries(body).length !== 8) {
+  if (Object.entries(body).length !== 7) {
     return { msg: "新增用户参数错误", code: 400 };
   }
   // 新增重复的_id会自动报错不需要查了再添加

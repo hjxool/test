@@ -20,13 +20,6 @@
         <view class="text" wx:else>{{item.phone}}</view>
       </view>
 
-      <view class="row_layout" catch:tap="copy_content" data-content="{{item.weChat}}">
-        <view class="title">微信号：</view>
-        <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.weChat}}" bindblur="edit_value" data-tag="edit.weChat" />
-
-        <view class="text" wx:else>{{item.weChat}}</view>
-      </view>
-
       <view class="row_layout" catch:tap="check" data-pets="{{item.pets}}">
         <view class="title">宠物信息：</view>
         <button size="mini" style="font-size: 28rpx;font-weight: lighter;margin: 0;">查看</button>

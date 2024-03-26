@@ -7,7 +7,6 @@ Page({
       is_edit: false, // 是否正在编辑
       name: "", // 用户名
       phone: "", // 电话
-      weChat: "", // 微信
       orders: "", // 订单数
       pay: "", // 金额
     },
@@ -109,7 +108,6 @@ Page({
         params: {
           name: form.name,
           phone: form.phone,
-          weChat: form.weChat,
           orders: Number(form.orders),
           pay: Number(form.pay),
         },
@@ -125,7 +123,6 @@ Page({
         "edit.select": "",
         [`${item}name`]: form.name,
         [`${item}phone`]: form.phone,
-        [`${item}weChat`]: form.weChat,
         [`${item}orders`]: form.orders,
         [`${item}pay`]: form.pay,
       });
@@ -136,7 +133,6 @@ Page({
         "edit.is_edit": true,
         "edit.name": d.name, // 传入输入框内容
         "edit.phone": d.phone,
-        "edit.weChat": d.weChat,
         "edit.orders": d.orders,
         "edit.pay": d.pay,
       });

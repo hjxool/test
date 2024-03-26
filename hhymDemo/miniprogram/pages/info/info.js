@@ -3,7 +3,6 @@ Page({
     form: {
       name: "", //联系人
       phone: "", //手机号
-      weChat: "", //微信号
       pet: [], //住店宠物
       start: "", //日期
       end: "", //日期
@@ -89,7 +88,6 @@ Page({
       "form.room": room_name,
       "form.name": customer?.name || "",
       "form.phone": customer?.phone || "",
-      "form.weChat": customer?.weChat || "",
       "form.know_from": customer?.know_from || "",
     });
     // 查询设置的房价
@@ -319,13 +317,14 @@ Page({
       mask: true,
     });
     // 不需要传用户id，由后端接口获取并写入
-    let { name, phone, weChat, pet, know_from } = this.data.form;
+    let { name, phone, pet, know_from } = this.data.form;
+    let st = new Date(this.app.globalData.start_time)
+    let et = new Date(this.app.globalData.end_time)
     let res = await this.app.mycall("reserve", {
       type: this.customer_type,
       params: {
         name,
         phone,
-        weChat,
         // 发送请求时不需要短名参数
         pet: pet.map((e) => {
           let t = {};
@@ -339,8 +338,8 @@ Page({
         }),
         // 表单里显示的开始和结束时间是.连接的 不能用
         // 全局变量里存的是时间戳
-        start: this.app.globalData.start_time,
-        end: this.app.globalData.end_time,
+        start: `${st.getFullYear()}/${st.getMonth()+1}/${st.getDate()}`,
+        end: `${et.getFullYear()}/${et.getMonth()+1}/${et.getDate()}`,
         room: this.app.globalData.room,
         know_from,
         cost: this.data.total_price,

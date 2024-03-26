@@ -47,11 +47,6 @@
       <view class="title">手机号</view>
       <input class="input1" bindblur="save_value" data-item="phone" value="{{form.phone}}" placeholder="必填" />
     </view>
-    <!-- 微信号 -->
-    <view class="row row2">
-      <view class="title">微信号</view>
-      <input class="input1" bindblur="save_value" data-item="weChat" value="{{form.weChat}}" placeholder="非必填" />
-    </view>
     <!-- 从何了解 -->
     <view class="row row3 col_layout" style="border: none;">
       <view class="title">从何知道好好养猫家</view>
