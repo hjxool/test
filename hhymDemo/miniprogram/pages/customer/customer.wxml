@@ -95,11 +95,6 @@
       </view>
 
       <view class="row_layout">
-        <view class="title">是否有耳螨：</view>
-        <view class="text">{{item.ear_mite?'是':'否'}}</view>
-      </view>
-
-      <view class="row_layout">
         <view class="title">是否携带猫藓、猫瘟、鼻支等传染病：</view>
         <view class="text">{{item.disease?'是':'否'}}</view>
       </view>
