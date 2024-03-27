@@ -161,11 +161,11 @@ async function del_orders(condition) {
         c[key] = _.in(condition[key]);
         break;
       case "customer_id":
-        c[key] = condition[key];
+        c[key] = _.in(condition[key]);
         break;
     }
   }
-  if (Object.entries(c).length !== 2) {
+  if (!Object.entries(c).length) {
     return { msg: "id缺失", code: 400 };
   }
   let res = await order
