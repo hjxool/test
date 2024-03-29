@@ -64,11 +64,13 @@ Page({
       this.data.room11_13.push(t);
     }
     // 根据用户所选时间段查询是否有已确认订单
+    let st = new Date(this.app.globalData.start_time)
+    let et = new Date(this.app.globalData.end_time)
     let { data: res } = await this.app.mycall("orders", {
       type: "get",
       condition: {
-        start: this.app.globalData.start_time,
-        end: this.app.globalData.end_time,
+        start: `${st.getFullYear()}/${st.getMonth()+1}/${st.getDate()}`,
+        end: `${et.getFullYear()}/${et.getMonth()+1}/${et.getDate()}`,
         status: 1,
       },
     });
