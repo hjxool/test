@@ -48,6 +48,20 @@ Page({
       this.first_load = true;
     }
   },
+  // 开放转发
+  onShareAppMessage() {
+    // 在这里定义分享的标题、路径等信息
+    return {
+      title: '好好养猫小助手',
+      path: '/pages/index/index', // 分享的页面路径
+    }
+  },
+  // 设置分享到朋友圈
+  onShareTimeline(){
+    return {
+      title: '好好养猫小助手',
+    }
+  },
   // 接收子组件渲染完毕消息
   page_ready(e) {
     if (e.detail) {
