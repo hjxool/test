@@ -177,7 +177,7 @@ Page({
                 id: val._id,
                 name: val.name,
                 phone: val.phone,
-                weChat: val.weChat,
+                remark: val.remark,
                 orders: [child],
               };
               list.push(t);

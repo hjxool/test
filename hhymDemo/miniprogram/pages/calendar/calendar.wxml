@@ -40,9 +40,9 @@
         <view class="text">{{item.phone}}</view>
       </view>
 
-      <view class="row_layout" catch:tap="copy_content" data-content="{{item.weChat}}">
-        <view class="title">微信号：</view>
-        <view class="text">{{item.weChat}}</view>
+      <view class="row_layout" catch:tap="copy_content" data-content="{{item.remark}}">
+        <view class="title">昵称：</view>
+        <view class="text">{{item.remark}}</view>
       </view>
 
       <view class="row_layout">

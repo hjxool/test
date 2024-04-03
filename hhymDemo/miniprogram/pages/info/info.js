@@ -71,6 +71,8 @@ Page({
       // 如果数据库中存在当前用户 则为更新 否则新增
       this.customer_type = "put";
     }
+    // 记录用户备注名
+    this.user_remark = customer?.remark || "";
     this.setData({
       "form.pet": pet.map((e) => {
         e.short = e.name.split("")[0];
@@ -318,8 +320,8 @@ Page({
     });
     // 不需要传用户id，由后端接口获取并写入
     let { name, phone, pet, know_from } = this.data.form;
-    let st = new Date(this.app.globalData.start_time)
-    let et = new Date(this.app.globalData.end_time)
+    let st = new Date(this.app.globalData.start_time);
+    let et = new Date(this.app.globalData.end_time);
     let res = await this.app.mycall("reserve", {
       type: this.customer_type,
       params: {
@@ -338,11 +340,12 @@ Page({
         }),
         // 表单里显示的开始和结束时间是.连接的 不能用
         // 全局变量里存的是时间戳
-        start: `${st.getFullYear()}/${st.getMonth()+1}/${st.getDate()}`,
-        end: `${et.getFullYear()}/${et.getMonth()+1}/${et.getDate()}`,
+        start: `${st.getFullYear()}/${st.getMonth() + 1}/${st.getDate()}`,
+        end: `${et.getFullYear()}/${et.getMonth() + 1}/${et.getDate()}`,
         room: this.app.globalData.room,
         know_from,
         cost: this.data.total_price,
+        remark: this.user_remark, // 用户每次提交订单都携带备注名
       },
     });
     wx.hideLoading();

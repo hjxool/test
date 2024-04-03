@@ -85,6 +85,7 @@ exports.main = async (event, context) => {
       phone: params.phone,
       pets: params.pet,
       know_from: params.know_from,
+      remark: params.remark,
     },
   };
   if (type === "post") {

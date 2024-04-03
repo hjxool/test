@@ -152,7 +152,7 @@ Component({
       let total_day = new Date(year, month, 0).getDate(); //获取当月总天数
       // 将当月日期填入
       for (let index = 1; index <= total_day; index++) {
-        let d = new Date(`${year}/${month}/${index}`);
+        let d = new Date(`${year}/${month}/${index} 00:00:00`);
         let d2 = {
           date: d.getTime(),
           text: index,

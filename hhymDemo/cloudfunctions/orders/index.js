@@ -70,7 +70,7 @@ async function get_orders(condition) {
   // 查询订单列表都按照开始时间降序
   let res = await order
     .where(c)
-    .orderBy('start','desc')
+    .orderBy("start", "desc")
     .get()
     .then((res) => res.data)
     .catch((err) => false);
@@ -161,7 +161,7 @@ async function del_orders(condition) {
         c[key] = _.in(condition[key]);
         break;
       case "customer_id":
-        c[key] = _.in(condition[key]);
+        c[key] = condition[key];
         break;
     }
   }
@@ -228,8 +228,8 @@ exports.main = async (event, context) => {
       return await update_orders(params, condition);
     case "del":
       return await del_orders(condition);
-    case 'post':
-      return await add_orders(params)
+    case "post":
+      return await add_orders(params);
     default:
       return { msg: `参数错误:${JSON.stringify(event)}`, code: 400 };
   }

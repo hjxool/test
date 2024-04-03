@@ -69,11 +69,12 @@ async function add_user(params) {
       case "know_from":
       case "pay":
       case "orders":
+      case "remark":
         body[key] = params[key];
         break;
     }
   }
-  if (Object.entries(body).length !== 7) {
+  if (Object.entries(body).length !== 8) {
     return { msg: "新增用户参数错误", code: 400 };
   }
   // 新增重复的_id会自动报错不需要查了再添加
@@ -152,14 +153,13 @@ async function update_user(params, condition) {
 // 删除用户
 // 删除时可以多个
 async function del_user(condition) {
-  if (!condition?._id?.length) {
+  if (!condition?._id) {
     // 删除时必须传id列表
     return { msg: "_id缺失", code: 400 };
   }
   let res = await user
     .where({
-      // 支持批量删除
-      _id: _.in(condition._id),
+      _id: condition._id,
     })
     .remove()
     .then(

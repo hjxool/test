@@ -9,6 +9,7 @@ Page({
       phone: "", // 电话
       orders: "", // 订单数
       pay: "", // 金额
+      remark: "", // 用户昵称
     },
     pop_show: false, // 显示弹窗
     pet_list: [], // 客户宠物信息列表
@@ -110,6 +111,7 @@ Page({
           phone: form.phone,
           orders: Number(form.orders),
           pay: Number(form.pay),
+          remark: form.remark,
         },
       });
       if (res.code !== 200) {
@@ -125,6 +127,7 @@ Page({
         [`${item}phone`]: form.phone,
         [`${item}orders`]: form.orders,
         [`${item}pay`]: form.pay,
+        [`${item}remark`]: form.remark,
       });
       this.tips("保存成功");
     } else if (tag == "edit") {
@@ -135,12 +138,13 @@ Page({
         "edit.phone": d.phone,
         "edit.orders": d.orders,
         "edit.pay": d.pay,
+        "edit.remark": d.remark,
       });
     } else if (tag === "del") {
       let res = await this.app.mycall("customer", {
         type: "del",
         condition: {
-          _id: [d._id],
+          _id: d._id,
         },
       });
       if (res.code !== 200) {
@@ -183,7 +187,7 @@ Page({
   async check(e) {
     if (this.data.edit.is_edit) {
       // 在编辑状态不能点击
-      return
+      return;
     }
     let { pets } = e.currentTarget.dataset;
     this.setData({

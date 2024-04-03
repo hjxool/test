@@ -17,7 +17,7 @@ Component({
       // 时间要跟日历里的统一
       let nowt = new Date();
       this.data.start_date = new Date(
-        `${nowt.getFullYear()}/${nowt.getMonth() + 1}/${nowt.getDate()}`
+        `${nowt.getFullYear()}/${nowt.getMonth() + 1}/${nowt.getDate()} 00:00:00`
       );
       this.app.globalData.start_time = this.data.start_date.getTime();
       let nextt = this.data.start_date.getTime() + 24 * 60 * 60 * 1000;

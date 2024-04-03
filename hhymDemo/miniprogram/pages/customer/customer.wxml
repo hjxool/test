@@ -13,6 +13,13 @@
         <view class="text" wx:else>{{item.name}}</view>
       </view>
 
+      <view class="row_layout" catch:tap="copy_content" data-content="{{item.remark}}">
+        <view class="title">昵称：</view>
+        <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.remark}}" bindblur="edit_value" data-tag="edit.remark" />
+
+        <view class="text" wx:else>{{item.remark}}</view>
+      </view>
+
       <view class="row_layout" catch:tap="copy_content" data-content="{{item.phone}}">
         <view class="title">电话：</view>
         <input class="text2" wx:if="{{edit.is_edit&&edit.select==item._id}}" value="{{edit.phone}}" bindblur="edit_value" data-tag="edit.phone" />
