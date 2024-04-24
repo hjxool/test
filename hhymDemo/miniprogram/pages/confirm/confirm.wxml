@@ -4,7 +4,7 @@
       <view class="text">客户名：{{item.customer_name}}</view>
       <view class="text">宠物：{{item.pets}}</view>
       <view class="text">预定时间：{{item.start_text}}~{{item.end_text}}</view>
-      <view class="text">房间：{{item.room_text}}</view>
+      <view class="text" catch:tap="zoom_in">房间：{{item.room_text}}</view>
       <view class="text">金额：{{item.cost}}</view>
     </view>
 
@@ -14,3 +14,9 @@
     </view>
   </view>
 </view>
+<!-- 房间布局弹窗 -->
+<popup show="{{popup_img?true:false}}" catch:close_pop="close_pop">
+  <view class="popup_img">
+    <image class="img" src="{{popup_img}}" mode="aspectFit"></image>
+  </view>
+</popup>

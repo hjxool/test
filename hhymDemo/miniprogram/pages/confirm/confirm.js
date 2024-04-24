@@ -2,6 +2,7 @@ Page({
   data: {
     // 客户提交订单
     list: [],
+    popup_img: "", // 弹窗图片
   },
   onLoad() {
     this.app = getApp();
@@ -11,7 +12,7 @@ Page({
         val.start_text = this.format_time_text(val.start);
         val.end_text = this.format_time_text(val.end);
         val.room_text = this.format_room_text(val.room);
-        val.pets = val.pet_name.join('、')
+        val.pets = val.pet_name.join("、");
       }
       this.setData({
         list: data,
@@ -38,8 +39,11 @@ Page({
           return `标准间${room_id}`;
         } else if (Number(room_id) >= 4 && Number(room_id) <= 10) {
           return `标准间${Number(room_id) - 1}`;
-        } else if (room_id == "2" || room_id == "13") {
+        } else if (room_id == "12" || room_id == "13") {
           return `标准间${Number(room_id) - 2}`;
+        } else if (room_id == "0") {
+          // 还有无房间的 其他业务
+          return "无";
         }
     }
   },
@@ -59,27 +63,42 @@ Page({
       mask: true,
     });
     let condition = { _id: list[index]._id };
-    let params = {}
+    let params = {};
     switch (type) {
       case "confirm":
         condition.customer_id = list[index].customer_id;
-        params.status = 1
+        params.status = 1;
         break;
-      case 'cancel':
-        params.status = -1
-        break
+      case "cancel":
+        params.status = -1;
+        break;
     }
     let res = await this.app.mycall("orders", {
       type: "put",
       condition,
       params,
     });
-    wx.hideToast()
+    wx.hideToast();
     if (res.code !== 200) {
       return;
     }
     // 更新成功 从待确认列表中删除
     list.splice(index, 1);
     this.setData({ list });
+  },
+  // 弹窗组件事件
+  close_pop_img(e) {
+    if (e.detail.type === "close") {
+      this.setData({
+        popup_img: "",
+      });
+    }
+  },
+  // 放大显示图片
+  zoom_in() {
+    this.setData({
+      popup_img:
+        "cloud://cloud1-0gzy726e39ba4d96.636c-cloud1-0gzy726e39ba4d96-1320186052/room.png",
+    });
   },
 });

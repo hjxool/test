@@ -42,8 +42,11 @@ Component({
             return `标准间${id}`;
           } else if (Number(id) >= 4 && Number(id) <= 10) {
             return `标准间${Number(id) - 1}`;
-          } else if (id == "2" || id == "13") {
+          } else if (id == "12" || id == "13") {
             return `标准间${Number(id) - 2}`;
+          }else if (room_id == "0") {
+            // 还有无房间的 其他业务
+            return "无";
           }
       }
     },

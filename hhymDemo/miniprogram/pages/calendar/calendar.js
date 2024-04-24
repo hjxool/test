@@ -7,6 +7,7 @@ Page({
     date_boundary: 0, // 当天之前的所有天数全部灰掉
     pop_show: false, // 显示弹窗
     day_user_order: [], // 当日用户以及订单列表
+    popup_img: "", // 弹窗图片
   },
   onLoad() {
     this.app = getApp();
@@ -220,5 +221,20 @@ Page({
           return "无";
         }
     }
+  },
+  // 弹窗组件事件
+  close_pop_img(e) {
+    if (e.detail.type === "close") {
+      this.setData({
+        popup_img: "",
+      });
+    }
+  },
+  // 放大显示图片
+  zoom_in() {
+    this.setData({
+      popup_img:
+        "cloud://cloud1-0gzy726e39ba4d96.636c-cloud1-0gzy726e39ba4d96-1320186052/room.png",
+    });
   },
 });

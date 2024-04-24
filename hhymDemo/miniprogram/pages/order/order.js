@@ -42,6 +42,7 @@ Page({
       room_index: "", // 房间列表索引
       status_index: "", // 订单状态索引
     },
+    popup_img: "", // 弹窗图片
   },
   async onLoad(options) {
     this.app = getApp();
@@ -340,6 +341,21 @@ Page({
     this.setData({
       "edit.is_edit": false,
       "edit.select": "",
+    });
+  },
+  // 弹窗组件事件
+  close_pop_img(e) {
+    if (e.detail.type === "close") {
+      this.setData({
+        popup_img: "",
+      });
+    }
+  },
+  // 放大显示图片
+  zoom_in() {
+    this.setData({
+      popup_img:
+        "cloud://cloud1-0gzy726e39ba4d96.636c-cloud1-0gzy726e39ba4d96-1320186052/room.png",
     });
   },
 });

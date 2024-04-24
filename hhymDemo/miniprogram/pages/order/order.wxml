@@ -64,7 +64,7 @@
             </picker>
           </block>
 
-          <view class="text" wx:else>{{item.room_text}}</view>
+          <view class="text" wx:else catch:tap="zoom_in">{{item.room_text}}</view>
         </view>
 
         <view class="row_layout">
@@ -88,3 +88,9 @@
     </view>
   </scroll-view>
 </view>
+<!-- 房间布局弹窗 -->
+<popup show="{{popup_img?true:false}}" catch:close_pop="close_pop">
+  <view class="popup_img">
+    <image class="img" src="{{popup_img}}" mode="aspectFit"></image>
+  </view>
+</popup>

@@ -38,3 +38,12 @@
 .icon2{
   color: #e6a23c;
 }
+/* 房间图片弹窗 */
+.popup_img {
+  width: 100%;
+  height: 100%;
+}
+.popup_img > .img {
+  width: 100%;
+  height: 100%;
+}

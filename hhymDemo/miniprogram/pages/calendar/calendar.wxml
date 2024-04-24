@@ -26,7 +26,7 @@
     </scroll-view>
   </view>
 </view>
-<!-- 弹窗 -->
+<!-- 详情弹窗 -->
 <page-container show="{{pop_show}}" round="{{true}}" position="bottom" custom-style="height:80%">
   <view class="pop_box">
     <view class="box" wx:for="{{day_user_order}}" wx:key="_id">
@@ -68,12 +68,18 @@
 
           <view class="row_layout">
             <view class="title">房间：</view>
-            <view class="text">{{aa.room}}</view>
+            <view class="text" catch:tap="zoom_in">{{aa.room}}</view>
           </view>
-          
+
           <view class="row_layout iconfont icon-xiajiantou text" hidden="{{aai==item.orders.length-1}}"></view>
         </block>
       </view>
     </view>
   </view>
 </page-container>
+<!-- 房间布局弹窗 -->
+<popup show="{{popup_img?true:false}}" catch:close_pop="close_pop">
+  <view class="popup_img">
+    <image class="img" src="{{popup_img}}" mode="aspectFit"></image>
+  </view>
+</popup>
