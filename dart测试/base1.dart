@@ -126,7 +126,29 @@ main() {
   // print(r);
 
   // 数组转Set集合
-  List arr = [1, 2, 3];
-  arr.toSet();
-  print(arr);
+  // List arr = [1, 2, 3];
+  // arr.toSet();
+  // print(arr);
+
+  // set集合求交集
+  // var arr = [1, 2, 3];
+  // var set1 = arr.toSet();
+  // arr = [2, 3, 7];
+  // var set2 = arr.toSet();
+  // print(set1.intersection(set2));
+
+  // map测试
+  var map = {'name': 'sasd', 'age': 18};
+  // print(map);
+
+  // map 判断key是否存在
+  // print(map.containsKey('name'));
+  // print(map.containsValue(18));
+
+  // map 测试赋值重复的key 答：会覆盖同名键值
+  // map['name'] = 'xxx';
+  // print(map);
+
+  // map 测试取值
+  print(map['name']);
 }
