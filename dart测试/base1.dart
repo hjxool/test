@@ -127,8 +127,10 @@ main() {
 
   // 数组转Set集合
   // List arr = [1, 2, 3];
-  // arr.toSet();
-  // print(arr);
+  // print(arr.toSet());
+
+  // set有length属性吗？ 答：有
+  // print(arr.toSet().length); // 3
 
   // set集合求交集
   // var arr = [1, 2, 3];
@@ -138,8 +140,11 @@ main() {
   // print(set1.intersection(set2));
 
   // map测试
-  var map = {'name': 'sasd', 'age': 18};
+  // var map = {'name': 'sasd', 'age': 18};
   // print(map);
+
+  // map 测试length
+  // print(map.length); // 2
 
   // map 判断key是否存在
   // print(map.containsKey('name'));
@@ -150,5 +155,24 @@ main() {
   // print(map);
 
   // map 测试取值
-  print(map['name']);
+  // print(map['name']);
+
+  // 避空运算符 测试
+  // print(null ?? 1); // 1
+  // print(null ?? null ?? 1); // 1
+
+  // 避空运算符 0是否算空 答：不算
+  // 且会警告
+  // print(0 ?? 1); // 0
+
+  // 避空运算符 赋值操作
+  // var a;
+  // a ??= 3;
+  // print(a); // 3
+
+  // 函数有声明提升吗 答：没有
+  // fn();
+  // void fn() {
+  //   print(1);
+  // }
 }
