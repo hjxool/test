@@ -175,4 +175,19 @@ main() {
   // void fn() {
   //   print(1);
   // }
+
+  // 函数 不使用可选参数，也需要设置默认值吗？ 答:指定类型的才需要设置默认值
+  // String fn(String name, [var age]) {
+  //   return '你好: $name, 年龄: $age';
+  // }
+
+  // print(fn('张三'));
+
+  // 函数 用var声明的可选参数 传入不同类型参数会报错吗？ 答:不会
+  String fn(String name, [var age = 12]) {
+    return '你好: $name, 年龄: $age';
+  }
+
+  print(fn('张三', 18));
+  print(fn('张三', '78'));
 }
