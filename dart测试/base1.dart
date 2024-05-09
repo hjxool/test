@@ -184,10 +184,10 @@ main() {
   // print(fn('张三'));
 
   // 函数 用var声明的可选参数 传入不同类型参数会报错吗？ 答:不会
-  String fn(String name, [var age = 12]) {
-    return '你好: $name, 年龄: $age';
-  }
+  // String fn(String name, [var age = 12]) {
+  //   return '你好: $name, 年龄: $age';
+  // }
 
-  print(fn('张三', 18));
-  print(fn('张三', '78'));
+  // print(fn('张三', 18));
+  // print(fn('张三', '78'));
 }
