@@ -190,4 +190,19 @@ main() {
 
   // print(fn('张三', 18));
   // print(fn('张三', '78'));
+
+  // 命名参数 测试 可以不用写类型吗？ 答: 可以，相当于var声明
+  // String fn({name}) {
+  //   return '你好: $name';
+  // }
+
+  // print(fn(name: 'asd'));
+
+  // 命名参数 测试 不指定类型，并赋初值后，还可以传入不同类型参数吗？
+  // 答: 可以
+  String fn({name = 'ssss'}) {
+    return '你好: $name';
+  }
+
+  print(fn(name: 123));
 }
