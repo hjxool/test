@@ -24,6 +24,20 @@ main() {
   // 四舍五入
   // print(-3.7.round());
 
+  // 常量可以和动态类型一起使用吗？ 答: 不可以和var，但可以和dynamic
+  // final var x = 1;
+  // final num x = 1;
+  // final dynamic x = 1;
+
+  // dynamic 声明的动态类型 可以随时改值吗？ 答: 可以
+  // dynamic x = 1;
+  // x = 'asd';
+  // var y = 1;
+  // y = 'sad';
+  // dynamic z;
+  // z = 1;
+  // z = 'asd';
+
   // 字符串类型
   // String str = '''
   // Hello
@@ -200,9 +214,19 @@ main() {
 
   // 命名参数 测试 不指定类型，并赋初值后，还可以传入不同类型参数吗？
   // 答: 可以
-  String fn({name = 'ssss'}) {
-    return '你好: $name';
-  }
+  // String fn({name = 'ssss'}) {
+  //   return '你好: $name';
+  // }
 
-  print(fn(name: 123));
+  // print(fn(name: 123));
+
+  // 测试 final 和 const 声明需要赋初值吗？ 答: const必须赋初值，final不需要
+  // final x;
+  // const y;
+
+  // 测试 final声明后可以修改值吗？
+  // 答: 不论赋不赋初值，final声明的常量在赋值过后都不能再修改
+  // final x;
+  // x = 1;
+  // x = 22;
 }
