@@ -78,6 +78,15 @@ class FactoryTest {
   FactoryTest.createInstance(this.keyname);
 }
 
+// 测试 字符串内能否读取 私有属性？ 答:
+class TestString {
+  String s1 = '你好';
+  String _s2 = '张三';
+  String fn() {
+    return '$s1,$_s2';
+  }
+}
+
 void main() {
   // 测试类传参
   // Point p = new Point(x: 4, y: 1);
@@ -87,10 +96,10 @@ void main() {
   // print(p2.x);
 
   // 测试 工厂构造函数
-  var p = new FactoryTest('张三');
-  print(p.keyname);
-  var p2 = new FactoryTest('李四');
-  print(p2.keyname);
+  // var p = new FactoryTest('张三');
+  // print(p.keyname);
+  // var p2 = new FactoryTest('李四');
+  // print(p2.keyname);
   // var p3 = new FactoryTest('张三');
   // print(p3.keyname);
   // print('------------------------');
@@ -99,4 +108,7 @@ void main() {
   // print('------------------------');
   // var p4 = new FactoryTest.createInstanceByJson({'name': '张三'});
   // print(p == p4);
+
+  // 测试 字符串读取私有属性
+  print(new TestString().fn());
 }
