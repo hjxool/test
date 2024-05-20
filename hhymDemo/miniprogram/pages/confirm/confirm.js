@@ -1,21 +1,37 @@
 Page({
   data: {
-    // 客户提交订单
-    list: [],
+    list: [], // 客户提交订单
     popup_img: "", // 弹窗图片
+    user: {
+      show: false, // 用户详情显示
+      data: null, // 用户数据
+    },
   },
   onLoad() {
     this.app = getApp();
     this.channel = this.getOpenerEventChannel();
     this.channel.on("comfirm_list", (data) => {
-      for (let val of data) {
-        val.start_text = this.format_time_text(val.start);
-        val.end_text = this.format_time_text(val.end);
-        val.room_text = this.format_room_text(val.room);
-        val.pets = val.pet_name.join("、");
-      }
+      // for (let val of data) {
+      //   val.start_text = this.format_time_text(val.start);
+      //   val.end_text = this.format_time_text(val.end);
+      //   val.room_text = this.format_room_text(val.room);
+      //   val.pets = val.pet_name.join("、");
+      // }
+      let p = ["花花", "灰灰"];
+      let list = [
+        {
+          customer_name: "xxx",
+          pets: p.join("、"),
+          start_text: this.format_time_text(1711670400000),
+          end_text: this.format_time_text(1743120000000),
+          room_text: this.format_room_text("2"),
+          cost: 18000,
+          customer_id: "ocEJ163A7xx4b8s5pol9qlvJXepc",
+        },
+      ];
       this.setData({
-        list: data,
+        // list: data,
+        list: list,
       });
     });
   },
@@ -86,7 +102,7 @@ Page({
     list.splice(index, 1);
     this.setData({ list });
   },
-  // 弹窗组件事件
+  // 关闭图片弹窗
   close_pop_img(e) {
     if (e.detail.type === "close") {
       this.setData({
@@ -100,5 +116,27 @@ Page({
       popup_img:
         "cloud://cloud1-0gzy726e39ba4d96.636c-cloud1-0gzy726e39ba4d96-1320186052/room.png",
     });
+  },
+  // 弹窗显示用户详情
+  async check_user_detail(e) {
+    let { user_id } = e.currentTarget.dataset;
+    let { data: res } = await this.app.mycall("customer", {
+      type: "get",
+      condition: {
+        user_id,
+      },
+    });
+    console.log("sssssssss", res);
+    this.setData({
+      "user.show": true,
+    });
+  },
+  // 关闭用户弹窗
+  close_pop_user() {
+    if (e.detail.type === "close") {
+      this.setData({
+        "user.show": false,
+      });
+    }
   },
 });

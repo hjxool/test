@@ -50,7 +50,7 @@ function statistic(dates, orders) {
       if (d) {
         // 有的会丢失精度 以防万一在这取小数点后一位
         let c = Math.floor(d * average * 10) / 10;
-        val2.income += c;
+        val2.income = Math.round(val2.income + c)
       }
     }
   }

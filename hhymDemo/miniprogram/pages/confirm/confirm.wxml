@@ -6,6 +6,7 @@
       <view class="text">预定时间：{{item.start_text}}~{{item.end_text}}</view>
       <view class="text" catch:tap="zoom_in">房间：{{item.room_text}}</view>
       <view class="text">金额：{{item.cost}}</view>
+      <button class="button" catch:tap="check_user_detail" data-user_id="{{item.customer_id}}" type="default" size="mini">用户详情</button>
     </view>
 
     <view class="flex_shrink row_layout">
@@ -15,8 +16,14 @@
   </view>
 </view>
 <!-- 房间布局弹窗 -->
-<popup show="{{popup_img?true:false}}" catch:close_pop="close_pop">
+<popup show="{{popup_img?true:false}}" catch:close_pop="close_pop_img">
   <view class="popup_img">
     <image class="img" src="{{popup_img}}" mode="aspectFit"></image>
+  </view>
+</popup>
+<!-- 用户详情弹窗 -->
+<popup show="{{user.show?true:false}}" catch:close_pop="close_pop_user">
+  <view class="popup_user">
+    <view class="text">待完善：{{item.cost}}</view>
   </view>
 </popup>

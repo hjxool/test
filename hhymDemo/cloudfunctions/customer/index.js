@@ -37,6 +37,10 @@ async function get_user(condition) {
   if (condition?.pet_name) {
     c["pet.name"] = condition.pet_name;
   }
+  // 根据用户id查询
+  if (condition?.user_id) {
+    c._id = condition.user_id
+  }
   // 如果参数为空 则查询当前操作用户信息
   if (!condition) {
     // 获取用户id
