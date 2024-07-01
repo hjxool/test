@@ -5,63 +5,88 @@
   box-sizing: border-box;
   padding: 20rpx;
 }
+
 /* 单个列表项 */
-.box{
+.box {
   margin-bottom: 40rpx;
 }
-.box>.flex_grow{
+
+.box>.flex_grow {
   background: #fff;
   border-radius: 20rpx;
   padding: 20rpx;
   display: flex;
   flex-direction: column;
 }
-.box>.flex_shrink{
+
+.box>.flex_shrink {
   margin-left: 20rpx;
 }
+
 /* 内容文字 */
-.text{
+.text {
   font-size: 28rpx;
   color: #808080;
   margin-bottom: 20rpx;
 }
+
 /* .text:not(:last-child){
   margin-bottom: 20rpx;
 } */
-.button{
+.button {
   color: #808080 !important;
   align-self: flex-start;
   margin: 0 !important;
   font-size: 28rpx !important;
 }
+
 /* 图标 */
-.icon{
+.icon {
   font-size: 60rpx;
 }
-.icon:first-child{
+
+.icon:first-child {
   margin-right: 32rpx;
 }
-.icon1{
+
+.icon1 {
   color: #67c23a;
 }
-.icon2{
+
+.icon2 {
   color: #e6a23c;
 }
+
 /* 房间图片弹窗 */
 .popup_img {
   width: 100%;
   height: 100%;
 }
-.popup_img > .img {
+
+.popup_img>.img {
   width: 100%;
   height: 100%;
 }
 /* 用户弹窗 */
-.popup_user{
+.popup_user {
   width: 80%;
   height: 80%;
   background: #fff;
   border-radius: 20rpx;
   padding: 40rpx 40rpx 0 40rpx;
   overflow-x: hidden;
+}
+/* 用户详情 */
+.detail {
+  margin-bottom: 40rpx;
+}
+.detail .title{
+  font-size: 32rpx;
+  flex-shrink: 0;
+}
+.detail .text{
+  margin: 0;
+}
+.detail>.padding {
+  padding-left: 40rpx;
 }

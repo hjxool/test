@@ -106,7 +106,7 @@ Page({
       this.half_month_day = res.half_month_day;
       this.half_month_discount = res.half_month_discount;
     } else {
-      this.tips("网络异常");
+      this.tip("网络异常");
       this.err = true;
       // 不往后继续执行计价方法
       return;
