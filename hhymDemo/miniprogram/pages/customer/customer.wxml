@@ -1,6 +1,6 @@
 <view class="index col_layout">
   <view class="head row_layout flex_shrink">
-    <view class="title">客户名:</view>
+    <view class="title">关键字搜索:</view>
     <input class="input" confirm-type="search" bindconfirm="get_data" bindfocus="focus" bindblur="blur" style="border-color: {{on_focus?'#1E90FF':''}};" />
   </view>
 

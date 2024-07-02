@@ -5,28 +5,80 @@ Page({
     select_user: "", // 用户筛选 选的数组元素下标
     user_list: [], // 用户列表
     select_status: "", // 订单状态
-    order_status: [
-      { label: "已确认", value: 1 },
-      { label: "待确认", value: 0 },
-      { label: "已过期", value: 2 },
-      { label: "已取消", value: -1 },
+    order_status: [{
+        label: "已确认",
+        value: 1
+      },
+      {
+        label: "待确认",
+        value: 0
+      },
+      {
+        label: "已过期",
+        value: 2
+      },
+      {
+        label: "已取消",
+        value: -1
+      },
     ],
     // 房间名及对应id
-    rooms: [
-      { label: "无", value: "0" },
-      { label: "标准间1", value: "1" },
-      { label: "标准间2", value: "2" },
-      { label: "豪华间1", value: "3" },
-      { label: "标准间3", value: "4" },
-      { label: "标准间4", value: "5" },
-      { label: "标准间5", value: "6" },
-      { label: "标准间6", value: "7" },
-      { label: "标准间7", value: "8" },
-      { label: "标准间8", value: "9" },
-      { label: "标准间9", value: "10" },
-      { label: "豪华间2", value: "11" },
-      { label: "标准间10", value: "12" },
-      { label: "标准间11", value: "13" },
+    rooms: [{
+        label: "无",
+        value: "0"
+      },
+      {
+        label: "标准间1",
+        value: "1"
+      },
+      {
+        label: "标准间2",
+        value: "2"
+      },
+      {
+        label: "豪华间1",
+        value: "3"
+      },
+      {
+        label: "标准间3",
+        value: "4"
+      },
+      {
+        label: "标准间4",
+        value: "5"
+      },
+      {
+        label: "标准间5",
+        value: "6"
+      },
+      {
+        label: "标准间6",
+        value: "7"
+      },
+      {
+        label: "标准间7",
+        value: "8"
+      },
+      {
+        label: "标准间8",
+        value: "9"
+      },
+      {
+        label: "标准间9",
+        value: "10"
+      },
+      {
+        label: "豪华间2",
+        value: "11"
+      },
+      {
+        label: "标准间10",
+        value: "12"
+      },
+      {
+        label: "标准间11",
+        value: "13"
+      },
     ],
     page_num: 1, //查询页数
     page_size: 10, //查询条数
@@ -43,6 +95,10 @@ Page({
       status_index: "", // 订单状态索引
     },
     popup_img: "", // 弹窗图片
+    user: {
+      show: false, // 用户详情显示
+      data: null, // 用户数据
+    },
   },
   async onLoad(options) {
     this.app = getApp();
@@ -58,7 +114,9 @@ Page({
   },
   // 选择时间等
   async select_value(e) {
-    let { tag } = e.currentTarget.dataset;
+    let {
+      tag
+    } = e.currentTarget.dataset;
     this.setData({
       [tag]: e.detail.value,
       // 每次选完清空列表 而不是在现有列表后拼接
@@ -75,7 +133,9 @@ Page({
   },
   // 选择器点取消清除值
   async clear_value(e) {
-    let { tag } = e.currentTarget.dataset;
+    let {
+      tag
+    } = e.currentTarget.dataset;
     this.setData({
       [tag]: "",
       // 每次选完清空列表 而不是在现有列表后拼接
@@ -92,7 +152,9 @@ Page({
   },
   // 编辑订单值
   edit_order_value(e) {
-    let { tag } = e.currentTarget.dataset;
+    let {
+      tag
+    } = e.currentTarget.dataset;
     if (tag == "edit.start" || tag == "edit.end") {
       // 时间用的是选择器 所以要区分是保存回显值还是显示文本
       this.setData({
@@ -163,7 +225,9 @@ Page({
         this.data.select_status
       ].value;
     }
-    let { data: res } = await this.app.mycall("get_orders_by_paging", body);
+    let {
+      data: res
+    } = await this.app.mycall("get_orders_by_paging", body);
     if (res) {
       // 记录总条数 避免翻页过了头
       this.total_page = Math.ceil(res.total / this.data.page_size);
@@ -189,7 +253,9 @@ Page({
   },
   // 查询用户列表
   async get_users() {
-    let { data: res } = await this.app.mycall("customer", {
+    let {
+      data: res
+    } = await this.app.mycall("customer", {
       type: "get",
       condition: {},
     });
@@ -214,7 +280,9 @@ Page({
     if (this.data.edit.is_edit) {
       return;
     }
-    let { id } = e.currentTarget.dataset;
+    let {
+      id
+    } = e.currentTarget.dataset;
     // 选中同一个 折叠显示 选中不同的赋值
     if (id === this.data.edit.select) {
       this.setData({
@@ -228,7 +296,10 @@ Page({
   },
   // 编辑、保存订单
   async edit_order(e) {
-    let { tag, index } = e.currentTarget.dataset;
+    let {
+      tag,
+      index
+    } = e.currentTarget.dataset;
     let d = this.data.list[index];
     if (tag == "save") {
       let form = this.data.edit;
@@ -354,8 +425,37 @@ Page({
   // 放大显示图片
   zoom_in() {
     this.setData({
-      popup_img:
-        "cloud://cloud1-0gzy726e39ba4d96.636c-cloud1-0gzy726e39ba4d96-1320186052/room.png",
+      popup_img: "cloud://cloud1-0gzy726e39ba4d96.636c-cloud1-0gzy726e39ba4d96-1320186052/room.png",
     });
+  },
+  // 弹窗显示用户详情
+  async check_user_detail(e) {
+    let {
+      user_id
+    } = e.currentTarget.dataset;
+    let {
+      data: res
+    } = await this.app.mycall("customer", {
+      type: "get",
+      condition: {
+        user_id,
+      },
+    });
+    if (res) {
+      this.setData({
+        "user.show": true,
+        'user.data': res[0]
+      });
+    } else {
+      this.tips('查询失败')
+    }
+  },
+  // 关闭用户弹窗
+  close_pop_user(e) {
+    if (e.detail.type === "close") {
+      this.setData({
+        "user.show": false,
+      });
+    }
   },
 });

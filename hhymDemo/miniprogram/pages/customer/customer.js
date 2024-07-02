@@ -26,7 +26,7 @@ Page({
     });
     let condition = {};
     if (e) {
-      condition.name = e.detail.value;
+      condition.keyword = e.detail.value;
     }
     let { data: res } = await this.app.mycall("customer", {
       type: "get",

@@ -71,3 +71,33 @@
   width: 100%;
   height: 100%;
 }
+/* 用户详情 */
+.button {
+  color: #808080 !important;
+  align-self: flex-start;
+  margin: 0 !important;
+  font-size: 28rpx !important;
+}
+/* 用户弹窗 */
+.popup_user {
+  width: 80%;
+  height: 80%;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 40rpx 40rpx 0 40rpx;
+  overflow-x: hidden;
+}
+/* 用户详情 */
+.detail {
+  margin-bottom: 40rpx;
+}
+.detail .title{
+  font-size: 32rpx;
+  flex-shrink: 0;
+}
+.detail .text{
+  margin: 0;
+}
+.detail>.padding {
+  padding-left: 40rpx;
+}

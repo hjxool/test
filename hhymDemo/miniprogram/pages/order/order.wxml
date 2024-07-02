@@ -77,6 +77,8 @@
 
           <view class="text" wx:else>{{item.status_text}}</view>
         </view>
+
+        <button class="button" catch:tap="check_user_detail" data-user_id="{{item.customer_id}}" type="default" size="mini">详情</button>
         <!-- 操作按钮 -->
         <view class="foot row_layout" style="height: {{edit.select==item._id?'64rpx':'0'}};">
           <button class="btn" wx:if="{{edit.is_edit}}" catch:tap="edit_order" data-tag="save" data-index="{{index}}" type="primary" size="mini">保存</button>
@@ -92,5 +94,64 @@
 <popup show="{{popup_img?true:false}}" catch:close_pop="close_pop">
   <view class="popup_img">
     <image class="img" src="{{popup_img}}" mode="aspectFit"></image>
+  </view>
+</popup>
+<!-- 用户详情弹窗 -->
+<popup show="{{user.show}}" catch:close_pop="close_pop_user">
+  <view class="popup_user">
+    <view class="detail" wx:for="{{user.data.pets}}">
+      <view class="row_layout">
+        <view class="title">宠物名：</view>
+        <view class="text">{{item.name}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">岁数：</view>
+        <view class="text">{{item.age}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">性别：</view>
+        <view class="text">{{item.gender?'公':'母'}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">品种：</view>
+        <view class="text">{{item.breed}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">性格：</view>
+        <view class="text">{{item.character}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">是否绝育：</view>
+        <view class="text">{{item.sterile?'是':'否'}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">是否有耳螨：</view>
+        <view class="text">{{item.ear_mite?'是':'否'}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">是否携带传染病：</view>
+        <view class="text">{{item.disease?'是':'否'}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">上一次驱虫时间：</view>
+        <view class="text">{{item.deworm_time}}</view>
+      </view>
+
+      <view class="row_layout">
+        <view class="title">上一次疫苗时间：</view>
+        <view class="text">{{item.vaccine_time}}</view>
+      </view>
+
+      <view class="title">特殊要求：</view>
+      <view class="text padding">{{item.detail}}</view>
+    </view>
   </view>
 </popup>

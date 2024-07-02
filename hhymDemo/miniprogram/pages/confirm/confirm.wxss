@@ -29,17 +29,12 @@
   color: #808080;
   margin-bottom: 20rpx;
 }
-
-/* .text:not(:last-child){
-  margin-bottom: 20rpx;
-} */
 .button {
   color: #808080 !important;
   align-self: flex-start;
   margin: 0 !important;
   font-size: 28rpx !important;
 }
-
 /* 图标 */
 .icon {
   font-size: 60rpx;

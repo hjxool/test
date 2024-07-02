@@ -1,7 +1,10 @@
 // 云函数入口文件
 const cloud = require("wx-server-sdk");
 
-cloud.init({ env: "cloud1-0gzy726e39ba4d96", traceUser: true }); // 使用当前云环境
+cloud.init({
+  env: "cloud1-0gzy726e39ba4d96",
+  traceUser: true
+}); // 使用当前云环境
 const db = cloud.database();
 const user = db.collection("customers");
 // 指令
@@ -9,55 +12,78 @@ const _ = db.command;
 
 // 通用调接口方法
 async function myCall(name, data) {
-  let body = { name };
+  let body = {
+    name
+  };
   if (data) {
     body.data = data;
   }
   let res = await cloud.callFunction(body).catch((err) => {
-    return { msg: "err", code: 400 };
+    return {
+      msg: "err",
+      code: 400
+    };
   });
   return res.result || res;
 }
 
 // 查询用户
 async function get_user(condition) {
-  let c = {};
-  // 根据用户名 模糊查询
-  if (condition?.name) {
-    c.name = db.RegExp({
-      regexp: `${condition.name}`,
-      options: "i",
-    });
-  }
-  // 根据电话检索
-  if (condition?.phone) {
-    c.phone = condition.phone;
-  }
-  // 根据宠物名反查用户
-  if (condition?.pet_name) {
-    c["pet.name"] = condition.pet_name;
-  }
-  // 根据用户id查询
-  if (condition?.user_id) {
-    c._id = condition.user_id
-  }
-  // 如果参数为空 则查询当前操作用户信息
-  if (!condition) {
+  let c
+  // 模糊查询
+  if (condition?.keyword) {
+    c = _.or([{
+        name: db.RegExp({
+          regexp: `${condition.keyword}`,
+          options: 'i',
+        })
+      },
+      {
+        "pets.name": db.RegExp({
+          regexp: `${condition.keyword}`,
+          options: 'i',
+        })
+      },
+      {
+        phone: db.RegExp({
+          regexp: `${condition.keyword}`,
+          options: 'i',
+        })
+      }
+    ])
+  } else if (condition?.user_id) {
+    // 根据用户id查询
+    c = {
+      _id: condition.user_id
+    }
+  } else if (!condition) {
+    // 如果参数为空 则查询当前操作用户信息
     // 获取用户id
-    const { OPENID: user_id } = cloud.getWXContext();
-    c._id = user_id;
+    const {
+      OPENID: user_id
+    } = cloud.getWXContext();
+    c = {
+      _id: user_id
+    }
   }
   let res = await user
-    .where(c)
+    .where(c || {})
     .get()
     .then(
       (res) => res.data,
       (err) => false
     );
   if (res) {
-    return { msg: "查询用户成功", code: 200, data: res };
+    return {
+      msg: "查询用户成功",
+      code: 200,
+      data: res
+    };
   } else {
-    return { msg: "查询用户失败", code: 400 };
+    return {
+      msg: "查询用户失败",
+      code: 400
+    };
   }
 }
 // 新增用户
@@ -79,7 +105,10 @@ async function add_user(params) {
     }
   }
   if (Object.entries(body).length !== 8) {
-    return { msg: "新增用户参数错误", code: 400 };
+    return {
+      msg: "新增用户参数错误",
+      code: 400
+    };
   }
   // 新增重复的_id会自动报错不需要查了再添加
   let res = await user
@@ -91,16 +120,25 @@ async function add_user(params) {
       (err) => false
     );
   if (res) {
-    return { msg: "success", code: 200 };
+    return {
+      msg: "success",
+      code: 200
+    };
   } else {
-    return { msg: "添加用户失败", code: 400 };
+    return {
+      msg: "添加用户失败",
+      code: 400
+    };
   }
 }
 // 更新用户
 // 更新用户不涉及订单 因此传什么字段就存什么
 async function update_user(params, condition) {
   if (!condition._id) {
-    return { msg: "_id缺失", code: 400 };
+    return {
+      msg: "_id缺失",
+      code: 400
+    };
   }
   // 用户名是否修改
   let name_change = false;
@@ -125,7 +163,10 @@ async function update_user(params, condition) {
     }
   }
   if (!Object.entries(body).length) {
-    return { msg: "更新参数不能为空", code: 400 };
+    return {
+      msg: "更新参数不能为空",
+      code: 400
+    };
   }
   let res = await user
     .doc(condition._id)
@@ -149,9 +190,15 @@ async function update_user(params, condition) {
         },
       });
     }
-    return { msg: "更新用户成功", code: 200 };
+    return {
+      msg: "更新用户成功",
+      code: 200
+    };
   } else {
-    return { msg: "更新用户失败", code: 400 };
+    return {
+      msg: "更新用户失败",
+      code: 400
+    };
   }
 }
 // 删除用户
@@ -159,7 +206,10 @@ async function update_user(params, condition) {
 async function del_user(condition) {
   if (!condition?._id) {
     // 删除时必须传id列表
-    return { msg: "_id缺失", code: 400 };
+    return {
+      msg: "_id缺失",
+      code: 400
+    };
   }
   let res = await user
     .where({
@@ -179,16 +229,23 @@ async function del_user(condition) {
       },
     });
   } else {
-    return { msg: "删除用户失败", code: 400 };
+    return {
+      msg: "删除用户失败",
+      code: 400
+    };
   }
 }
 // 云函数入口函数
 exports.main = async (event, context) => {
-  let { type, params, condition } = event;
+  let {
+    type,
+    params,
+    condition
+  } = event;
   switch (type) {
     case "get":
       return await get_user(condition);
-    // 新增和更新改为支持事务的形式
+      // 新增和更新改为支持事务的形式
     case "post":
       return await add_user(params);
     case "put":
@@ -196,6 +253,8 @@ exports.main = async (event, context) => {
     case "del":
       return await del_user(condition);
     default:
-      return { msg: `参数错误:${JSON.stringify(event)}`, code: 400 };
+      return {
+        msg: `参数错误:${JSON.stringify(event)}`, code: 400
+      };
   }
 };
